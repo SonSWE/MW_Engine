@@ -1,0 +1,11 @@
+﻿using DataAccess.Core.Abtractions;
+using Object;
+using Object.Core;
+
+namespace DataAccess.Core.SkillDAs
+{
+    public interface ICategoryDA : IBaseDA<MWCategory>
+    {
+
+    }
+}

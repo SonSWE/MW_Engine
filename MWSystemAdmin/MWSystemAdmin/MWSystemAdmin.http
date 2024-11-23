@@ -1,0 +1,6 @@
+@MWSystemAdmin_HostAddress = http://localhost:5072
+
+GET {{MWSystemAdmin_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

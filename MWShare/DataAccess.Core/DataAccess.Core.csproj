@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Interfaces\BO\**" />
+    <EmbeddedResource Remove="Interfaces\BO\**" />
+    <None Remove="Interfaces\BO\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Dapper.Oracle" Version="2.0.3" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.4" />
+    <PackageReference Include="Moq" Version="4.20.69" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="6.21.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib\CommonLib.csproj" />
+    <ProjectReference Include="..\MemoryData\MemoryData.csproj" />
+    <ProjectReference Include="..\Object.Core\Object.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DapperLib">
+      <HintPath>..\Lib\DapperLib.dll</HintPath>
+    </Reference>
+    <Reference Include="OracleHelpers">
+      <HintPath>..\Lib\OracleHelpers.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
