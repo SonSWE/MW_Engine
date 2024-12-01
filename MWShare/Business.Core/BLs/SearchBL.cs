@@ -35,16 +35,6 @@ namespace Business.Core.BLs
             return _searchDA.Inquiry(storeName, searchConds, sortConds, language, fromRecord, toRecord, out recordCount);
         }
 
-        public DataSet InquiryArray(string storeName, List<SearchInquiryCond> searchConds, List<string> sortConds, string language, int fromRecord, int toRecord, out int recordCount)
-        {
-            return _searchDA.InquiryArray(storeName, searchConds, sortConds, language, fromRecord, toRecord, out recordCount);
-        }
-
-        public DataSet InquiryOptimize(string storeName, List<SearchInquiryCond> searchConds, List<string> sortConds, string language, int maxRecordShow, out int realRecordCount, out long maxAutoId)
-        {
-            return _searchDA.InquiryOptimize(storeName, searchConds, sortConds, language, maxRecordShow, out realRecordCount, out maxAutoId);
-        }
-
         public DataSet InquiryUseSqlText(string sqlText, List<SearchInquiryCond> searchConds, List<string> sortConds, string language, int maxRecordShow, out int realRecordCount, out long maxAutoId)
         {
             return _searchDA.InquiryUseSqlText(sqlText, searchConds, sortConds, language, maxRecordShow, out realRecordCount, out maxAutoId);

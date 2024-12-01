@@ -4,21 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MemoryData
 {
     public static class SysParamMem
     {
-        private static List<SysParam> _sysParams = new();
+        private static List<MWSysParam> _sysParams = new();
         private static string _busDate = string.Empty;
 
         //
-        public static void InitData(List<SysParam> sysParams, string busDate)
+        public static void InitData(List<MWSysParam> sysParams, string busDate)
         {
             _sysParams = sysParams;
             _busDate = busDate;
         }
-        public static List<SysParam> GetAll()
+        public static List<MWSysParam> GetAll()
         {
             if (_sysParams?.Count > 0)
             {
@@ -27,20 +28,21 @@ namespace MemoryData
 
             return null;
         }
-        public static SysParam GetByGrpName(string grp, string name)
+        public static MWSysParam GetById(string id)
         {
-            if (_sysParams?.Count > 0 && !string.IsNullOrEmpty(grp) && !string.IsNullOrEmpty(name))
+            if (_sysParams?.Count > 0 && !string.IsNullOrEmpty(id))
             {
-                return _sysParams.FirstOrDefault(x => x.Grp.Equals(grp) && x.Name.Equals(name));
+                return _sysParams.FirstOrDefault(x => x.SysParamId.Equals(id));
             }
 
             return null;
         }
-        public static string GetValueByGrpName(string grp, string name)
+
+        public static string GetValueById(string id)
         {
-            if (_sysParams?.Count > 0 && !string.IsNullOrEmpty(grp) && !string.IsNullOrEmpty(name))
+            if (_sysParams?.Count > 0 && !string.IsNullOrEmpty(id))
             {
-                return _sysParams.FirstOrDefault(x => x.Grp == grp && x.Name == name)?.PValue ?? string.Empty;
+                return _sysParams.FirstOrDefault(x => x.SysParamId == id)?.PValue ?? string.Empty;
             }
 
             return string.Empty;
@@ -62,8 +64,8 @@ namespace MemoryData
         //
         public static int GetMaxRecordShow()
         {
-            var sysparam = GetByGrpName("SYSTEM", "MAXRECORDSHOW");
-            if (!string.IsNullOrEmpty(sysparam?.Grp))
+            var sysparam = GetById("MAXRECORDSHOW");
+            if (!string.IsNullOrEmpty(sysparam?.SysParamId))
             {
                 _ = long.TryParse(sysparam.PValue, out long maxRecordShow);
 
@@ -72,60 +74,6 @@ namespace MemoryData
             }
 
             return 2000;
-        }
-
-        //
-        public static decimal GetDepositIMFee()
-        {
-            decimal.TryParse(SysParamMem.GetValueByGrpName(Const.SysParam_Grp.SystemFee, Const.SysParam_Name.DepositIM), out decimal feeValue);
-            return feeValue;
-        }
-
-        //
-        public static DateTime GetCotBank(out DateTime endTime)
-        {
-            endTime = DateTime.MinValue;
-
-            var sysParamCoTValues = GetValueByGrpName(Const.SysParam_Grp.SystemCot, Const.SysParam_Name.CotBank)?.Split("|");
-            if (sysParamCoTValues?.Length > 1)
-            {
-                DateTime.TryParseExact(sysParamCoTValues[1], Const.TimeFormat.HHmm, CultureInfo.InvariantCulture, DateTimeStyles.None, out endTime);
-            }
-
-            if (sysParamCoTValues?.Length > 0)
-            {
-                DateTime.TryParseExact(sysParamCoTValues[0], Const.TimeFormat.HHmm, CultureInfo.InvariantCulture, DateTimeStyles.None, out var startTime);
-                return startTime;
-            }
-
-            return DateTime.MinValue;
-        }
-
-        //
-        public static DateTime GetCotVSD(out DateTime endTime)
-        {
-            endTime = DateTime.MinValue;
-
-            var sysParamCoTValues = GetValueByGrpName(Const.SysParam_Grp.SystemCot, Const.SysParam_Name.CotVSD)?.Split("|");
-            if (sysParamCoTValues?.Length > 1)
-            {
-                DateTime.TryParseExact(sysParamCoTValues[1], Const.TimeFormat.HHmm, CultureInfo.InvariantCulture, DateTimeStyles.None, out endTime);
-            }
-
-            if (sysParamCoTValues?.Length > 0)
-            {
-                DateTime.TryParseExact(sysParamCoTValues[0], Const.TimeFormat.HHmm, CultureInfo.InvariantCulture, DateTimeStyles.None, out var startTime);
-                return startTime;
-            }
-
-            return DateTime.MinValue;
-        }
-
-        //
-        public static decimal GetWithdrawIMFee()
-        {
-            _ = decimal.TryParse(SysParamMem.GetValueByGrpName(Const.SysParam_Grp.SystemFee, Const.SysParam_Name.WithdrawIM), out decimal feeValue);
-            return feeValue;
         }
     }
 }

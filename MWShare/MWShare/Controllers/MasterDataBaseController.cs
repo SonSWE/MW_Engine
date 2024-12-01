@@ -35,9 +35,9 @@ namespace MWShare.Controllers
         }
 
         //
-        [ApiAuthorize(Action = Const.AuthenAction.Query)]
-        [HttpGet("getdetailbyautoid")]
-        public virtual async Task<T?> GetDetailByAutoId([FromQuery] string? value)
+        //[ApiAuthorize(Action = Const.AuthenAction.Query)]
+        [HttpGet("getdetailbyid")]
+        public virtual async Task<T?> GetDetailById([FromQuery] string? value)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -108,7 +108,7 @@ namespace MWShare.Controllers
         }
 
         // Create
-        [ApiAuthorize(Action = Const.AuthenAction.Add)]
+        //[ApiAuthorize(Action = Const.AuthenAction.Add)]
         [HttpPost("add")]
         public virtual async Task<MasterDataBaseBusinessResponse> Create([FromBody] T data)
         {
@@ -167,7 +167,7 @@ namespace MWShare.Controllers
         }
 
         // Update
-        [ApiAuthorize(Action = Const.AuthenAction.Update)]
+        //[ApiAuthorize(Action = Const.AuthenAction.Update)]
         [HttpPut("update")]
         public virtual async Task<MasterDataBaseBusinessResponse> Update([FromBody] T data)
         {
@@ -227,7 +227,7 @@ namespace MWShare.Controllers
         }
 
         // Delete
-        [ApiAuthorize(Action = Const.AuthenAction.Delete)]
+        //[ApiAuthorize(Action = Const.AuthenAction.Delete)]
         [HttpDelete("delete")]
         public virtual async Task<MasterDataBaseBusinessResponse> Delete([FromBody] MasterDataBaseDeleteRequest data)
         {

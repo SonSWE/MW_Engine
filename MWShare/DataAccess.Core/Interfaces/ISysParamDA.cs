@@ -3,7 +3,7 @@ using Object.Core;
 
 namespace DataAccess.Core.Interfaces
 {
-    public interface ISysParamDA : IBaseDA<SysParam>
+    public interface ISysParamDA : IBaseDA<MWSysParam>
     {
     }
 }

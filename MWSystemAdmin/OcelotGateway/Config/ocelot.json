@@ -9,7 +9,7 @@
           "Port": 7110
         }
       ],
-      "UpstreamPathTemplate": "/api/{controller}",
+      "UpstreamPathTemplate": "/api/sa/{controller}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {

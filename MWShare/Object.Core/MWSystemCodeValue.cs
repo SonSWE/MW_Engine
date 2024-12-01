@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Object.Core
 {
-    [DbTable(Name = Const.DbTable.MWSystemCodeValue, ViewName = "VW_" +  Const.DbTable.MWSystemCodeValue)]
+    [DbTable(Name = Const.DbTable.MWSystemCodeValue, ViewName =  Const.DbTable.MWSystemCodeValue)]
+
     public class MWSystemCodeValue
     {
         [DbField(IsKey = true)]

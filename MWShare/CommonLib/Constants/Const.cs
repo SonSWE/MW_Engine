@@ -269,6 +269,7 @@ namespace CommonLib.Constants
             
             public const string Any = "ANY";
             public const string SystemCode = "SystemCode";
+            public const string SysParam = "SysParam";
 
         }
 
@@ -345,87 +346,9 @@ namespace CommonLib.Constants
 
         public static class ProfileKeyField
         {
-            public const string DepositIM = "MovementId";
-            public const string WithdrawIM = "MovementId";
-            public const string ExtraCreditMaintenance = "MovementId";
-            public const string PaymentST = "TLLOGID";
-            public const string ExtraCreditReleaseMaintenance = "MovementId";
-            public const string DepositIMBatchPanel = "TLLOGID";
-            public const string PostCollateralFee = "MovementId";
-            public const string CashWithdraw = "MovementId";
-            public const string CashDeposit = "MovementId";
-            public const string CashDepositElectronic = "MovementId";
-            public const string CashDepositError = "MovementId";
-            public const string CashHold = "MovementId";
-            public const string CashRelease = "MovementId";
-            public const string InternalCashTransfer = "MovementId";
-            public const string Location = "LocationId";
-
-            public const string Calendar = "CalendarId";
-
-            public const string Notification = "NotificationID";
-
-            public const string Market = "MarketId";
-            public const string MarketGroup = "MarketGroupId";
-
-            public const string AccountSubStatusCode = "AccountSubStatusCode";
-
-            public const string Role = "RoleId";
-            public const string User = "UserName";
-
-            public const string UmcAccount = "BatchID";
-
-            public const string Bank = "BankId";
-            public const string BankAccount = "BankAccountId";
-            public const string BankAccountUsageType = "UsageTypeId";
-
-            public const string Branch = "BranchId";
-            public const string BranchDepartment = "DepartmentId";
-
-            public const string BranchGroup = "BranchGroupId";
-
-            public const string LogicalBranch = "LogicalBranchId";
-
-            public const string AccountExecutive = "AeId";
-            public const string Channel = "CHANNELID";
-
-            public const string Customer = "CustId";
-            public const string Account = "AccountId";
-            public const string Currency = "CurrencyId";
-
-            public const string RegistrationGroup = "RegistrationGroupId";
-            public const string RegistrationGroupRegistrationType = "RegistrationTypeId";
-
-            public const string FEENATURE = "FeeNatureId";
-            public const string FeeClass = "FeeClassId";
-            public const string COMPANY = "CompanyId";
-
-            public const string CalculationMethod = "CalculationMethodId";
-            public const string CalculationMethodTimeTable = "EffectDate";
-
-            public const string TransactionType = "TransactionType";
-            public const string TransactionCode = "TrancodeCode";
-            public const string InterestClass = "InterestClassID";
-            public const string AccountType = "AccountTypeId";
-            public const string ServiceClass = "ServiceClassId";
-            public const string FinancialClass = "FinancialClassId";
-            public const string Underlying = "UnderlyingID";
-            public const string Instrument = "InstrumentID";
-            public const string OrderCheckingGroup = "OrderCheckingGroupId";
-            public const string PositionLimitGroup = "PositionLimitGroupId";
-            // VM/DM  ST/DL Payment
-            public const string CompanyMovement = "MovementId";
-            public const string AccountAccuredFee = "AccountAccruedFeeId";
-
-            public const string PromotionPeriod = "PromotionPeriodId";
-
-            public const string SendNotification = "SendNotification";
+            
             public const string SystemCode = "SystemCodeId";
-
-            public const string AccountAccruedInterestId = "AccountAccruedInterestId";
-
-            //stock
-            public const string AccountInstrumentMovement = "MovementId";
+            public const string SysParam = "SysParamId";
 
 
         }
@@ -469,6 +392,7 @@ namespace CommonLib.Constants
             public const string MWFeedBackImage = "MWFeedBackImage";
             public const string MWCashMovement = "MWCashMovement";
             public const string MWJobSkill = "MWJobSkill";
+            public const string MWSysParam = "MWSysParam";
             public const string MWSystemCode = "MWSystemCode";
             public const string MWSystemCodeValue = "MWSystemCodeValue";
             public const string MWJob = "MWJob";
@@ -478,6 +402,8 @@ namespace CommonLib.Constants
             public const string MWFunction = "MWFunction";
             public const string MWUserFunction = "MWUserFunction";
             public const string MWUser = "MWUser";
+            public const string MWSearch = "MWSearch";
+
 
         }
 

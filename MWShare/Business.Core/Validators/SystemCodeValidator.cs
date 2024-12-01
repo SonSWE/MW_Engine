@@ -38,7 +38,7 @@ namespace Business.Core.Validators
                .WithErrorCode(ErrorCodes.SA_SystemCode.Err_SystemCodeId_Invalid)
                .WithMessage(DefErrorMem.GetErrorDesc(ErrorCodes.SA_SystemCode.Err_SystemCodeId_Invalid, Config.Language));
 
-            RuleFor(x => x.Description).NotEmpty()
+            RuleFor(x => x.Name).NotEmpty()
                .WithErrorCode(ErrorCodes.SA_SystemCode.Err_SystemCodeDescription_Invalid)
                .WithMessage(DefErrorMem.GetErrorDesc(ErrorCodes.SA_SystemCode.Err_SystemCodeDescription_Invalid, Config.Language))
                .MaximumLength(250)

@@ -14,6 +14,7 @@ namespace Object.Core.CustomAttributes
     public class DbFieldAttribute : System.Attribute
     {
         public string Name { get; init; } = string.Empty;
+        public string DataType { get; init; } = string.Empty;
         public bool IsKey { get; init; } = false;
         public bool IgnoreInsert { get; init; } = false;
         public bool IgnoreUpdate { get; init; } = false;

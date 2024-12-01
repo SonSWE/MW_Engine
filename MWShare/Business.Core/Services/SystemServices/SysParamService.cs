@@ -1,31 +1,41 @@
-﻿using DataAccess.Core.Interfaces;
+﻿using Business.Core.BLs.BaseBLs;
+using Business.Core.BLs.SysParamBLs;
+using Business.Core.BLs.SystemCodeBLs;
+using Business.Core.Services.BaseServices;
+using Business.Core.Validators;
+using CommonLib.Constants;
+using DataAccess.Core.Helpers;
+using DataAccess.Core.Interfaces;
+using FluentValidation;
 using Object.Core;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Business.Core.Services.SystemServices
 {
-    public class SysParamService : ISysParamService
+    public class SysParamService : MasterDataBaseService<MWSysParam>, ISysParamService
     {
         private readonly ISysParamDA _sysParamDA;
+        public override string ProfileKeyField => Const.ProfileKeyField.SystemCode;
 
-        public SysParamService(ISysParamDA sysParamDA)
+        public SysParamService(IMasterDataBaseBL<MWSysParam> masterDataBaseDA, IDbManagement dbManagement, ISysParamDA sysParamDA) : base(masterDataBaseDA, dbManagement)
         {
             _sysParamDA = sysParamDA;
         }
 
-        public List<SysParam> GetAll()
+        public override BaseValidator<MWSysParam> GetValidator(IDbTransaction transaction, ValidationAction validationAction, ClientInfo clientInfo, MWSysParam dataToValidate, MWSysParam oldData)
         {
-            return _sysParamDA.Get()?.ToList();
+            return new SysParamValidator(validationAction, clientInfo?.ClientLanguage ?? string.Empty)
+            {
+                ClassLevelCascadeMode = CascadeMode.Stop,
+                RuleLevelCascadeMode = CascadeMode.Stop,
+            };
         }
 
-        public List<SysParam> GetByGrpName(string grp, string name)
+        public List<MWSysParam> GetAll()
         {
-            return _sysParamDA.Get(new Dictionary<string, object>
-            {
-                { nameof(SysParam.Grp), grp },
-                { nameof(SysParam.Name), name },
-            })?.ToList();
+            return _sysParamDA.Get().ToList();
         }
     }
 }

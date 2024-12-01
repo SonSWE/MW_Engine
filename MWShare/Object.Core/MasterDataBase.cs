@@ -8,6 +8,8 @@ namespace Object.Core
 {
     public class MasterDataBase
     {
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public long No { get; set; }
         //
         [DbField(IgnoreUpdate = true)]
         public virtual string CreateBy { get; set; }
@@ -36,7 +38,6 @@ namespace Object.Core
     }
     public class MasterDataBaseDeleteRequest
     {
-        public long AutoId { get; set; }
         public string Id { get; set; }
     }
 

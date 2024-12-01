@@ -6,8 +6,8 @@ namespace CommonLib
     {
         private static readonly JsonSerializerOptions defaultJsonSerializerOptions = new()
         {
-            //PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNamingPolicy = null,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            //PropertyNamingPolicy = null,
             WriteIndented = false,
             PropertyNameCaseInsensitive = true,
             ReadCommentHandling = JsonCommentHandling.Skip

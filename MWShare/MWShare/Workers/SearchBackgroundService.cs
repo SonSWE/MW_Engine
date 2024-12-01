@@ -35,9 +35,9 @@ namespace MWShare.Workers
                     await Task.Run(() =>
                     {
                         var searches = _searchBL.GetAll();
-                        var searchFlds = _searchBL.SearchFldGetAll();
+                        //var searchFlds = _searchBL.SearchFldGetAll();
 
-                        SearchMem.InitData(searches, searchFlds);
+                        SearchMem.InitData(searches);
                     }, stoppingToken);
                 }
                 catch (Exception ex)

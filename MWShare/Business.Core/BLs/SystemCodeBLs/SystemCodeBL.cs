@@ -46,40 +46,41 @@ namespace Business.Core.BLs.SystemCodeBLs
             return data;
         }
 
-        //public override long InsertChildData(IDbTransaction transaction, MWSystemCode data, MWSystemCode oldData, ClientInfo clientInfo)
-        //{
-        //    long resultValues = ErrorCodes.Success;
+        public override long InsertChildData(IDbTransaction transaction, MWSystemCode data, MWSystemCode oldData, ClientInfo clientInfo)
+        {
+            long resultValues = ErrorCodes.Success;
 
-        //    if (data != null && data.SystemCodeValues?.Count > 0)
-        //    {
-        //        data.SystemCodeValues.ForEach(x =>
-        //        {
-        //            x.SystemCodeId = data.SystemCodeId;
+            if (data != null && data.SystemCodeValues?.Count > 0)
+            {
+                data.SystemCodeValues.ForEach(x =>
+                {
+                    x.SystemCodeId = data.SystemCodeId;
+                });
 
-        //            x.Value = x.Value.Trim();
-        //            x.Description = x.Description.Trim();
-
-        //        });
-
-        //        var insertedCount = _systemCodeValueDA.Insert(data.SystemCodeValues, transaction);
-        //        resultValues = insertedCount == data.SystemCodeValues.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
-        //    }
+                var insertedCount = _systemCodeValueDA.Insert(data.SystemCodeValues, transaction);
+                resultValues = insertedCount == data.SystemCodeValues.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+            }
 
 
-        //    return resultValues;
-        //}
+            return resultValues;
+        }
 
+        public override long DeleteChildData(IDbTransaction transaction, string id, MWSystemCode deleteData, ClientInfo clientInfo)
+        {
+            long resultValues = ErrorCodes.Success;
 
-        //public override long UpdateChildData(IDbTransaction transaction, MWSystemCode data, MWSystemCode oldData, ClientInfo clientInfo)
-        //{
-        //    long result = ErrorCodes.Success;
+            if (deleteData != null && deleteData.SystemCodeValues?.Count > 0)
+            {
+                deleteData.SystemCodeValues.ForEach(x =>
+                {
+                    x.SystemCodeId = deleteData.SystemCodeId;
+                });
 
-        //    if (result > 0)
-        //    {
-        //        result = UpdateChildData(transaction, data, oldData, clientInfo);
-        //    }
+                var insertedCount = _systemCodeValueDA.Delete(deleteData.SystemCodeValues, transaction);
+                resultValues = insertedCount == deleteData.SystemCodeValues.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+            }
 
-        //    return result;
-        //}
+            return resultValues;
+        }
     }
 }

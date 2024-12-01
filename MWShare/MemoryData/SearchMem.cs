@@ -11,15 +11,13 @@ namespace MemoryData
     {
         private static readonly object _lock = new();
         private static List<Search> _searches = new();
-        private static List<SearchFld> _searchFlds = new();
 
         //
-        public static void InitData(List<Search> searches, List<SearchFld> searchFlds)
+        public static void InitData(List<Search> searches)
         {
             lock (_lock)
             {
                 _searches = searches ?? new List<Search>();
-                _searchFlds = searchFlds ?? new List<SearchFld>();
             }
         }
 
@@ -44,18 +42,18 @@ namespace MemoryData
             }
         }
 
-        public static List<SearchFld> SearchFldGetBySearchCode(string searchCode)
-        {
-            lock (_lock)
-            {
-                if (!string.IsNullOrEmpty(searchCode))
-                {
-                    return _searchFlds?.Where(x => x.SearchCode.Equals(searchCode, StringComparison.OrdinalIgnoreCase))?.ToList();
-                }
+        //public static List<SearchFld> SearchFldGetBySearchCode(string searchCode)
+        //{
+        //    lock (_lock)
+        //    {
+        //        if (!string.IsNullOrEmpty(searchCode))
+        //        {
+        //            return _searchFlds?.Where(x => x.SearchCode.Equals(searchCode, StringComparison.OrdinalIgnoreCase))?.ToList();
+        //        }
 
-                return null;
-            }
-        }
+        //        return null;
+        //    }
+        //}
 
         public static List<SearchFilterOption> GetSearchFilterOptions(string source)
         {

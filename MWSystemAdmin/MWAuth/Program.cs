@@ -119,7 +119,7 @@ try
         options.JsonSerializerOptions.Converters.Insert(0, new CustomDoubleConverter());
         options.JsonSerializerOptions.Converters.Insert(0, new CustomInt32Converter());
         options.JsonSerializerOptions.Converters.Insert(0, new CustomInt64Converter());
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        //options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
 
 

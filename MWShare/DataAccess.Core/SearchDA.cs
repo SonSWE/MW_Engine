@@ -232,7 +232,7 @@ namespace DataAccess.Core
             string conds = BuildSearchConds(searchConds, out var dbParams);
 
             var dicParams = dbParams as IDictionary<string, object>;
-            dicParams["language"] = language;
+            //dicParams["language"] = language;
 
             string selectTotalRows = sqlText?.Contains(_totalRecordField, StringComparison.OrdinalIgnoreCase) == true ? "" : $" COUNT(*) over () AS {_totalRecordField}, ";
 

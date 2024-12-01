@@ -9,7 +9,8 @@ namespace Object.Core
     {
         [DbField(IsKey = true)]
         public string SystemCodeId { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
+
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
         public List<MWSystemCodeValue> SystemCodeValues { get; set; }
     }

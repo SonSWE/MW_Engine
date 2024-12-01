@@ -11,6 +11,7 @@ using MWShare.ExportEngine;
 using MWShare.ExportHelpers;
 using Object.Core.Configs;
 using MWShare.Helpers.FileStorage;
+using MWShare.GrpcAuthen;
 
 namespace MWShare.Startups
 {
@@ -58,7 +59,7 @@ namespace MWShare.Startups
             services.AddSingleton<IExportService, ExportService>();
             services.AddSingleton<IFileStorageClient, MinIOClient>();
 
-           
+
 
             //services.AddSingleton<INotifyClient>(new NotifyClient(ConfigData.NotifyHost));
             //services.AddSingleton<IBOAuthClient>(new BOAuthGrpcClient(ConfigData.BOAuthHost));
@@ -73,9 +74,9 @@ namespace MWShare.Startups
 
 
             services.AddHostedService<SysParamBackgroundService>();
-            services.AddHostedService<DefErrorBackgroundService>();
+            //services.AddHostedService<DefErrorBackgroundService>();
             services.AddHostedService<SearchBackgroundService>();
-            services.AddHostedService<LoadMemBackgroundService>();
+            //services.AddHostedService<LoadMemBackgroundService>();
 
             services.AddControllers();
         }
