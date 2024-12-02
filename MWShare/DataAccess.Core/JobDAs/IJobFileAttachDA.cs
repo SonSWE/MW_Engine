@@ -4,7 +4,7 @@ using Object.Core;
 
 namespace DataAccess.Core.JobDAs
 {
-    public interface IProposalDA : IBaseDA<MWProposal>
+    public interface IJobFileAttachDA : IBaseDA<MWJobFileAttach>
     {
 
     }

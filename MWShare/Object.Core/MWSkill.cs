@@ -1,9 +1,8 @@
 ﻿using CommonLib.Constants;
-using Object.Core;
 using Object.Core.CustomAttributes;
 using static CommonLib.Constants.Const;
 
-namespace Object
+namespace Object.Core
 {
     [DbTable(Name = Const.DbTable.MWSkill, ViewName = $"VW_{Const.DbTable.MWSkill}")]
     public sealed class MWSkill : MasterDataBase

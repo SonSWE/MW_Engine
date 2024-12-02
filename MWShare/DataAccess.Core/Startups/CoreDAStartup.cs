@@ -4,7 +4,9 @@ using DataAccess.Core.DefErrorDAs;
 using DataAccess.Core.FunctionDAs;
 using DataAccess.Core.Helpers;
 using DataAccess.Core.Interfaces;
+using DataAccess.Core.JobDAs;
 using DataAccess.Core.LoginDAs;
+using DataAccess.Core.SkillDAs;
 using DataAccess.Core.SystemCodeDAs;
 using DataAccess.Core.SystemDAs;
 using DataAccess.Core.UserDAs;
@@ -45,6 +47,18 @@ namespace DataAccess.Core.Startups
             //system code
             services.AddScoped<ISystemCodeDA, SystemCodeDA>();
             services.AddScoped<ISystemCodeValueDA, SystemCodeValueDA>();
+
+            //job
+            services.AddScoped<IJobDA, JobDA>();
+            services.AddScoped<IProposalDA, ProposalDA>();
+            services.AddScoped<IJobSkillDA, JobSkillDA>();
+            services.AddScoped<IJobFileAttachDA, JobFileAttachDA>();
+
+            //skill
+            services.AddScoped<ISkillDA, SkillDA>();
+
+            //specialty
+            services.AddScoped<ISpecialtyDA, SpecialtyDA>();
 
 
             //login

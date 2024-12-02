@@ -1,6 +1,9 @@
 ﻿using CommonLib.Constants;
 using DataAccess.Core.Interfaces;
+using DataAccess.Core.JobDAs;
+using DataAccess.Core.SkillDAs;
 using DataAccess.Core.SystemCodeDAs;
+using Object;
 using Object.Core;
 using System;
 using System.Collections.Generic;
@@ -16,11 +19,16 @@ namespace Business.Core.Services.SystemServices
         private readonly ISystemCodeDA _systemCodeDA;
         private readonly ISystemCodeValueDA _systemCodeValueDA;
 
-        public CommonService(ICommonDA commonML, ISystemCodeDA systemCodeDA, ISystemCodeValueDA systemCodeValueDA)
+        private readonly ISkillDA _skillDA;
+        private readonly ISpecialtyDA _specialtyDA;
+
+        public CommonService(ICommonDA commonML, ISystemCodeDA systemCodeDA, ISystemCodeValueDA systemCodeValueDA, ISkillDA skillDA, ISpecialtyDA specialtyDA)
         {
             _commonDA = commonML;
             _systemCodeDA = systemCodeDA;
             _systemCodeValueDA = systemCodeValueDA;
+            _skillDA = skillDA;
+            _specialtyDA = specialtyDA;
         }
 
         //
@@ -69,6 +77,21 @@ namespace Business.Core.Services.SystemServices
             }
 
             return systemCodes;
+        }
+
+
+        public async Task<List<MWSkill>> GetSkills()
+        {
+            var skills = (await _skillDA.GetAsync())?.ToList() ?? new();
+
+            return skills;
+        }
+
+        public async Task<List<MWSpecialty>> GetSpecialties()
+        {
+            var specialties = (await _specialtyDA.GetAsync())?.ToList() ?? new();
+
+            return specialties;
         }
     }
 }

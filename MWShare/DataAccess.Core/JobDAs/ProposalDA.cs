@@ -1,8 +1,7 @@
 ﻿using DataAccess.Core.Abtractions;
 using DataAccess.Core.Helpers;
-using DataAccess.Core.JobDAs;
-using DataAccess.Core.SkillDAs;
-using Object;
+using Object.Core;
+
 
 namespace DataAccess.Core.JobDAs
 {

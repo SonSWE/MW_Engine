@@ -11,7 +11,7 @@ namespace Object
         [DbField(IsKey = true)]
         public string FileId { get; set; }
         public string FileName { get; set; }
-        public string Link { get; set; }
+        public string FileLink { get; set; }
       
 
     }

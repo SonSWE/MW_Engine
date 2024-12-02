@@ -76,7 +76,7 @@ namespace MWShare.Startups
             services.AddHostedService<SysParamBackgroundService>();
             //services.AddHostedService<DefErrorBackgroundService>();
             services.AddHostedService<SearchBackgroundService>();
-            //services.AddHostedService<LoadMemBackgroundService>();
+            services.AddHostedService<LoadMemBackgroundService>();
 
             services.AddControllers();
         }

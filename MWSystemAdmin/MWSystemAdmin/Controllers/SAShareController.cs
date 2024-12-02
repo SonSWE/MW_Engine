@@ -5,6 +5,7 @@ using DataAccess.Helpers;
 using MemoryData;
 using Microsoft.AspNetCore.Mvc;
 using MWShare.FilterAttributes;
+using Object;
 using Object.Core;
 
 namespace MWSystemAdmin.Controllers
@@ -39,6 +40,54 @@ namespace MWSystemAdmin.Controllers
                 }
 
                 return systemCodes;
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                return null;
+            }
+        }
+
+
+        [HttpGet("getskills")]
+        public async Task<IEnumerable<MWSkill>> GetSkills()
+        {
+            try
+            {
+                var skills = SkillMem.GetAll();
+
+                if (skills == null || !skills.Any())
+                {
+                    Response.StatusCode = StatusCodes.Status204NoContent;
+                    return null;
+                }
+
+                return skills;
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                return null;
+            }
+        }
+
+
+        [HttpGet("getspecialties")]
+        public async Task<IEnumerable<MWSpecialty>> GetSpecialties()
+        {
+            try
+            {
+                var specialties = SpecialtyMem.GetAll();
+
+                if (specialties == null || !specialties.Any())
+                {
+                    Response.StatusCode = StatusCodes.Status204NoContent;
+                    return null;
+                }
+
+                return specialties;
             }
             catch (Exception ex)
             {

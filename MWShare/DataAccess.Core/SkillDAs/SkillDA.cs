@@ -1,6 +1,9 @@
-﻿using DataAccess.Core.Abtractions;
+﻿using CommonLib.Constants;
+using Dapper;
+using DataAccess.Core.Abtractions;
 using DataAccess.Core.Helpers;
-using Object;
+using Object.Core;
+using System.Data;
 
 namespace DataAccess.Core.SkillDAs
 {
@@ -8,6 +11,13 @@ namespace DataAccess.Core.SkillDAs
     {
         public SkillDA(IDbManagement dbManagement) : base(dbManagement)
         {
+        }
+
+        public long GetNextSequenceValue(IDbTransaction transaction)
+        {
+            string sqlText = $"SELECT {Const.SeqTable.skill}.NEXTVAL FROM dual";
+            long result = transaction.Connection.QueryFirstOrDefault<long>(sqlText);
+            return result;
         }
     }
 }

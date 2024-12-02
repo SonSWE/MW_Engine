@@ -270,6 +270,8 @@ namespace CommonLib.Constants
             public const string Any = "ANY";
             public const string SystemCode = "SystemCode";
             public const string SysParam = "SysParam";
+            public const string Job = "JOB";
+            public const string Skill = "SKILL";
 
         }
 
@@ -348,7 +350,12 @@ namespace CommonLib.Constants
         {
             
             public const string SystemCode = "SystemCodeId";
+            public const string Job = "JobId";
             public const string SysParam = "SysParamId";
+            public const string JobSkill = "SkillId";
+            public const string Skill = "SkillId";
+            public const string Specialty = "SpecialtyId";
+
 
 
         }
@@ -396,6 +403,7 @@ namespace CommonLib.Constants
             public const string MWSystemCode = "MWSystemCode";
             public const string MWSystemCodeValue = "MWSystemCodeValue";
             public const string MWJob = "MWJob";
+            public const string MWJobFileAttach = "MWJobFileAttach";
             public const string MWFileAttach = "MWFileAttach";
             public const string MWCategory = "MWCategory";
             public const string MWSpecialty = "MWSpecialty";
@@ -407,7 +415,11 @@ namespace CommonLib.Constants
 
         }
 
-
+        public static class SeqTable
+        {
+            public const string skill = "seq_mwskill";
+            public const string specialty = "seq_mwspecialty";
+        }
 
         public static class SystemCodeId
         {

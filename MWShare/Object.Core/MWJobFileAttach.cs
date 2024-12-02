@@ -5,15 +5,19 @@ using static CommonLib.Constants.Const;
 
 namespace Object
 {
-    [DbTable(Name = Const.DbTable.MWJobSkill, ViewName = $"VW_{Const.DbTable.MWJobSkill}")]
-    public sealed class MWJobSkill : MasterDataBase
+    [DbTable(Name = Const.DbTable.MWJobFileAttach, ViewName = $"VW_{Const.DbTable.MWJobFileAttach}")]
+    public sealed class MWJobFileAttach : MasterDataBase
     {
         [DbField(IsKey = true)]
         public string JobId { get; set; }
-        public string SkillId { get; set; }
+        [DbField(IsKey = true)]
+        public string FileId { get; set; }
+
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
-        public string Name { get; set; }
+        public string FileName { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
-        public string Description { get; set; }
+        public string FileLink { get; set; }
+      
+
     }
 }

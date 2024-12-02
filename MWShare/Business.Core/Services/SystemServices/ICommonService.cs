@@ -1,4 +1,5 @@
-﻿using Object.Core;
+﻿using Object;
+using Object.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,5 +21,8 @@ namespace Business.Core.Services.SystemServices
         /// </summary>
         /// <returns></returns>
         Task<List<MWSystemCode>> GetSystemCodes();
+
+        Task<List<MWSkill>> GetSkills();
+        Task<List<MWSpecialty>> GetSpecialties();
     }
 }
