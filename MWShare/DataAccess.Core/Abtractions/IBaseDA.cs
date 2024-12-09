@@ -10,6 +10,9 @@ namespace DataAccess.Core.Abtractions
 {
     public interface IBaseDA<T> where T : class, new()
     {
+        long GetNextSequenceValue(IDbTransaction transaction = null);
+        Task<long> GetNextSequenceValueAsync(IDbTransaction transaction);
+
         int Count(object param = null, IDbTransaction transaction = null, int? commandTimeout = null);
 
         Task<int> CountAsync(object param = null, IDbTransaction transaction = null, int? commandTimeout = null);

@@ -14,8 +14,8 @@ using DataAccess.Core.Interfaces;
 using DataAccess.Core.SystemDAs;
 using System.Collections.Generic;
 using Object;
-using DataAccess.Core.JobDAs;
 using DataAccess.Core.SkillDAs;
+using DataAccess.Core.SpencialDAs;
 
 namespace Business.Core.BLs.SpecialtyBLs
 {

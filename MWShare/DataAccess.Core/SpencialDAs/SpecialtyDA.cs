@@ -5,7 +5,7 @@ using DataAccess.Core.Helpers;
 using Object.Core;
 using System.Data;
 
-namespace DataAccess.Core.JobDAs
+namespace DataAccess.Core.SpencialDAs
 {
     public sealed class SpecialtyDA : BaseDA<MWSpecialty>, ISpecialtyDA
     {
@@ -15,7 +15,7 @@ namespace DataAccess.Core.JobDAs
 
         public long GetNextSequenceValue(IDbTransaction transaction)
         {
-            string sqlText = $"SELECT {Const.SeqTable.specialty}.NEXTVAL FROM dual";
+            string sqlText = $"SELECT seq_{Const.DbTable.MWSpecialty}.NEXTVAL FROM dual";
             long result = transaction.Connection.QueryFirstOrDefault<long>(sqlText);
             return result;
         }

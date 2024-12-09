@@ -1,7 +1,7 @@
 ﻿using CommonLib.Constants;
 using DataAccess.Core.Interfaces;
-using DataAccess.Core.JobDAs;
 using DataAccess.Core.SkillDAs;
+using DataAccess.Core.SpencialDAs;
 using DataAccess.Core.SystemCodeDAs;
 using Object;
 using Object.Core;

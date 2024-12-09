@@ -1,4 +1,5 @@
 using CommonLib;
+using CommonLib.Constants;
 using Dapper;
 using Object.Core.CustomAttributes;
 using System;
@@ -31,6 +32,16 @@ namespace DataAccess.Core.Extensions
         #endregion
 
         #region Get
+
+        public static async Task<long> GetNextSequenceValue<T>(this IDbConnection connection, IDbTransaction transaction = null, int? commandTimeout = null) where T : class
+        {
+            var type = typeof(T);
+            var tableName = type.GetDbTableName();
+            string sqlText = $"SELECT seq_{tableName}.NEXTVAL FROM dual";
+
+            return await connection.QueryFirstOrDefaultAsync<long>(sqlText, null, transaction, commandTimeout: commandTimeout, commandType: CommandType.Text);
+        }
+
 
         /// <summary>
         /// DVMINH Bổ sung hàm Get truyền vào type và param

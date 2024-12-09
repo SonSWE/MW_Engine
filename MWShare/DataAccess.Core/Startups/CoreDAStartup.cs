@@ -1,12 +1,14 @@
 ﻿using Dapper;
 using DataAccess.Core.Abtractions;
 using DataAccess.Core.DefErrorDAs;
+using DataAccess.Core.FreelancerDAs;
 using DataAccess.Core.FunctionDAs;
 using DataAccess.Core.Helpers;
 using DataAccess.Core.Interfaces;
 using DataAccess.Core.JobDAs;
 using DataAccess.Core.LoginDAs;
 using DataAccess.Core.SkillDAs;
+using DataAccess.Core.SpencialDAs;
 using DataAccess.Core.SystemCodeDAs;
 using DataAccess.Core.SystemDAs;
 using DataAccess.Core.UserDAs;
@@ -44,6 +46,14 @@ namespace DataAccess.Core.Startups
             services.AddScoped<IUserDA, UserDA>();
             services.AddScoped<IUserFunctionDA, UserFunctionDA>();
 
+            //freelancer
+            services.AddScoped<IFreelancerDA, FreelancerDA>();
+            services.AddScoped<IFreelancerWorkingHistoryDA, FreelancerWorkingHistoryDA>();
+            services.AddScoped<IFreelancerSpecialtyDA, FreelancerSpecialtyDA>();
+            services.AddScoped<IFreelancerSkillDA, FreelancerSkillDA>();
+            services.AddScoped<IFreelancerEducationDA, FreelancerEducationDA>();
+            services.AddScoped<IFreelancerCertificateDA, FreelancerCertificateDA>();
+
             //system code
             services.AddScoped<ISystemCodeDA, SystemCodeDA>();
             services.AddScoped<ISystemCodeValueDA, SystemCodeValueDA>();
@@ -59,6 +69,7 @@ namespace DataAccess.Core.Startups
 
             //specialty
             services.AddScoped<ISpecialtyDA, SpecialtyDA>();
+            services.AddScoped<IProposalFileAttachDA, ProposalFileAttachDA>();
 
 
             //login

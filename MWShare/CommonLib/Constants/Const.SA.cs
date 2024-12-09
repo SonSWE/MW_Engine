@@ -360,7 +360,7 @@
         public static class User_UserType
         {
             public const string UserAdmin = "ADM";
-            public const string UserMW = "MW";
+            public const string UserCustomer = "USER";
         }
 
         //public static class User_Source
@@ -378,7 +378,8 @@
         public static class User_Status
         {
             public const string Active = "A";
-            public const string Deactive = "D";
+            public const string PendingVerify = "P";
+            public const string InActive = "I";
         }
 
         public static class Title

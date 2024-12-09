@@ -3,7 +3,7 @@ using Object;
 using Object.Core;
 using System.Data;
 
-namespace DataAccess.Core.JobDAs
+namespace DataAccess.Core.SpencialDAs
 {
     public interface ISpecialtyDA : IBaseDA<MWSpecialty>
     {

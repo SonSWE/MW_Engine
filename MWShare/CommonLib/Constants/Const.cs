@@ -351,10 +351,13 @@ namespace CommonLib.Constants
             
             public const string SystemCode = "SystemCodeId";
             public const string Job = "JobId";
+            public const string Proposal = "ProposalId";
             public const string SysParam = "SysParamId";
             public const string JobSkill = "SkillId";
             public const string Skill = "SkillId";
             public const string Specialty = "SpecialtyId";
+            public const string User = "UserName";
+            public const string Freelancer = "FreelancerId";
 
 
 
@@ -387,13 +390,18 @@ namespace CommonLib.Constants
         {
             public const string MWMessage = "MWMessage";
             public const string MWResult = "MWResult";
-            public const string MWTalentSkill = "MWTalentSkill";
+            
             public const string MWSkill = "MWSkill";
             public const string MWAccount = "MWAccount";
-            public const string MWAccountTalent = "MWAccountTalent";
-            public const string MWCertificate = "MWCertificate";
+            public const string MWFreelancer = "MWFreelancer";
+            public const string MWFreelancerSkill = "MWFreelancerSkill";
+            public const string MWFreelancerSpecialty = "MWFreelancerSpecialty";
+            public const string MWFreelancerEducation = "MWFreelancerEducation";
+            public const string MWFreelancerWorkingHistory = "MWFreelancerWorkingHistory";
+            public const string MWFreelancerCertificate = "MWFreelancerCertificate";
             public const string MWAccountCash = "MWAccountCash";
             public const string MWProposal = "MWProposal";
+            public const string MWProposalFileAttach = "MWProposalFileAttach";
             public const string MWFeedBack = "MWFeedBack";
             public const string MWAccountClient = "MWAccountClient";
             public const string MWFeedBackImage = "MWFeedBackImage";

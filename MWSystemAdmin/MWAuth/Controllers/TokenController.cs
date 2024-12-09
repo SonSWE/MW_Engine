@@ -448,7 +448,6 @@ namespace MWAuth.Controllers.SA
                 Password = c_passwordAdmin,
                 EnableLogon = Const.YN.Yes,
                 Name = c_userNameAdmin,
-                NameOther = c_userNameAdmin,
                 UserType = Const.User_UserType.UserAdmin,
                 Status = "A",
             } : await _loginService.GetUserByUserNameAsync(parameters.Username);
@@ -468,7 +467,7 @@ namespace MWAuth.Controllers.SA
             }
 
 
-            if (string.Equals(user.UserType, Const.User_UserType.UserMW, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(user.UserType, Const.User_UserType.UserCustomer, StringComparison.OrdinalIgnoreCase))
             {
 
                 if (!string.Equals(parameters.Password, user.Password))

@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using CommonLib.Constants;
+using Dapper;
 using DapperLib.SqlGenerator;
 using DapperLib.SqlGenerator.Filters;
 using DataAccess.Core.Extensions;
@@ -21,6 +22,24 @@ namespace DataAccess.Core.Abtractions
         {
             _dbManagement = dbManagement;
             SqlGenerator = new SqlGenerator<T>(SqlProvider.Oracle);
+        }
+
+        public long GetNextSequenceValue(IDbTransaction transaction = null)
+        {
+            return GetNextSequenceValueAsync(transaction).GetAwaiter().GetResult();
+        }
+
+        public async Task<long> GetNextSequenceValueAsync(IDbTransaction transaction)
+        {
+            if (transaction is null)
+            {
+                using var connection = _dbConnection;
+                return await connection.GetNextSequenceValue<T>();
+            }
+            else
+            {
+                return await transaction.Connection.GetNextSequenceValue<T>( transaction);
+            }
         }
 
         public int Count(object param = null, IDbTransaction transaction = null, int? commandTimeout = null)

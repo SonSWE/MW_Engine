@@ -1,5 +1,6 @@
 ﻿using CommonLib.Constants;
 using Object.Core.CustomAttributes;
+using System.Collections.Generic;
 using static CommonLib.Constants.Const;
 
 namespace Object.Core
@@ -9,21 +10,16 @@ namespace Object.Core
     {
         [DbField(IsKey = true)]
         public string ProposalId { get; set; }
-        [DbField(IsKey = true)]
+        //[DbField(IsKey = true)]
         public string JobId { get; set; }
-        public string TalentId { get; set; }
+        //[DbField(IsKey = true)]
+        public string FreelancerId { get; set; }
         public string Status { get; set; }
-
-        public string CoverLetter { get; set; }
-        public string Description { get; set; }
-        public string TargetTime { get; set; }
+        public string CoverLetter { get; set; } // thư xin việc
         public decimal Bid { get; set; } //giá đấu thầu
         public decimal FeeService { get; set; } //phí
-        public decimal RealReceive { get; set; } //phí
-        public string HourlyRate { get; set; }
-        public string ReceiveRate { get; set; }
-        public string FrequencyReceive { get; set; }
-        public string PercentReceivePerTime { get; set; }
-        public string FileAttach { get; set; }
+        public decimal RealReceive { get; set; } //nhận thực tế sau khi trừ phí
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
+        public List<MWProposalFileAttach> FileAttaches { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using static CommonLib.Constants.Const;
 namespace Object
 {
     [DbTable(Name = Const.DbTable.MWJobSkill, ViewName = $"VW_{Const.DbTable.MWJobSkill}")]
-    public sealed class MWJobSkill : MasterDataBase
+    public sealed class MWJobSkill
     {
         [DbField(IsKey = true)]
         public string JobId { get; set; }

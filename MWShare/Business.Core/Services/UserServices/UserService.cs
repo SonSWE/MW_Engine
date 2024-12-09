@@ -21,7 +21,7 @@ namespace Business.Core.Services.UserServices
         {
             _userBL = userBL;
         }
-        public override string ProfileKeyField => Const.ProfileKeyField.SystemCode;
+        public override string ProfileKeyField => Const.ProfileKeyField.User;
         public override BaseValidator<MWUser> GetValidator(IDbTransaction transaction, ValidationAction validationAction, ClientInfo clientInfo, MWUser dataToValidate, MWUser oldData)
         {
             return new UserValidator(validationAction, clientInfo?.ClientLanguage ?? string.Empty)

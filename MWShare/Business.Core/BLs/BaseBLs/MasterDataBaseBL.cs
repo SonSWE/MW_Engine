@@ -88,7 +88,6 @@ namespace Business.Core.BLs.BaseBLs
 
         // INSERT
         #region INSERT
-
         public virtual long Insert(IDbTransaction transaction, T data, ClientInfo clientInfo)
         {
             var requestTime = DateTime.Now;

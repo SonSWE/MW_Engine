@@ -23,8 +23,8 @@ namespace Object.Core
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string SpecialtyIdText { get; set; }
         public string Scope { get; set; }
-        public string LevelTalent { get; set; }
-        public decimal BudgetType { get; set; }
+        public string LevelFreelancerId { get; set; }
+        public string BudgetType { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string BudgetTypeText { get; set; }
         public decimal HourlyRateFrom { get; set; }

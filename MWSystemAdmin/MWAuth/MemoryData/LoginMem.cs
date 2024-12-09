@@ -74,7 +74,7 @@ namespace MWAuth.MemoryData
 
         public static bool ValidateFunctionPermission(string userId, string functionId, string action)
         {
-            var isReadOnlyUser = string.Equals(GetUser(userId)?.ReadOnlyUser, Const.YN.Yes);
+
             var functionsByUser = LoginMem.GetFunctionsByUserName(userId);
             var hasRight = false;
 
@@ -97,37 +97,37 @@ namespace MWAuth.MemoryData
                     {
                         Const.AuthenAction.Any =>
                             string.Equals(x.AllowQuery, Const.YN.Yes)
-                            || (!isReadOnlyUser && string.Equals(x.AllowAdd, Const.YN.Yes))
-                            || (!isReadOnlyUser && string.Equals(x.AllowUpdate, Const.YN.Yes))
-                            || (!isReadOnlyUser && string.Equals(x.AllowDelete, Const.YN.Yes))
-                            || (!isReadOnlyUser && string.Equals(x.AllowExecute, Const.YN.Yes))
-                            || (!isReadOnlyUser && string.Equals(x.AllowApproveAdd, Const.YN.Yes))
-                            || (!isReadOnlyUser && string.Equals(x.AllowApproveUpdate, Const.YN.Yes))
-                            || (!isReadOnlyUser && string.Equals(x.AllowApproveDelete, Const.YN.Yes))
-                            || (!isReadOnlyUser && string.Equals(x.AllowApproveExecute, Const.YN.Yes))
+                            || (string.Equals(x.AllowAdd, Const.YN.Yes))
+                            || (string.Equals(x.AllowUpdate, Const.YN.Yes))
+                            || (string.Equals(x.AllowDelete, Const.YN.Yes))
+                            || (string.Equals(x.AllowExecute, Const.YN.Yes))
+                            || (string.Equals(x.AllowApproveAdd, Const.YN.Yes))
+                            || (string.Equals(x.AllowApproveUpdate, Const.YN.Yes))
+                            || (string.Equals(x.AllowApproveDelete, Const.YN.Yes))
+                            || (string.Equals(x.AllowApproveExecute, Const.YN.Yes))
                             || string.Equals(x.AllowBackdate, Const.YN.Yes)
                             || string.Equals(x.AllowNotification, Const.YN.Yes)
-                            || (!isReadOnlyUser && string.Equals(x.AllowImport, Const.YN.Yes))
+                            || (string.Equals(x.AllowImport, Const.YN.Yes))
                             || string.Equals(x.AllowExport, Const.YN.Yes)
                             || string.Equals(x.AllowPrint, Const.YN.Yes)
                             || string.Equals(x.AllowCheckAccessHierachy, Const.YN.Yes)
-                            || (!isReadOnlyUser && string.Equals(x.AllowCopyRecord, Const.YN.Yes)),
+                            || (string.Equals(x.AllowCopyRecord, Const.YN.Yes)),
                         Const.AuthenAction.Query => string.Equals(x.AllowQuery, Const.YN.Yes),
-                        Const.AuthenAction.Add => (!isReadOnlyUser && string.Equals(x.AllowAdd, Const.YN.Yes)),
-                        Const.AuthenAction.Update => (!isReadOnlyUser && string.Equals(x.AllowUpdate, Const.YN.Yes)),
-                        Const.AuthenAction.Delete => (!isReadOnlyUser && string.Equals(x.AllowDelete, Const.YN.Yes)),
-                        Const.AuthenAction.Execute => (!isReadOnlyUser && string.Equals(x.AllowExecute, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveAdd => (!isReadOnlyUser && string.Equals(x.AllowApproveAdd, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveUpdate => (!isReadOnlyUser && string.Equals(x.AllowApproveUpdate, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveDelete => (!isReadOnlyUser && string.Equals(x.AllowApproveDelete, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveExecute => (!isReadOnlyUser && string.Equals(x.AllowApproveExecute, Const.YN.Yes)),
+                        Const.AuthenAction.Add => (string.Equals(x.AllowAdd, Const.YN.Yes)),
+                        Const.AuthenAction.Update => (string.Equals(x.AllowUpdate, Const.YN.Yes)),
+                        Const.AuthenAction.Delete => (string.Equals(x.AllowDelete, Const.YN.Yes)),
+                        Const.AuthenAction.Execute => (string.Equals(x.AllowExecute, Const.YN.Yes)),
+                        Const.AuthenAction.ApproveAdd => (string.Equals(x.AllowApproveAdd, Const.YN.Yes)),
+                        Const.AuthenAction.ApproveUpdate => (string.Equals(x.AllowApproveUpdate, Const.YN.Yes)),
+                        Const.AuthenAction.ApproveDelete => (string.Equals(x.AllowApproveDelete, Const.YN.Yes)),
+                        Const.AuthenAction.ApproveExecute => (string.Equals(x.AllowApproveExecute, Const.YN.Yes)),
                         Const.AuthenAction.Backdate => string.Equals(x.AllowBackdate, Const.YN.Yes),
                         Const.AuthenAction.Notification => string.Equals(x.AllowNotification, Const.YN.Yes),
-                        Const.AuthenAction.Import => (!isReadOnlyUser && string.Equals(x.AllowImport, Const.YN.Yes)),
+                        Const.AuthenAction.Import => (string.Equals(x.AllowImport, Const.YN.Yes)),
                         Const.AuthenAction.Export => string.Equals(x.AllowExport, Const.YN.Yes),
                         Const.AuthenAction.Print => string.Equals(x.AllowPrint, Const.YN.Yes),
                         Const.AuthenAction.CheckAccessHierachy => string.Equals(x.AllowCheckAccessHierachy, Const.YN.Yes),
-                        Const.AuthenAction.CopyRecord => (!isReadOnlyUser && string.Equals(x.AllowCopyRecord, Const.YN.Yes)),
+                        Const.AuthenAction.CopyRecord => (string.Equals(x.AllowCopyRecord, Const.YN.Yes)),
                         _ => false
                     };
 
@@ -257,35 +257,30 @@ namespace MWAuth.MemoryData
             loggedUser = new LoggedUser
             {
                 UserName = user.UserName,
-                BranchId = user.BranchId,
-                DepartmentId = user.DepartmentId,
                 Name = user.Name,
-                NameOther = user.NameOther,
-                RptFuncCanViewAllBranches = user.RptFuncCanViewAllBranches,
                 UserType = user.UserType,
                 Status = user.Status,
-                ReadOnlyUser = user.ReadOnlyUser,
                 MustChangePassword = mustChangePassword,
                 FunctionSettings = functionsByUser?.Select(x => new LoggedUserFunction
                 {
                     FunctionId = x.FunctionId,
                     FunctionType = x.FunctionType,
                     AllowQuery = x.AllowQuery,
-                    AllowAdd = CalculateRight(user.ReadOnlyUser, x.AllowAdd),
-                    AllowUpdate = CalculateRight(user.ReadOnlyUser, x.AllowUpdate),
-                    AllowDelete = CalculateRight(user.ReadOnlyUser, x.AllowDelete),
-                    AllowExecute = CalculateRight(user.ReadOnlyUser, x.AllowExecute),
-                    AllowApproveAdd = CalculateRight(user.ReadOnlyUser, x.AllowApproveAdd),
-                    AllowApproveUpdate = CalculateRight(user.ReadOnlyUser, x.AllowApproveUpdate),
-                    AllowApproveDelete = CalculateRight(user.ReadOnlyUser, x.AllowApproveDelete),
-                    AllowApproveExecute = CalculateRight(user.ReadOnlyUser, x.AllowApproveExecute),
+                    AllowAdd = x.AllowAdd,
+                    AllowUpdate = x.AllowUpdate,
+                    AllowDelete = x.AllowDelete,
+                    AllowExecute = x.AllowExecute,
+                    AllowApproveAdd = x.AllowApproveAdd,
+                    AllowApproveUpdate = x.AllowApproveUpdate,
+                    AllowApproveDelete = x.AllowApproveDelete,
+                    AllowApproveExecute = x.AllowApproveExecute,
                     AllowBackdate = x.AllowBackdate,
                     AllowNotification = x.AllowNotification,
-                    AllowImport = CalculateRight(user.ReadOnlyUser, x.AllowImport),
+                    AllowImport = x.AllowImport,
                     AllowExport = x.AllowExport,
                     AllowPrint = x.AllowPrint,
                     AllowCheckAccessHierachy = x.AllowCheckAccessHierachy,
-                    AllowCopyRecord = CalculateRight(user.ReadOnlyUser, x.AllowCopyRecord),
+                    AllowCopyRecord = x.AllowCopyRecord,
                 }).ToList(),
             };
 
