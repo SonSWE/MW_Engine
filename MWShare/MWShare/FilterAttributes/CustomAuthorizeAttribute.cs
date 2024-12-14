@@ -1,4 +1,4 @@
-﻿using MWShare.GrpcAuthen;
+﻿using MWShare.Authen;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -15,13 +15,13 @@ public class CustomAuthorizeAttribute : TypeFilterAttribute
 
 public class CustomAuthorizeFilter : IAuthorizationFilter
 {
-    private readonly IBOAuthClient _boAuthClient;
+    private readonly IMWAuthClient _boAuthClient;
     protected string Action { get; set; }
     protected string FunctionId { get; set; }
     protected bool CheckFunction { get; set; } = true;
 
 
-    public CustomAuthorizeFilter(IBOAuthClient boAuthClient, string Action, string FunctionID, bool CheckFunction)
+    public CustomAuthorizeFilter(IMWAuthClient boAuthClient, string Action, string FunctionID, bool CheckFunction)
     {
         _boAuthClient = boAuthClient;
         this.Action = Action;

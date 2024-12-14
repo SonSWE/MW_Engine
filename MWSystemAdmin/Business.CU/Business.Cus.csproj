@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MWShare\Business.Core\Business.Core.csproj" />
+    <ProjectReference Include="..\..\MWShare\DataAccess.Core\DataAccess.Core.csproj" />
+    <ProjectReference Include="..\..\MWShare\Object.Core\Object.Core.csproj" />
+  </ItemGroup>
+
+</Project>

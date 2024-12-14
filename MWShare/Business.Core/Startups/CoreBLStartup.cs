@@ -1,7 +1,9 @@
 ﻿using Business.Core.BLs;
 using Business.Core.BLs.BaseBLs;
+using Business.Core.BLs.ClientBLs;
 using Business.Core.BLs.FreelancerBLs;
 using Business.Core.BLs.JobBLs;
+using Business.Core.BLs.LoginBLs;
 using Business.Core.BLs.ProposalBLs;
 using Business.Core.BLs.SkillBLs;
 using Business.Core.BLs.SpecialtyBLs;
@@ -9,9 +11,11 @@ using Business.Core.BLs.SysParamBLs;
 using Business.Core.BLs.SystemCodeBLs;
 using Business.Core.BLs.UserBLs;
 using Business.Core.Services.BaseServices;
+using Business.Core.Services.ClientServices;
 using Business.Core.Services.DefErrorServices;
 using Business.Core.Services.FreelancerServices;
 using Business.Core.Services.JobServices;
+using Business.Core.Services.LoginServices;
 using Business.Core.Services.Share;
 using Business.Core.Services.ShareServices;
 using Business.Core.Services.SkillServices;
@@ -45,6 +49,10 @@ namespace Business.Core.Startups
             services.AddScoped<ISearchBL, SearchBL>();
             services.AddScoped<IShareService, ShareService>();
 
+
+            services.AddScoped<ILoginBL, LoginBL>();
+            services.AddScoped<ILoginService, LoginService>();
+
             // SysParam
             #region SysParam
             services.AddScoped<ISysParamBL, SysParamBL>();
@@ -61,12 +69,20 @@ namespace Business.Core.Startups
             services.AddScoped<IMasterDataBaseService<MWUser>, UserService>();
             #endregion
 
-            // Job
-            #region Job
+            // Freelancer
+            #region Freelancer
             services.AddScoped<IFreelancerBL, FreelancerBL>();
             services.AddScoped<IMasterDataBaseBL<MWFreelancer>, FreelancerBL>();
             services.AddScoped<IFreelancerService, FreelancerService>();
             services.AddScoped<IMasterDataBaseService<MWFreelancer>, FreelancerService>();
+            #endregion
+
+            // client
+            #region client
+            services.AddScoped<IClientBL, ClientBL>();
+            services.AddScoped<IMasterDataBaseBL<MWClient>, ClientBL>();
+            services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<IMasterDataBaseService<MWClient>, ClientService>();
             #endregion
 
             // SystemCode

@@ -13,7 +13,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{controller}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -21,7 +21,7 @@
           "Port": 5011
         }
       ],
-      "UpstreamPathTemplate": "/auth/api/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/auth/{controller}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }
   ],

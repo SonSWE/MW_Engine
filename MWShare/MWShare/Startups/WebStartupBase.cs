@@ -11,7 +11,7 @@ using MWShare.ExportEngine;
 using MWShare.ExportHelpers;
 using Object.Core.Configs;
 using MWShare.Helpers.FileStorage;
-using MWShare.GrpcAuthen;
+using MWShare.Authen;
 
 namespace MWShare.Startups
 {

@@ -100,34 +100,12 @@ namespace MWAuth.MemoryData
                             || (string.Equals(x.AllowAdd, Const.YN.Yes))
                             || (string.Equals(x.AllowUpdate, Const.YN.Yes))
                             || (string.Equals(x.AllowDelete, Const.YN.Yes))
-                            || (string.Equals(x.AllowExecute, Const.YN.Yes))
-                            || (string.Equals(x.AllowApproveAdd, Const.YN.Yes))
-                            || (string.Equals(x.AllowApproveUpdate, Const.YN.Yes))
-                            || (string.Equals(x.AllowApproveDelete, Const.YN.Yes))
-                            || (string.Equals(x.AllowApproveExecute, Const.YN.Yes))
-                            || string.Equals(x.AllowBackdate, Const.YN.Yes)
-                            || string.Equals(x.AllowNotification, Const.YN.Yes)
-                            || (string.Equals(x.AllowImport, Const.YN.Yes))
-                            || string.Equals(x.AllowExport, Const.YN.Yes)
-                            || string.Equals(x.AllowPrint, Const.YN.Yes)
-                            || string.Equals(x.AllowCheckAccessHierachy, Const.YN.Yes)
-                            || (string.Equals(x.AllowCopyRecord, Const.YN.Yes)),
+                            || (string.Equals(x.AllowExecute, Const.YN.Yes)),
                         Const.AuthenAction.Query => string.Equals(x.AllowQuery, Const.YN.Yes),
                         Const.AuthenAction.Add => (string.Equals(x.AllowAdd, Const.YN.Yes)),
                         Const.AuthenAction.Update => (string.Equals(x.AllowUpdate, Const.YN.Yes)),
                         Const.AuthenAction.Delete => (string.Equals(x.AllowDelete, Const.YN.Yes)),
                         Const.AuthenAction.Execute => (string.Equals(x.AllowExecute, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveAdd => (string.Equals(x.AllowApproveAdd, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveUpdate => (string.Equals(x.AllowApproveUpdate, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveDelete => (string.Equals(x.AllowApproveDelete, Const.YN.Yes)),
-                        Const.AuthenAction.ApproveExecute => (string.Equals(x.AllowApproveExecute, Const.YN.Yes)),
-                        Const.AuthenAction.Backdate => string.Equals(x.AllowBackdate, Const.YN.Yes),
-                        Const.AuthenAction.Notification => string.Equals(x.AllowNotification, Const.YN.Yes),
-                        Const.AuthenAction.Import => (string.Equals(x.AllowImport, Const.YN.Yes)),
-                        Const.AuthenAction.Export => string.Equals(x.AllowExport, Const.YN.Yes),
-                        Const.AuthenAction.Print => string.Equals(x.AllowPrint, Const.YN.Yes),
-                        Const.AuthenAction.CheckAccessHierachy => string.Equals(x.AllowCheckAccessHierachy, Const.YN.Yes),
-                        Const.AuthenAction.CopyRecord => (string.Equals(x.AllowCopyRecord, Const.YN.Yes)),
                         _ => false
                     };
 
@@ -270,18 +248,9 @@ namespace MWAuth.MemoryData
                     AllowUpdate = x.AllowUpdate,
                     AllowDelete = x.AllowDelete,
                     AllowExecute = x.AllowExecute,
-                    AllowApproveAdd = x.AllowApproveAdd,
-                    AllowApproveUpdate = x.AllowApproveUpdate,
-                    AllowApproveDelete = x.AllowApproveDelete,
-                    AllowApproveExecute = x.AllowApproveExecute,
-                    AllowBackdate = x.AllowBackdate,
-                    AllowNotification = x.AllowNotification,
-                    AllowImport = x.AllowImport,
-                    AllowExport = x.AllowExport,
-                    AllowPrint = x.AllowPrint,
-                    AllowCheckAccessHierachy = x.AllowCheckAccessHierachy,
-                    AllowCopyRecord = x.AllowCopyRecord,
                 }).ToList(),
+                Clients = user.Clients,
+                Freelancer = user.Freelancer,
             };
 
             c_dicLoggedUser.AddOrUpdate(user.UserName, loggedUser, (key, value) => loggedUser);

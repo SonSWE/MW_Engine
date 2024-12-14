@@ -13,21 +13,36 @@ using DataAccess.Core.UserDAs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Core.BLs.BaseBLs;
+using DataAccess.Core.ClientDAs;
+using Business.Core.BLs.FreelancerBLs;
 
 namespace Business.Core.BLs.UserBLs
 {
     public class UserBL : MasterDataBaseBL<MWUser>, IUserBL
     {
-        private readonly IUserDA _userDA;
         private readonly IUserFunctionDA _userFunctionDA;
         public override string ProfileKeyField => Const.ProfileKeyField.User;
         public override string DbTable => Const.DbTable.MWUser;
 
-        public UserBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IUserDA userDA, IUserFunctionDA userFunctionDA) : base(dbManagement, loggingManagement)
+        public UserBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IUserFunctionDA userFunctionDA) : base(dbManagement, loggingManagement)
         {
-            _userDA = userDA;
             _userFunctionDA = userFunctionDA;
 
+
         }
+
+        public override MWUser GetDetailById(IDbTransaction transaction, string id)
+        {
+            var requestTime = DateTime.Now;
+            Logger.log.Info($"[{RequestId}] [{ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod())}] Start. id=[{id}]");
+
+            MWUser data = base.GetDetailById(transaction, id);
+            
+            Logger.log.Info($"[{RequestId}] [{ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod())}] End. Tong thoi gian {ConstLog.GetProcessingMilliseconds(requestTime)} (ms)");
+
+
+            return data;
+        }
+
     }
 }

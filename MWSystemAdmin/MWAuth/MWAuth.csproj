@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\MWShare\Business.Core\Business.Core.csproj" />
     <ProjectReference Include="..\..\MWShare\CommonLib\CommonLib.csproj" />
+    <ProjectReference Include="..\..\MWShare\MWShare\MWShare.csproj" />
     <ProjectReference Include="..\..\MWShare\Object.Core\Object.Core.csproj" />
   </ItemGroup>
 

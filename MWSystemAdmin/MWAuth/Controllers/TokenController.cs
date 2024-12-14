@@ -429,74 +429,34 @@ namespace MWAuth.Controllers.SA
 
             string messageFailedLogonCount = "Số lần đăng nhập sai";
 
-            //
-            if (LoginMem.AccountIsLockedOut(parameters.Username, browserInfo.Ip))
-            {
-                responseCode = StatusCodes.Status400BadRequest;
-                responseData = new BaseInfo
-                {
-                    Code = ErrorCodes.Err_InvalidData,
-                    Message = "Tài khoản đã bị khóa",
-                };
-                goto endFunc;
-            }
-            isAdmin = true;
+
             ////
-            var user = isAdmin ? new MWUser
-            {
-                UserName = c_userNameAdmin,
-                Password = c_passwordAdmin,
-                EnableLogon = Const.YN.Yes,
-                Name = c_userNameAdmin,
-                UserType = Const.User_UserType.UserAdmin,
-                Status = "A",
-            } : await _loginService.GetUserByUserNameAsync(parameters.Username);
+            var user = await _loginService.GetUserByUserNameAsync(parameters.Username);
 
 
             if (user == null || string.IsNullOrEmpty(user.UserName))
             {
+                responseCode = StatusCodes.Status400BadRequest;
+                responseData = new BaseInfo
+                {
+                    Code = Err_SAUser.PasswordWrrong,
+                    Message = $"Không tìm thấy tài khoản trong hệ thống."
+                };
+                goto endFunc;
+            }
+
+            if (!string.Equals(parameters.Password, user.Password))
+            {
                 LoginMem.UpdateUserLoginState(parameters.Username, browserInfo.Ip, true, out var failedLogonCount, out var maximumLogonFailureCount);
 
-                responseCode = StatusCodes.Status400BadRequest;
+                responseCode = StatusCodes.Status401Unauthorized;
                 responseData = new BaseInfo
                 {
                     Code = Err_SAUser.PasswordWrrong,
                     Message = $"{DefErrorMem.GetErrorDesc(Err_SAUser.PasswordWrrong, browserInfo.Language)}. {messageFailedLogonCount} {failedLogonCount}/{maximumLogonFailureCount}"
                 };
+
                 goto endFunc;
-            }
-
-
-            if (string.Equals(user.UserType, Const.User_UserType.UserCustomer, StringComparison.OrdinalIgnoreCase))
-            {
-
-                if (!string.Equals(parameters.Password, user.Password))
-                {
-                    responseCode = StatusCodes.Status401Unauthorized;
-                    responseData = new BaseInfo
-                    {
-                        Code = Err_SAUser.PasswordWrrong,
-                        Message = $"{DefErrorMem.GetErrorDesc(Err_SAUser.PasswordWrrong, browserInfo.Language)}"
-                    };
-
-                    goto endFunc;
-                }
-
-            }
-            else if (isAdmin)
-            {
-                if (!string.Equals(parameters.Password, c_passwordAdmin))
-                {
-                    LoginMem.UpdateUserLoginState(user.UserName, browserInfo.Ip, true, out var failedLogonCount, out var maximumLogonFailureCount);
-
-                    responseCode = StatusCodes.Status401Unauthorized;
-                    responseData = new BaseInfo
-                    {
-                        Code = Err_SAUser.PasswordWrrong,
-                        Message = $"{DefErrorMem.GetErrorDesc(Err_SAUser.PasswordWrrong, browserInfo.Language)}. {messageFailedLogonCount} {failedLogonCount}/{maximumLogonFailureCount}"
-                    };
-                    goto endFunc;
-                }
             }
 
             // Check user có bị khóa hay không
@@ -506,15 +466,17 @@ namespace MWAuth.Controllers.SA
                 responseData = new BaseInfo
                 {
                     Code = ErrorCodes.Err_InvalidData,
-                    Message ="Tài khoản đã bị khóa",
+                    Message = "Tài khoản đã bị khóa, hoặc không có quyền đăng nhập vào hệ thống.",
                 };
                 goto endFunc;
             }
 
-            //store the sauser
-            LoginMem.SetUser(user);
+            MWUser userDetail = await _loginService.GetDetailUserAsync(user.UserName);
 
-            LoginMem.UpdateUserLoginState(user.UserName, browserInfo.Ip, false, out _, out _);
+            //store the sauser
+            LoginMem.SetUser(userDetail);
+
+            LoginMem.UpdateUserLoginState(userDetail.UserName, browserInfo.Ip, false, out _, out _);
 
             //
             var now = DateTime.UtcNow;
@@ -526,14 +488,14 @@ namespace MWAuth.Controllers.SA
                 ExpiryTimeUtc = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc).AddDays(1),
             };
 
-            var returnValue = await GetJwtAsync(requestId, refresh_token.RefreshToken, user);
+            var returnValue = await GetJwtAsync(requestId, refresh_token.RefreshToken, userDetail);
 
             //store the refresh_token
             refresh_token.AccessToken = returnValue.Item2;
             LoginMem.SetRefreshToken(refresh_token);
 
             //
-            Logger.log.Info($"Time: \"{DateTime.Now:O}\". User login: \"{user.UserName}\". Ip \"{browserInfo.Ip}\"");
+            Logger.log.Info($"Time: \"{DateTime.Now:O}\". User login: \"{userDetail.UserName}\". User type: \"{userDetail.LoginTypeText}\". Ip \"{browserInfo.Ip}\"");
 
             responseCode = StatusCodes.Status200OK;
             responseData = returnValue.Item1;
@@ -672,15 +634,7 @@ namespace MWAuth.Controllers.SA
 
             //Lấy quyền từ bảng trung gian
             List<MWUserFunction> functionSettingsByUser;
-            if (isAdmin)
-            {
-                //functionSettingsByUser = await _loginService.GetFunctionByUserNameAsync(user.UserName);
-                functionSettingsByUser = new List<MWUserFunction>();
-            }
-            else
-            {
-                functionSettingsByUser = user.FunctionSettings;
-            }
+            functionSettingsByUser = user.FunctionSettings;
 
             LoginMem.SetFunctions(user.UserName, functionSettingsByUser);
 
@@ -722,16 +676,13 @@ namespace MWAuth.Controllers.SA
                 fullName = user.Name,
                 username = user.UserName,
                 userId = user.UserName,
-                isAdministrator = isAdmin,
-                loggedUser.BranchId,
-                loggedUser.DepartmentId,
-                loggedUser.ReadOnlyUser,
-                loggedUser.MustChangePassword,
-                loggedUser.UserType,
+                loginType = user.LoginType,
+                mustChangePassword = loggedUser.MustChangePassword,
+                userType = loggedUser.UserType,
                 functionSettings = loggedUser.FunctionSettings,
-                inputSettings = loggedUser.InputSettings,
-                approvalSettings = loggedUser.ApprovalSettings,
-                accessibleBranches = loggedUser.AccessibleBranches,
+                freelancer = loggedUser.Freelancer,
+                clients = loggedUser.Clients,
+     
             };
 
             return new Tuple<string, string>(JsonHelper.Serialize(response), accessToken);

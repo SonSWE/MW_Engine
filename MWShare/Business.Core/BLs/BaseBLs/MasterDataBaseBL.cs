@@ -100,7 +100,7 @@ namespace Business.Core.BLs.BaseBLs
                 result = ErrorCodes.Err_DataNull;
                 goto endFunc;
             }
-
+            BeforeCreate(transaction, data);
             //
             string id = data.GetPropertyValue(ProfileKeyField)?.ToString();
 

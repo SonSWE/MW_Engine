@@ -14,6 +14,7 @@ namespace Business.Core.Services.LoginServices
         List<MWUserFunction> GetFunctionByUserName(string userName);
         Task<MWUser> GetUserByUserNameAsync(string userName);
         Task<List<MWUserFunction>> GetFunctionByUserNameAsync(string userName);
+        Task<MWUser> GetDetailUserAsync(string userName);
 
     }
 }

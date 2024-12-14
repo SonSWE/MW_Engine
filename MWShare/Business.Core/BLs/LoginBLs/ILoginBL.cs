@@ -15,5 +15,6 @@ namespace Business.Core.BLs.LoginBLs
 
         Task<MWUser> GetUserByUserNameAsync(IDbTransaction transaction, string userName);
         Task<List<MWUserFunction>> GetFunctionByUserNameAsync(IDbTransaction transaction, string userName);
+        Task<MWUser> GetDetailUserAsync(IDbTransaction transaction, string userName);
     }
 }

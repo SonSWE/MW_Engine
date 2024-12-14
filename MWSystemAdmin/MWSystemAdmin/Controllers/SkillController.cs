@@ -2,7 +2,7 @@
 using MWShare.FilterAttributes;
 using Object.Core;
 using CommonLib.Constants;
-using MWShare.GrpcAuthen;
+using MWShare.Authen;
 using MWShare.Helpers;
 using Business.Core;
 using DataAccess.Helpers;

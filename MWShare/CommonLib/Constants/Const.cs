@@ -45,13 +45,16 @@ namespace CommonLib.Constants
             public static bool IsDelete(string action) => string.Equals(action, Action.Delete);
         }
 
-
+        public static class ONLINE_STATUS
+        {
+            public const string Online = "ON";
+            public const string Offline = "OFF";
+        }
 
         public static class YN
         {
             public const string Yes = "Y";
             public const string No = "N";
-            public const string All = "A";
 
             public static bool IsYes(string value)
             {
@@ -62,6 +65,11 @@ namespace CommonLib.Constants
                     default:
                         return false;
                 }
+            }
+
+            public static bool IsValidate(string value)
+            {
+                return value == Yes || value == No;
             }
         }
 
@@ -266,7 +274,7 @@ namespace CommonLib.Constants
 
         public static class AuthenFunctionId
         {
-            
+
             public const string Any = "ANY";
             public const string SystemCode = "SystemCode";
             public const string SysParam = "SysParam";
@@ -348,7 +356,7 @@ namespace CommonLib.Constants
 
         public static class ProfileKeyField
         {
-            
+
             public const string SystemCode = "SystemCodeId";
             public const string Job = "JobId";
             public const string Proposal = "ProposalId";
@@ -358,6 +366,7 @@ namespace CommonLib.Constants
             public const string Specialty = "SpecialtyId";
             public const string User = "UserName";
             public const string Freelancer = "FreelancerId";
+            public const string Client = "ClientId";
 
 
 
@@ -390,7 +399,7 @@ namespace CommonLib.Constants
         {
             public const string MWMessage = "MWMessage";
             public const string MWResult = "MWResult";
-            
+
             public const string MWSkill = "MWSkill";
             public const string MWAccount = "MWAccount";
             public const string MWFreelancer = "MWFreelancer";
@@ -403,7 +412,7 @@ namespace CommonLib.Constants
             public const string MWProposal = "MWProposal";
             public const string MWProposalFileAttach = "MWProposalFileAttach";
             public const string MWFeedBack = "MWFeedBack";
-            public const string MWAccountClient = "MWAccountClient";
+            public const string MWClient = "MWClient";
             public const string MWFeedBackImage = "MWFeedBackImage";
             public const string MWCashMovement = "MWCashMovement";
             public const string MWJobSkill = "MWJobSkill";
@@ -419,6 +428,7 @@ namespace CommonLib.Constants
             public const string MWUserFunction = "MWUserFunction";
             public const string MWUser = "MWUser";
             public const string MWSearch = "MWSearch";
+            public const string MWSaveJob = "MWSaveJob";
 
 
         }

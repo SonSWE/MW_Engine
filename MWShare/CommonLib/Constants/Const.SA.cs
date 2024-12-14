@@ -357,10 +357,16 @@
             }
         }
 
-        public static class User_UserType
+        public static class USER_TYPE
         {
-            public const string UserAdmin = "ADM";
-            public const string UserCustomer = "USER";
+            public const string Admin = "A";
+            public const string User = "U";
+        }
+
+        public static class LOGIN_TYPE
+        {
+            public const string Freelancer = "F";
+            public const string Client = "C";
         }
 
         //public static class User_Source

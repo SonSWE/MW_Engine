@@ -1,4 +1,4 @@
-﻿using MWShare.GrpcAuthen;
+﻿using MWShare.Authen;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -24,7 +24,7 @@ namespace MWShare.FilterAttributes
 
             string token = authorizationValue.ToString();
 
-            IBOAuthClient _boAuthClient = context.HttpContext.RequestServices.GetRequiredService<IBOAuthClient>();
+            IMWAuthClient _boAuthClient = context.HttpContext.RequestServices.GetRequiredService<IMWAuthClient>();
             Tuple<HttpStatusCode, LoggedUser> verifyResult = await _boAuthClient.ValidateTokenAndFunction(token, functionConfig?.FunctionId ?? string.Empty, Action, CheckFunction);
             if (verifyResult == null)
             {

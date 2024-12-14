@@ -82,6 +82,20 @@ namespace Business.Core.BLs.FreelancerBLs
 
             return data;
         }
+        public MWFreelancer GetDetailByEmail(IDbTransaction transaction, string email)
+        {
+            MWFreelancer data = _baseDA.GetFirstOrDefault(new Dictionary<string, object>
+            {
+                { nameof(MWFreelancer.Email), email },
+            }, transaction);
+
+            if (data == null)
+            {
+                return default;
+            }
+
+            return GetDetailById(transaction, data.FreelancerId);
+        }
 
         public override void BeforeCreate(IDbTransaction transaction, MWFreelancer data)
         {
@@ -93,7 +107,7 @@ namespace Business.Core.BLs.FreelancerBLs
         {
             long resultValues = ErrorCodes.Success;
 
-            
+
             var user = _userDA.GetFirstOrDefault(new Dictionary<string, object>()
             {
                 { nameof(MWUser.UserName), data.Email }
@@ -104,10 +118,12 @@ namespace Business.Core.BLs.FreelancerBLs
                 //nếu chưa có tài khoản thì tạo tài khoản tự động
                 MWUser userData = new MWUser();
                 userData.UserName = data.Email;
+                userData.Email = data.Email;
                 //pass
                 userData.Password = data.Password;
                 userData.Name = data.Name;
-                userData.UserType = Const.User_UserType.UserCustomer;
+                userData.UserType = Const.USER_TYPE.User;
+                userData.LoginType = Const.LOGIN_TYPE.Freelancer;
                 //mặc định k được phép đăng nhập, sau khi xác thực email mới được phép đăng nhập
                 userData.EnableLogon = Const.YN.No;
                 userData.Status = Const.User_Status.PendingVerify;

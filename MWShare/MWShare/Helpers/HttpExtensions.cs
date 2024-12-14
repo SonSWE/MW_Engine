@@ -34,7 +34,6 @@ namespace MWShare.Helpers
                 loggedUser = getUser as LoggedUser ?? new();
                 userName = loggedUser.UserName;
                 userId = loggedUser.UserName;
-                branchId = loggedUser.BranchId;
             }
 
             //

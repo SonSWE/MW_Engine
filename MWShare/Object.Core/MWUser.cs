@@ -15,6 +15,7 @@ namespace Object.Core
         [DbField(IsKey = true)]
         public string UserName { get; set; }
         public string Name { get; set; }
+        public string Email { get; set; }
         public string UserType { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string UserTypeText { get; set; }
@@ -46,5 +47,26 @@ namespace Object.Core
         public DateTime LastChangePasswordOn { get; set; }
 
         public string ResetPassword { get; set; }
+        public string IsEkycVerified { get; set; } = Const.YN.No;
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IsEkycVerifiedText { get; set; }
+        public string IsEmailVerified { get; set; } = Const.YN.No;
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IsEmailVerifiedText { get; set; }
+        public string LoginType { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string LoginTypeText { get; set; }
+        public string OnlineStatus { get; set; } = Const.ONLINE_STATUS.Offline;
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string OnlineStatusText { get; set; }
+        public string IsHiddenOnlineStatus { get; set; } = Const.YN.No;
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IsHiddenOnlineStatusText { get; set; }
+
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public MWFreelancer Freelancer { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public List<MWClient> Clients { get; set; }
+
     }
 }

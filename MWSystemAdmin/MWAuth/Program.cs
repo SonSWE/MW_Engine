@@ -11,8 +11,9 @@ using System.Diagnostics;
 using System.Reflection;
 using MWAuth.BackgroundWokers;
 using Business.Core.Startups;
-using DataAccess.Auth.Startups;
 using System.Text;
+using DataAccess.Core.Startups;
+using MWShare.Startups;
 
 
 try
@@ -20,20 +21,11 @@ try
     var guid = Utils.GenGuidStringN();
 
     var builder = WebApplication.CreateBuilder(args);
-    builder.WebHost.ConfigureAppConfiguration((hostingContext, config) =>
-    {
-        var path = Path.Combine("./ConfigApp", "appsettings.json");
-        config.AddJsonFile(path, optional: false, reloadOnChange: true);
-        config.AddEnvironmentVariables();
-    });
 
-    // Init log
-    NLog.LogManager.LoadConfiguration(Path.Combine("./ConfigLog/nlog.config"));
-    builder.Host.UseNLog();
+    WebStartupBase.ConfigureBuilder(builder);
 
-    
-    AuthDAStartup.ConfigureServices(builder.Services);
-    AuthBLStartup.ConfigureServices(builder.Services);
+    CoreDAStartup.ConfigureServices(builder.Services);
+    CoreBLStartup.ConfigureServices(builder.Services);
 
     #region LOG STARTING
 

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DataAccess.Core.Abtractions;
+using DataAccess.Core.ClientDAs;
 using DataAccess.Core.DefErrorDAs;
 using DataAccess.Core.FreelancerDAs;
 using DataAccess.Core.FunctionDAs;
@@ -33,6 +34,8 @@ namespace DataAccess.Core.Startups
             services.AddScoped<IDbManagement, DbManagement>();
             services.AddScoped(typeof(IBaseDA<>), typeof(BaseDA<>));
 
+            services.AddScoped<ILoginDA, LoginDA>();
+
             //system
             services.AddScoped<ICommonDA, CommonDA>();
             services.AddScoped<ISearchDA, SearchDA>();
@@ -45,6 +48,9 @@ namespace DataAccess.Core.Startups
             services.AddScoped<IFunctionDA, FunctionDA>();
             services.AddScoped<IUserDA, UserDA>();
             services.AddScoped<IUserFunctionDA, UserFunctionDA>();
+
+            //client
+            services.AddScoped<IClientDA, ClientDA>();
 
             //freelancer
             services.AddScoped<IFreelancerDA, FreelancerDA>();
