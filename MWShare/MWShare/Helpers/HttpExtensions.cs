@@ -13,10 +13,9 @@ namespace MWShare.Helpers
             string ipAddress = string.Empty;
             string wsName = string.Empty;
             string userName = string.Empty;
-            string userId = string.Empty;
+
             DateTime actionTime = DateTime.Now;
             string clientLanguage = request.Headers.GetValueIgnoreCase("ClientLanguage") ?? string.Empty;
-            string branchId = string.Empty;
             string remoteIpAddress = httpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? string.Empty;
 
             //
@@ -33,7 +32,7 @@ namespace MWShare.Helpers
             {
                 loggedUser = getUser as LoggedUser ?? new();
                 userName = loggedUser.UserName;
-                userId = loggedUser.UserName;
+
             }
 
             //
@@ -45,7 +44,6 @@ namespace MWShare.Helpers
                 UserName = userName,
                 ActionTime = actionTime.Date != DateTime.MinValue.Date ? actionTime : DateTime.Now,
                 ClientLanguage = clientLanguage,
-                BranchId = branchId,
                 RemoteIpAddress = remoteIpAddress,
                 LoggedUser = loggedUser,
             };

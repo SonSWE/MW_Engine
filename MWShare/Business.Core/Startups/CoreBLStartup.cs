@@ -99,6 +99,8 @@ namespace Business.Core.Startups
             services.AddScoped<IMasterDataBaseBL<MWJob>, JobBL>();
             services.AddScoped<IJobService, JobService>();
             services.AddScoped<IMasterDataBaseService<MWJob>, JobService>();
+            services.AddScoped<IJobSavedBL, JobSavedBL>();
+            services.AddScoped<IJobSavedService, JobSavedService>();
             #endregion
 
             // Proposal

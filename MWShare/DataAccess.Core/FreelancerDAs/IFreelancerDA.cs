@@ -7,5 +7,6 @@ namespace DataAccess.Core.FreelancerDAs
 {
     public interface IFreelancerDA : IBaseDA<MWFreelancer>
     {
+        int UpdateIsOpenForJob(MWFreelancer data, IDbTransaction transaction);
     }
 }

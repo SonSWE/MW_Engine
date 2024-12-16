@@ -31,6 +31,7 @@ builder.Services.AddCors(options =>
         });
 });
 
+
 //builder.Services.AddControllers().AddJsonOptions(options =>
 //{
 //    options.JsonSerializerOptions.PropertyNamingPolicy = null; // Giữ nguyên tên thuộc tính
@@ -42,6 +43,8 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAllOrigins");
+
+app.UseWebSockets();
 
 app.UseOcelot().Wait();
 

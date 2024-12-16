@@ -38,7 +38,7 @@ namespace MWAuth.Controllers.SA
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout(string refresh_token)
+        public IActionResult Logout(TokenRequestParams parameters)
         {
             var requestId = Utils.GenGuidStringN();
 
@@ -50,9 +50,9 @@ namespace MWAuth.Controllers.SA
 
             try
             {
-                if (!string.IsNullOrEmpty(refresh_token))
+                if (parameters != null && !string.IsNullOrEmpty(parameters?.Refresh_token))
                 {
-                    LoginMem.RemoveRefreshToken(refresh_token);
+                    LoginMem.RemoveRefreshToken(parameters.Refresh_token);
                 }
 
                 responseCode = StatusCodes.Status200OK;
@@ -74,7 +74,7 @@ namespace MWAuth.Controllers.SA
                 processTime = Logger.GetProcessingMilliseconds(requestTime),
                 userName = Request.GetUserName(),
                 browserInfo,
-                request = new { refresh_token },
+                request = new { parameters?.Refresh_token },
             }));
 
             return StatusCode(responseCode, responseData);
@@ -453,7 +453,7 @@ namespace MWAuth.Controllers.SA
                 responseData = new BaseInfo
                 {
                     Code = Err_SAUser.PasswordWrrong,
-                    Message = $"{DefErrorMem.GetErrorDesc(Err_SAUser.PasswordWrrong, browserInfo.Language)}. {messageFailedLogonCount} {failedLogonCount}/{maximumLogonFailureCount}"
+                    Message = $"Mật khẩu không chính xác. {messageFailedLogonCount} {failedLogonCount}/{maximumLogonFailureCount}"
                 };
 
                 goto endFunc;
@@ -472,7 +472,6 @@ namespace MWAuth.Controllers.SA
             }
 
             MWUser userDetail = await _loginService.GetDetailUserAsync(user.UserName);
-
             //store the sauser
             LoginMem.SetUser(userDetail);
 

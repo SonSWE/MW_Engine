@@ -14,6 +14,7 @@ using Business.Core.Startups;
 using System.Text;
 using DataAccess.Core.Startups;
 using MWShare.Startups;
+using MWAuth.NotifySocketServer;
 
 
 try
@@ -44,8 +45,8 @@ try
 
     ConfigDataAuth.Init(builder.Configuration);
 
- 
 
+    builder.Services.AddSingleton<INotifyServer>(new NotifyServer());
     builder.Services.AddHostedService<UserLoginWorker>(); // Co dung ILoginClient nen de sau khi Client init
 
     // Config auth
@@ -151,6 +152,44 @@ try
         return DateTime.Now;
     })
       .WithName("HealthCheck");
+
+    app.UseWebSockets(new WebSocketOptions()
+    {
+        KeepAliveInterval = TimeSpan.FromSeconds(10),
+    });
+
+    app.Use(async (context, next) =>
+    {
+        if (context.Request.Path == "/notify")
+        {
+            Logger.log.Info("/notify is called");
+            DateTime startTime = DateTime.Now;
+            var notifyServer = app.Services.GetRequiredService<INotifyServer>();
+            if (context.WebSockets.IsWebSocketRequest)
+            {
+                using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                Logger.log.Info($"[notify] AcceptWebSocketAsync {Logger.GetProcessingMilliseconds(startTime)}(ms)");
+                var identify = await notifyServer.AddClientAsync(webSocket);
+                Logger.log.Info($"[notify] AddClientAsync {Logger.GetProcessingMilliseconds(startTime)}(ms)");
+                if (!string.IsNullOrEmpty(identify))
+                {
+                    await notifyServer.ReceiveMessageAsync(webSocket, identify);
+                    Logger.log.Info($"[notify] ReceiveMessageAsync {Logger.GetProcessingMilliseconds(startTime)}(ms)");
+                }
+            }
+            else
+            {
+                await Task.Delay(3000);
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                //return; 
+            }
+            Logger.log.Info($"[notify] Ket thuc. Tong thoi gian {Logger.GetProcessingMilliseconds(startTime)}(ms)");
+        }
+        else
+        {
+            await next(context);
+        }
+    });
 
     app.MapControllers();
 

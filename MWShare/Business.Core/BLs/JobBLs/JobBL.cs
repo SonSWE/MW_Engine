@@ -164,5 +164,12 @@ namespace Business.Core.BLs.JobBLs
 
             return resultValues;
         }
+        
+        public List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId)
+        {
+            var data = _jobDA.GetSuggestByFreelancer(transaction, freelancerId);
+
+            return data;
+        }
     }
 }

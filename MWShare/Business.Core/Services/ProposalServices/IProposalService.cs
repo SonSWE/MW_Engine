@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Core.BLs.JobBLs
+namespace Business.Core.Services.ProposalServices
 {
-    public interface IJobBL
+    public interface IProposalService
     {
-        List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId);
     }
 }

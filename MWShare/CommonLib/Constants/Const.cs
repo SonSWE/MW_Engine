@@ -416,6 +416,7 @@ namespace CommonLib.Constants
             public const string MWFeedBackImage = "MWFeedBackImage";
             public const string MWCashMovement = "MWCashMovement";
             public const string MWJobSkill = "MWJobSkill";
+            public const string MWJobSaved = "MWJobSaved";
             public const string MWSysParam = "MWSysParam";
             public const string MWSystemCode = "MWSystemCode";
             public const string MWSystemCodeValue = "MWSystemCodeValue";

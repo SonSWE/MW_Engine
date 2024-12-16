@@ -24,17 +24,27 @@ namespace Object.Core
         public string SpecialtyIdText { get; set; }
         public string Scope { get; set; }
         public string LevelFreelancerId { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string LevelFreelancerIdText { get; set; }
         public string BudgetType { get; set; }
+
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string BudgetTypeText { get; set; }
+        public string Position { get; set; }
         public decimal HourlyRateFrom { get; set; }
         public decimal HourlyRateTo { get; set; }
         public decimal CostEstimate { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public long CountOfProposal { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string Saved { get; set; }
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
         public List<MWProposal> Proposals { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
         public List<MWJobSkill> JobSkills { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string JobSkillsText { get; set; }
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
         public List<MWJobFileAttach> FileAttaches { get; set; }

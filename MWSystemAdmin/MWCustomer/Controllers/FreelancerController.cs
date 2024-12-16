@@ -10,6 +10,10 @@ using MemoryData;
 using Microsoft.AspNetCore.Http.Extensions;
 using static CommonLib.Constants.Const;
 using System.Reflection;
+using MWShare.Helpers;
+using Business.Core.Services.FreelancerServices;
+using Business.Core.BLs.JobBLs;
+using Business.Core.Services.JobServices;
 
 namespace MWCustomer.Controllers
 {
@@ -18,15 +22,18 @@ namespace MWCustomer.Controllers
     //[ApiAuthorizeFunctionConfig(Const.AuthenFunctionId.Job)]
     public class FreelancerController : ControllerBase
     {
+        private readonly IFreelancerService _freelancerService;
+
         public string RequestId => LoggingManagement.RequestId;
         private readonly ILoggingManagement LoggingManagement;
-        public FreelancerController( ILoggingManagement loggingManagement)
+        public FreelancerController(ILoggingManagement loggingManagement, IFreelancerService freelancerService)
         {
             LoggingManagement = loggingManagement;
+            _freelancerService = freelancerService;
         }
 
-        [HttpPut("change-open-job-status")]
-        public async Task<MasterDataBaseBusinessResponse> Update([FromQuery]string value)
+        [HttpPut("updateisopenforjob")]
+        public async Task<MasterDataBaseBusinessResponse> UpdateIsOpenForJob([FromBody] MWFreelancer data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -40,14 +47,13 @@ namespace MWCustomer.Controllers
             {
                 var result = await Task.Run(() =>
                 {
-                    var createResult = MasterDataBaseService.Update(data, clientInfo, out var createResMessage, out var propertyName);
-                    return new Tuple<long, string, string>(createResult, createResMessage, propertyName);
+                    var createResult = _freelancerService.UpdateIsOpenForJob(data, clientInfo, out var createResMessage);
+                    return new Tuple<long, string>(createResult, createResMessage);
                 });
 
                 //
                 response.Code = result.Item1;
                 response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
-                response.PropertyName = result.Item3 ?? string.Empty;
 
                 if (response.Code <= 0)
                 {
@@ -55,7 +61,7 @@ namespace MWCustomer.Controllers
                 }
                 else
                 {
-                    response.Id = $"{data.GetPropertyValue(ProfileKeyField)}";
+                    response.Id = $"{data.FreelancerId}";
                 }
             }
             catch (Exception ex)
@@ -78,11 +84,8 @@ namespace MWCustomer.Controllers
                 request = data,
             }));
 
-            LogStationFacade.RecordforPT(ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod()), DateTime.Now.Subtract(requestTime).Ticks, true);
-
             return response;
         }
-
     }
 
 }

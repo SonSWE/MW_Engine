@@ -21,6 +21,7 @@ namespace Business.Core.BLs.FreelancerBLs
     public class FreelancerBL : MasterDataBaseBL<MWFreelancer>, IFreelancerBL
     {
         private readonly IMasterDataBaseBL<MWUser> _userBL;
+        private readonly IFreelancerDA _freelancerDA;
         private readonly IUserDA _userDA;
         private readonly IFreelancerWorkingHistoryDA _workingHistoryDA;
         private readonly IFreelancerSpecialtyDA _specialtyDA;
@@ -32,8 +33,10 @@ namespace Business.Core.BLs.FreelancerBLs
         public override string DbTable => Const.DbTable.MWFreelancer;
 
         public FreelancerBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IFreelancerWorkingHistoryDA workingHistoryDA, IFreelancerSpecialtyDA specialtyDA,
-            IFreelancerSkillDA skillDA, IFreelancerEducationDA freelancerEducationDA, IFreelancerCertificateDA certificateDA, IMasterDataBaseBL<MWUser> userBL, IUserDA userDA) : base(dbManagement, loggingManagement)
+            IFreelancerSkillDA skillDA, IFreelancerEducationDA freelancerEducationDA, IFreelancerCertificateDA certificateDA, IMasterDataBaseBL<MWUser> userBL, IUserDA userDA,
+            IFreelancerDA freelancerDA) : base(dbManagement, loggingManagement)
         {
+            _freelancerDA = freelancerDA;
             _workingHistoryDA = workingHistoryDA;
             _specialtyDA = specialtyDA;
             _skillDA = skillDA;
@@ -273,5 +276,13 @@ namespace Business.Core.BLs.FreelancerBLs
 
             return resultValues;
         }
+
+        public long UpdateIsOpenForJob(IDbTransaction transaction, MWFreelancer data)
+        {
+            long resultValues = _freelancerDA.UpdateIsOpenForJob(data, transaction);
+
+            return resultValues;
+        }
+
     }
 }

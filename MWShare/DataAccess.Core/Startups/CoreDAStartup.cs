@@ -69,6 +69,7 @@ namespace DataAccess.Core.Startups
             services.AddScoped<IProposalDA, ProposalDA>();
             services.AddScoped<IJobSkillDA, JobSkillDA>();
             services.AddScoped<IJobFileAttachDA, JobFileAttachDA>();
+            services.AddScoped<IJobSavedDA, JobSavedDA>();
 
             //skill
             services.AddScoped<ISkillDA, SkillDA>();
