@@ -34,6 +34,8 @@ namespace Object.Core
         public string IsOpeningForJob { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string IsOpeningForJobText { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string SkillsText { get; set; }
         public decimal HourlyRate { get; set; } // số tiền công mỗi giờ
         //public decimal HourlyRateReal { get; set; } // số tiền công mỗi giờ sau phí
 

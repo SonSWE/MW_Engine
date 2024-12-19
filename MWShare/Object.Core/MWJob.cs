@@ -37,7 +37,11 @@ namespace Object.Core
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public long CountOfProposal { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public long CountOfContract { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string Saved { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string Applied { get; set; }
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
         public List<MWProposal> Proposals { get; set; }

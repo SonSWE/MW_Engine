@@ -53,7 +53,7 @@ namespace Business.Core.BLs.ProposalBLs
         public override void BeforeCreate(IDbTransaction transaction, MWProposal data)
         {
             //tự sinh id
-            data.JobId = "PR" + _proposalDA.GetNextSequenceValue(transaction).ToString();
+            data.ProposalId = "PR" + _proposalDA.GetNextSequenceValue(transaction).ToString();
         }
 
         public override long InsertChildData(IDbTransaction transaction, MWProposal data, MWProposal oldData, ClientInfo clientInfo)

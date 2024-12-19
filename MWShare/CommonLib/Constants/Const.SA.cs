@@ -26,5 +26,24 @@
             public const string PendingVerify = "P";
             public const string InActive = "I";
         }
+        public static class Proposal_Status
+        {
+            public const string Sent = "A";
+            public const string Read = "O";
+            public const string Rejected = "R";
+            public const string Offer = "D";
+        }
+
+        public static class Contract_Status
+        {
+            public const string Pending = "P";
+            public const string Closed = "C";
+            public const string Active = "A";
+            public const string End = "E";
+            public const string PendingApprovalSubmit = "PS";
+            public const string Reopen = "RO";
+            public const string Done = "D";
+            public const string Fail = "F";
+        }
     }
 }

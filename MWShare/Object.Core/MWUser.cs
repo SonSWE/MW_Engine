@@ -52,6 +52,7 @@ namespace Object.Core
         public string IsEkycVerifiedText { get; set; }
         public string IsEmailVerified { get; set; } = Const.YN.No;
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string LoggedClientId { get; set; }
         public string IsEmailVerifiedText { get; set; }
         public string LoginType { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
@@ -68,5 +69,7 @@ namespace Object.Core
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public List<MWClient> Clients { get; set; }
 
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public MWClient Client { get; set; }
     }
 }

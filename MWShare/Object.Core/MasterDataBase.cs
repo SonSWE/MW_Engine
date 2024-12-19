@@ -31,9 +31,8 @@ namespace Object.Core
 
     public class MasterDataBaseApproveRequest
     {
-        public long AutoId { get; set; }
         public string Status { get; set; }
-        public string RejectDes { get; set; }
+        public string Des { get; set; }
         public string Id { get; set; }
     }
     public class MasterDataBaseDeleteRequest

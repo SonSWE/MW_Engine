@@ -250,6 +250,7 @@ namespace MWAuth.MemoryData
                     AllowExecute = x.AllowExecute,
                 }).ToList(),
                 Clients = user.Clients,
+                Client = user.Client,
                 Freelancer = user.Freelancer,
             };
 

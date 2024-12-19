@@ -11,5 +11,6 @@ namespace Business.Core.BLs.JobBLs
     public interface IJobBL
     {
         List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId);
+        List<MWJob> GetByClientId(IDbTransaction transaction, string clientId);
     }
 }

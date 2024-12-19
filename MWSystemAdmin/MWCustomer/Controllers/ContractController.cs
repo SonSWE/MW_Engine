@@ -8,111 +8,32 @@ using Object.Core;
 using CommonLib;
 using Microsoft.AspNetCore.Http.Extensions;
 using MWShare.Helpers;
-using Business.Core.Services.JobServices;
-using MemoryData;
 using System.Reflection;
+using Business.Core.Services.ProposalServices;
+using MemoryData;
+using Business.Core.Services.ContractServices;
+using Business.Core.BLs.BaseBLs;
+using Business.Core.Validators;
+using DataAccess.Core.Helpers;
+using System.Data;
 using CommonLib.Extensions;
-using Object;
 
 namespace MWCustomer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     //[ApiAuthorizeFunctionConfig(Const.AuthenFunctionId.Job)]
-    [MasterDataBaseControllerConfig("JOB", Const.ProfileKeyField.Job)]
-    public class JobController : MasterDataBaseController<MWJob>
+    [MasterDataBaseControllerConfig("CONTRACT", Const.ProfileKeyField.Contract)]
+    public class ContractController : MasterDataBaseController<MWContract>
     {
-        private readonly IJobService _jobService;
-        private readonly IJobSavedService _jobSavedService;
-        public JobController(IMasterDataBaseService<MWJob> masterDataBaseBL, ILoggingManagement loggingManagement, IJobService jobService, IJobSavedService jobSavedService) : base(masterDataBaseBL, loggingManagement)
+        private readonly IContractService _contractService;
+        public ContractController(IMasterDataBaseService<MWContract> masterDataBaseBL, ILoggingManagement loggingManagement, IContractService contractService) : base(masterDataBaseBL, loggingManagement)
         {
-            _jobService = jobService;
-            _jobSavedService = jobSavedService;
+            _contractService = contractService;
         }
 
-        [HttpGet("getsuggestbyfreelancer")]
-        public virtual async Task<List<MWJob>?> GetSuggestByFreelancer([FromQuery] string? value)
-        {
-            var requestTime = DateTime.Now;
-            var clientInfo = Request.GetClientInfo();
-
-            Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
-
-            //
-            List<MWJob>? response = null;
-
-            try
-            {
-                response = await Task.Run(() => _jobService.GetSuggestByFreelancer(value, clientInfo));
-
-                if (response == null)
-                {
-                    Response.StatusCode = StatusCodes.Status204NoContent;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
-
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-            }
-
-            Logger.logData.Info(JsonHelper.Serialize(new
-            {
-                RequestId,
-                requestTime,
-                responseTime = DateTime.Now,
-                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
-                peer = clientInfo?.IpAddress,
-                request = new { value },
-            }));
-
-            return response;
-        }
-
-
-        [HttpGet("getsavedjobs")]
-        public virtual async Task<List<MWJob>?> GetSavedJobsByFreelancer([FromQuery] string? value)
-        {
-            var requestTime = DateTime.Now;
-            var clientInfo = Request.GetClientInfo();
-
-            Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
-
-            //
-            List<MWJob>? response = null;
-
-            try
-            {
-                response = await Task.Run(() => _jobSavedService.GetSavedJobsByFreelancer(value, clientInfo));
-
-                if (response == null)
-                {
-                    Response.StatusCode = StatusCodes.Status204NoContent;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
-
-                Response.StatusCode = StatusCodes.Status500InternalServerError;
-            }
-
-            Logger.logData.Info(JsonHelper.Serialize(new
-            {
-                RequestId,
-                requestTime,
-                responseTime = DateTime.Now,
-                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
-                peer = clientInfo?.IpAddress,
-                request = new { value },
-            }));
-
-            return response;
-        }
-
-        [HttpPost("insertsavejob")]
-        public virtual async Task<MasterDataBaseBusinessResponse> InsertSaveJob([FromBody] MWJobSaved data)
+        [HttpPost("add")]
+        public override async Task<MasterDataBaseBusinessResponse> Create([FromBody] MWContract data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -125,13 +46,15 @@ namespace MWCustomer.Controllers
             {
                 var result = await Task.Run(() =>
                 {
-                    var createResult = _jobSavedService.InsertData(data, clientInfo, out var createResMessage);
-                    return new Tuple<long, string>(createResult, createResMessage);
+                    data.Status = Const.Proposal_Status.Sent;
+                    var createResult = MasterDataBaseService.Create(data, clientInfo, out var createResMessage, out var propertyName);
+                    return new Tuple<long, string, string>(createResult, createResMessage, propertyName);
                 });
 
                 //
                 response.Code = result.Item1;
                 response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
+                response.PropertyName = result.Item3 ?? string.Empty;
 
                 if (response.Code <= 0)
                 {
@@ -139,7 +62,63 @@ namespace MWCustomer.Controllers
                 }
                 else
                 {
-                    response.Id = $"{data.GetPropertyValue(ProfileKeyField)}";
+                    response.Id = $"{data.FreelancerId}";
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+
+                response.Code = ErrorCodes.Err_Exception;
+                response.Message = ex.Message;
+
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            Logger.logData.Info(JsonHelper.Serialize(new
+            {
+                RequestId,
+                requestTime,
+                responseTime = DateTime.Now,
+                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
+                peer = clientInfo?.IpAddress,
+                request = data,
+            }));
+
+            return response;
+        }
+
+        [HttpPut("updatestatus")]
+        public virtual async Task<MasterDataBaseBusinessResponse> UpdateStatus([FromBody] MasterDataBaseApproveRequest data)
+        {
+            var requestTime = DateTime.Now;
+            var clientInfo = Request.GetClientInfo();
+
+            Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
+
+            //
+            MasterDataBaseBusinessResponse response = new();
+
+            try
+            {
+                var result = await Task.Run(() =>
+                {
+                    var createResult = _contractService.UpdateStatus(data.Id, data.Status, data.Des, clientInfo, out var createResMessage, out var propertyName);
+                    return new Tuple<long, string, string>(createResult, createResMessage, propertyName);
+                });
+
+                //
+                response.Code = result.Item1;
+                response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
+                response.PropertyName = result.Item3 ?? string.Empty;
+
+                if (response.Code <= 0)
+                {
+                    Response.StatusCode = StatusCodes.Status400BadRequest;
+                }
+                else
+                {
+                    response.Id = $"{data.Id}";
                 }
             }
             catch (Exception ex)
@@ -166,25 +145,29 @@ namespace MWCustomer.Controllers
         }
 
 
-        [HttpDelete("removesavejob")]
-        public virtual async Task<MasterDataBaseBusinessResponse> RemoveSaveJob([FromBody] MWJobSaved data)
+        [HttpPut("submitcontact")]
+        public virtual async Task<MasterDataBaseBusinessResponse> SubmitContact([FromBody] MasterDataBaseApproveRequest data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
 
             Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
 
+            //
             MasterDataBaseBusinessResponse response = new();
 
             try
             {
                 var result = await Task.Run(() =>
                 {
-                    var createResult = _jobSavedService.DeleteData(data, clientInfo, out var createResMessage);
-                    return new Tuple<long, string>(createResult, createResMessage);
+                    var createResult = _contractService.Submit(data.Id, data.Des, clientInfo, out var createResMessage, out var propertyName);
+                    return new Tuple<long, string, string>(createResult, createResMessage, propertyName);
                 });
+
+                //
                 response.Code = result.Item1;
-                response.Message = result.Item2;
+                response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
+                response.PropertyName = result.Item3 ?? string.Empty;
 
                 if (response.Code <= 0)
                 {
@@ -192,7 +175,7 @@ namespace MWCustomer.Controllers
                 }
                 else
                 {
-                    response.Id = $"{data.GetPropertyValue(ProfileKeyField)}";
+                    response.Id = $"{data.Id}";
                 }
             }
             catch (Exception ex)
@@ -200,7 +183,7 @@ namespace MWCustomer.Controllers
                 Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
 
                 response.Code = ErrorCodes.Err_Exception;
-                response.Message = DefErrorMem.GetErrorDesc(ErrorCodes.Err_Exception, clientInfo.ClientLanguage);
+                response.Message = ex.Message;
 
                 Response.StatusCode = StatusCodes.Status500InternalServerError;
             }
@@ -218,9 +201,8 @@ namespace MWCustomer.Controllers
             return response;
         }
 
-        //client
-        [HttpGet("getbyclientid")]
-        public virtual async Task<List<MWJob>?> GetByClientId([FromQuery] string? value)
+        [HttpGet("getbyfreelancer")]
+        public virtual async Task<List<MWContract>?> GetContractByFreelancer([FromQuery] string? value)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -228,11 +210,51 @@ namespace MWCustomer.Controllers
             Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
 
             //
-            List<MWJob>? response = null;
+            List<MWContract>? response = null;
 
             try
             {
-                response = await Task.Run(() => _jobService.GetByClientId(value, clientInfo));
+                response = await Task.Run(() => _contractService.GetContractByFreelancer(value));
+
+                if (response == null)
+                {
+                    Response.StatusCode = StatusCodes.Status204NoContent;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            Logger.logData.Info(JsonHelper.Serialize(new
+            {
+                RequestId,
+                requestTime,
+                responseTime = DateTime.Now,
+                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
+                peer = clientInfo?.IpAddress,
+                request = new { value },
+            }));
+
+            return response;
+        }
+
+        [HttpGet("getbyjobid")]
+        public virtual async Task<List<MWContract>?> GetContractByJobId([FromQuery] string? value)
+        {
+            var requestTime = DateTime.Now;
+            var clientInfo = Request.GetClientInfo();
+
+            Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
+
+            //
+            List<MWContract>? response = null;
+
+            try
+            {
+                response = await Task.Run(() => _contractService.GetContractByJobId(value));
 
                 if (response == null)
                 {

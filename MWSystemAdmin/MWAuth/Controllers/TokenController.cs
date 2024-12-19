@@ -681,6 +681,7 @@ namespace MWAuth.Controllers.SA
                 functionSettings = loggedUser.FunctionSettings,
                 freelancer = loggedUser.Freelancer,
                 clients = loggedUser.Clients,
+                client = loggedUser.Client,
      
             };
 

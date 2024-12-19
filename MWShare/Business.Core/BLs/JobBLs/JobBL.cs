@@ -164,10 +164,17 @@ namespace Business.Core.BLs.JobBLs
 
             return resultValues;
         }
-        
+
         public List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId)
         {
             var data = _jobDA.GetSuggestByFreelancer(transaction, freelancerId);
+
+            return data;
+        }
+
+        public List<MWJob> GetByClientId(IDbTransaction transaction, string clientId)
+        {
+            var data = _jobDA.GetView(new Dictionary<string, object> { { nameof(MWClient.ClientId), clientId } }, transaction).OrderBy(x=>x.CreateBy).ToList();
 
             return data;
         }

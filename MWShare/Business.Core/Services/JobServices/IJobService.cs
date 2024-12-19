@@ -11,5 +11,6 @@ namespace Business.Core.Services.JobServices
     public interface IJobService
     {
         List<MWJob> GetSuggestByFreelancer(string freelancerId, ClientInfo clientInfo);
+        List<MWJob> GetByClientId(string clientId, ClientInfo clientInfo);
     }
 }

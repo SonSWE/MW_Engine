@@ -43,5 +43,18 @@ namespace Business.Core.Services.JobServices
 
             return _jobBL.GetSuggestByFreelancer(transaction, freelancerId);
         }
+
+        public List<MWJob> GetByClientId(string clientId, ClientInfo clientInfo)
+        {
+            using var connection = DbManagement.GetConnection();
+            using var transaction = connection.BeginTransaction();
+
+            if (string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientInfo?.LoggedUser?.Client?.ClientId))
+            {
+                clientId = clientInfo?.LoggedUser?.Client?.ClientId;
+            }
+
+            return _jobBL.GetByClientId(transaction, clientId);
+        }
     }
 }

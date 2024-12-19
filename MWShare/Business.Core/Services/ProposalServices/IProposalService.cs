@@ -10,5 +10,7 @@ namespace Business.Core.Services.ProposalServices
 {
     public interface IProposalService
     {
+        List<MWProposal> GetProposalByFreelancer(string freelancerId);
+        List<MWProposal> GetProposalByJobId(string jobId);
     }
 }

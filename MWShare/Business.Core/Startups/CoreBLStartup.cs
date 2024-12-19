@@ -1,6 +1,7 @@
 ﻿using Business.Core.BLs;
 using Business.Core.BLs.BaseBLs;
 using Business.Core.BLs.ClientBLs;
+using Business.Core.BLs.ContractBLs;
 using Business.Core.BLs.FreelancerBLs;
 using Business.Core.BLs.JobBLs;
 using Business.Core.BLs.LoginBLs;
@@ -12,10 +13,12 @@ using Business.Core.BLs.SystemCodeBLs;
 using Business.Core.BLs.UserBLs;
 using Business.Core.Services.BaseServices;
 using Business.Core.Services.ClientServices;
+using Business.Core.Services.ContractServices;
 using Business.Core.Services.DefErrorServices;
 using Business.Core.Services.FreelancerServices;
 using Business.Core.Services.JobServices;
 using Business.Core.Services.LoginServices;
+using Business.Core.Services.ProposalServices;
 using Business.Core.Services.Share;
 using Business.Core.Services.ShareServices;
 using Business.Core.Services.SkillServices;
@@ -107,6 +110,16 @@ namespace Business.Core.Startups
             #region Proposal
             services.AddScoped<IProposalBL, ProposalBL>();
             services.AddScoped<IMasterDataBaseBL<MWProposal>, ProposalBL>();
+            services.AddScoped<IProposalService, ProposalService>();
+            services.AddScoped<IMasterDataBaseService<MWProposal>, ProposalService>();
+            #endregion
+
+            // contract
+            #region contract
+            services.AddScoped<IContractBL, ContractBL>();
+            services.AddScoped<IMasterDataBaseBL<MWContract>, ContractBL>();
+            services.AddScoped<IContractService, ContractService>();
+            services.AddScoped<IMasterDataBaseService<MWContract>, ContractService>();
             #endregion
 
             // Skill

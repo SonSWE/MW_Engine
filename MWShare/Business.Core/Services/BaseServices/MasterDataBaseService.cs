@@ -107,7 +107,7 @@ namespace Business.Core.Services.BaseServices
 
         // GET
         #region GET
-        public T GetDetailById(string id)
+        public virtual T GetDetailById(string id)
         {
             using var connection = DbManagement.GetConnection();
             using var transaction = connection.BeginTransaction();
@@ -115,7 +115,7 @@ namespace Business.Core.Services.BaseServices
             return GetDetailById(transaction, id);
         }
 
-        public T GetDetailById(IDbTransaction transaction, string id)
+        public virtual T GetDetailById(IDbTransaction transaction, string id)
         {
             return MasterDataBaseBL.GetDetailById(transaction, id);
         }
@@ -195,6 +195,17 @@ namespace Business.Core.Services.BaseServices
             {
                 var result = MasterDataBaseBL.Insert(transaction, data, clientInfo);
 
+                if(result > 0)
+                {
+                    if (OnCreated(transaction, data, clientInfo, out var resCode, out var resMessage1))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        return resCode;
+                    }
+                }
                 return result;
             }
             else

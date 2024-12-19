@@ -87,13 +87,17 @@ namespace Business.Core.BLs.LoginBLs
                     user.Email,
                 }, transaction))?.ToList() ?? new();
 
+                if (!string.IsNullOrEmpty(user.LoggedClientId))
+                {
+                    user.Client = (await _clientDA.GetFirstOrDefaultAsync(new Dictionary<string, object> { { nameof(MWClient.ClientId), user.LoggedClientId }, }, transaction)) ?? new();
+                }
 
                 var data = (await _freelancerDA.GetFirstOrDefaultAsync(new
                 {
                     user.Email,
                 }, transaction)) ?? new();
 
-                if (data != null)
+                if (data != null && !string.IsNullOrEmpty(data.FreelancerId))
                 {
                     data.WorkingHistories = (await _workingHistoryDA.GetViewAsync(new
                     {

@@ -32,20 +32,6 @@ namespace CommonLib
             }
             return sb.ToString();
         }
-        public static string GenPCFFlag(string registrationType)
-        {
-            if (Constants.Const.RegistrationType.CheckTuDoanh(registrationType))
-            {
-                return "P";
-            }
-
-            if (Constants.Const.RegistrationType.CheckNuocNgoai(registrationType))
-            {
-                return "F";
-            }
-
-            return "C";
-        }
         //
         public static string GenGuidStringN()
         {
@@ -227,18 +213,6 @@ namespace CommonLib
 
         #endregion
 
-        public static bool IsValidIdCode(string idType, string idCode)
-        {
-            if (
-                ((string.Equals(idType, Constants.Const.CF_IdType.CitizenId) || string.Equals(idType, Constants.Const.CF_IdType.SocialId)) && !Regex.IsMatch(idCode ?? string.Empty, @"^[0-9]*$"))
-            //|| !Regex.IsMatch(idCode, @"^[a-zA-Z0-9]*$")
-            )
-            {
-                return false;
-            }
-
-            return true;
-        }
 
         /// <summary>
         /// Hàm check chuỗi truyền vào có parse được sang datetime không
