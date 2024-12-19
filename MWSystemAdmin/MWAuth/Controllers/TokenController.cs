@@ -16,6 +16,8 @@ using System.Security.Claims;
 using static CommonLib.Constants.ErrorCodes.SA;
 using System.Text;
 using Business.Core.Services.LoginServices;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Cryptography;
 namespace MWAuth.Controllers.SA
 {
     [Route("api/[controller]")]
@@ -272,14 +274,14 @@ namespace MWAuth.Controllers.SA
                     goto endFunc;
                 }
 
-                if (model.CheckFunction)
-                {
-                    if (!LoginMem.ValidateFunctionPermission(user.UserName, model.FunctionId.Split(","), model.Action.Split(","), model.CheckMode))
-                    {
-                        responseCode = StatusCodes.Status403Forbidden;
-                        goto endFunc;
-                    }
-                }
+                //if (model.CheckFunction)
+                //{
+                //    if (!LoginMem.ValidateFunctionPermission(user.UserName, model.FunctionId.Split(","), model.Action.Split(","), model.CheckMode))
+                //    {
+                //        responseCode = StatusCodes.Status403Forbidden;
+                //        goto endFunc;
+                //    }
+                //}
 
                 //
                 responseCode = StatusCodes.Status200OK;
@@ -645,8 +647,7 @@ namespace MWAuth.Controllers.SA
                 new Claim(ClaimTypes.NameIdentifier, user.UserName, ClaimValueTypes.String),
             };
 
-            //var signingKey = JWTHelper.GetSecretInfo();
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"));
+            var signingKey = JWTHelper.GetSecretInfo();
             var expires = now.Add(TimeSpan.FromMinutes(20));
 
             var jwt = new JwtSecurityToken(

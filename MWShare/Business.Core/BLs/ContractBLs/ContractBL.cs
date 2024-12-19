@@ -29,7 +29,7 @@ namespace Business.Core.BLs.ContractBLs
         public override void BeforeCreate(IDbTransaction transaction, MWContract data)
         {
             //tự sinh id
-            data.ContractId = "PR" + _baseDA.GetNextSequenceValue(transaction).ToString();
+            data.ContractId = "CT" + _baseDA.GetNextSequenceValue(transaction).ToString();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Business.Core.Services.ContractServices
         private readonly IFreelancerDA _freelancerDA;
         private readonly IJobDA _jobDA;
 
-        public ContractService(IMasterDataBaseBL<MWContract> masterDataBaseDA, IDbManagement dbManagement, IContractDA contractDA, 
+        public ContractService(IMasterDataBaseBL<MWContract> masterDataBaseDA, IDbManagement dbManagement, IContractDA contractDA,
             IMasterDataBaseBL<MWProposal> proposalBL, IFreelancerDA freelancerDA, IJobDA jobDA) : base(masterDataBaseDA, dbManagement)
         {
             _contractDA = contractDA;
@@ -50,7 +50,7 @@ namespace Business.Core.Services.ContractServices
         {
             var data = base.GetDetailById(transaction, id);
 
-            if(data != null && !string.IsNullOrEmpty(data?.ContractId))
+            if (data != null && !string.IsNullOrEmpty(data?.ContractId))
             {
                 data.Job = _jobDA.GetViewFirstOrDefault(new Dictionary<string, object> { { nameof(MWContract.JobId), data.JobId } }, transaction) ?? new();
             }
@@ -101,12 +101,26 @@ namespace Business.Core.Services.ContractServices
             return data;
         }
 
-        public long Submit(string id, string des, ClientInfo clientInfo, out string resMessage, out string propertyName)
+        public long SubmitContract(MWContract data, ClientInfo clientInfo, out string resMessage, out string propertyName)
         {
+            resMessage = string.Empty;
+            propertyName = string.Empty;
+
             using var connection = DbManagement.GetConnection();
             using var transaction = connection.BeginTransaction();
 
-            var result = UpdateStatus(transaction, id, Const.Contract_Status.PendingApprovalSubmit, des, clientInfo, out resMessage, out propertyName);
+            var oldData = GetDetailById(data.ContractId);
+            if (oldData == null)
+            {
+                return ErrorCodes.Err_NotFound;
+            }
+
+            oldData.Remark = data.Remark;
+            oldData.Status = Const.Contract_Status.PendingApprovalSubmit;
+            oldData.FileAttaches = data.FileAttaches;
+
+
+            var result = Update(transaction, oldData, clientInfo, out resMessage, out propertyName);
 
             if (result > 0)
             {
@@ -179,12 +193,21 @@ namespace Business.Core.Services.ContractServices
             //
             long result = MasterDataBaseBL.Update(transaction, data, clientInfo);
 
-            if(result > 0)
+            if (result > 0)
             {
+                if (status == Const.Contract_Status.Active)
+                {
+                    //freelancer xác nhận thì sẽ cập nhật lại trạng thái của job
+                    var oblJob = _jobDA.GetFirstOrDefault(new Dictionary<string, object> { { nameof(MWContract.JobId), data.JobId } }, transaction);
+                    if (oblJob != null)
+                    {
+                        oblJob.Status = Const.Job_Status.Hired;
+                        _jobDA.Update(oblJob, new Dictionary<string, object> { { nameof(MWContract.JobId), data.JobId } }, transaction);
+                    }
+                }
                 //if(status == Const.Contract_Status.Done)
                 //{
                 //    //nếu hoàn thành dự án chuyển tiền về tài khoản freelancer
-
                 //}
                 //else if(status == Const.Contract_Status.Fail)
                 //{

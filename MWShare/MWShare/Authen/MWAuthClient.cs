@@ -1,4 +1,5 @@
-﻿using CommonLib;
+﻿using Azure;
+using CommonLib;
 using CommonLib.Constants;
 using Object.Core;
 using System.Collections.Concurrent;
@@ -191,6 +192,10 @@ namespace MWShare.Authen
 
         public async Task<Tuple<HttpStatusCode, LoggedUser>> ValidateTokenAndFunction(string token, string functionId, string action, bool checkFunction, string checkMode = "")
         {
+            try
+            {
+
+            
             var requestId = Utils.GenGuidStringN();
             var requestTime = DateTime.Now;
             Logger.log.Info($"[{requestId}] [MWAuthClient.ValidateTokenAndFunction] dia chi [{_httpClient?.BaseAddress}] tham so userPid=[{functionId}] action=[{action} checkFunction=[{checkFunction}]");
@@ -237,6 +242,10 @@ namespace MWShare.Authen
 
             //
             return new Tuple<HttpStatusCode, LoggedUser>(response.StatusCode, user);
+            }
+            catch (Exception ex) {
+                return new Tuple<HttpStatusCode, LoggedUser>(HttpStatusCode.BadRequest, new LoggedUser());
+            }
         }
 
         public async Task<Tuple<HttpStatusCode, LoggedUser>> ValidateTokenAndUrl(string token, string requestUrl, bool isCheckUrl = true)

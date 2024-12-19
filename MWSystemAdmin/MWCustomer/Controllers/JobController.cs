@@ -18,7 +18,7 @@ namespace MWCustomer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ApiAuthorizeFunctionConfig(Const.AuthenFunctionId.Job)]
+    [ApiAuthorizeFunctionConfig(Const.AuthenFunctionId.Job)]
     [MasterDataBaseControllerConfig("JOB", Const.ProfileKeyField.Job)]
     public class JobController : MasterDataBaseController<MWJob>
     {
@@ -219,6 +219,7 @@ namespace MWCustomer.Controllers
         }
 
         //client
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
         [HttpGet("getbyclientid")]
         public virtual async Task<List<MWJob>?> GetByClientId([FromQuery] string? value)
         {

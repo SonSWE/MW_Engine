@@ -1,5 +1,6 @@
 ﻿using CommonLib.Constants;
 using Object.Core.CustomAttributes;
+using System;
 using System.Collections.Generic;
 using static CommonLib.Constants.Const;
 
@@ -35,5 +36,8 @@ namespace Object.Core
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public MWJob Job { get; set; }
+
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

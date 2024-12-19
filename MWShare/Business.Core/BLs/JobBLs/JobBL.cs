@@ -73,8 +73,21 @@ namespace Business.Core.BLs.JobBLs
 
         public override void BeforeCreate(IDbTransaction transaction, MWJob data)
         {
+            if (string.IsNullOrEmpty(data.Status))
+            {
+                data.Status = Const.Job_Status.Open;
+            }
             //tự sinh id
             data.JobId = "J" + _jobDA.GetNextSequenceValue(transaction).ToString();
+        }
+
+        public override long InsertData(IDbTransaction transaction, MWJob data, ClientInfo clientInfo)
+        {
+            if (string.IsNullOrEmpty(data.ClientId)) {
+                data.ClientId = clientInfo.LoggedUser.Client?.ClientId;
+            }
+
+            return base.InsertData(transaction, data, clientInfo);
         }
 
         public override long InsertChildData(IDbTransaction transaction, MWJob data, MWJob oldData, ClientInfo clientInfo)

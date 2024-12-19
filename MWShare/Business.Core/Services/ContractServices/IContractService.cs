@@ -13,6 +13,6 @@ namespace Business.Core.Services.ContractServices
         List<MWContract> GetContractByFreelancer(string freelancerId);
         List<MWContract> GetContractByJobId(string jobId);
         long UpdateStatus(string id, string status, string des, ClientInfo clientInfo, out string resMessage, out string propertyName);
-        long Submit(string id, string des, ClientInfo clientInfo, out string resMessage, out string propertyName);
+        long SubmitContract(MWContract data, ClientInfo clientInfo, out string resMessage, out string propertyName);
     }
 }

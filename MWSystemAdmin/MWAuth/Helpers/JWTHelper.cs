@@ -84,9 +84,12 @@ namespace MWAuth.Helpers
         {
             var audienceConfig = ConfigDataAuth.Audience;
             var symmetricKeyAsBase64 = audienceConfig["Secret"];
-            var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
-            var signingKey = new SymmetricSecurityKey(keyByteArray);
-            return signingKey;
+            //var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
+            //var signingKey = new SymmetricSecurityKey(keyByteArray);
+            //return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(symmetricKeyAsBase64.PadRight((512 / 8), '\0')));
+            //return signingKey;
+
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"));
         }
 
         public static string GetAccessToken(Claim[] claims)

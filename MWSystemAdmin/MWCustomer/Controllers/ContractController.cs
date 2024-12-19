@@ -46,7 +46,7 @@ namespace MWCustomer.Controllers
             {
                 var result = await Task.Run(() =>
                 {
-                    data.Status = Const.Proposal_Status.Sent;
+                    data.Status = Const.Contract_Status.Pending;
                     var createResult = MasterDataBaseService.Create(data, clientInfo, out var createResMessage, out var propertyName);
                     return new Tuple<long, string, string>(createResult, createResMessage, propertyName);
                 });
@@ -89,7 +89,7 @@ namespace MWCustomer.Controllers
         }
 
         [HttpPut("updatestatus")]
-        public virtual async Task<MasterDataBaseBusinessResponse> UpdateStatus([FromBody] MasterDataBaseApproveRequest data)
+        public async Task<MasterDataBaseBusinessResponse> UpdateStatus([FromBody] MasterDataBaseApproveRequest data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -146,7 +146,7 @@ namespace MWCustomer.Controllers
 
 
         [HttpPut("submitcontact")]
-        public virtual async Task<MasterDataBaseBusinessResponse> SubmitContact([FromBody] MasterDataBaseApproveRequest data)
+        public async Task<MasterDataBaseBusinessResponse> SubmitContact([FromBody] MWContract data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -160,7 +160,7 @@ namespace MWCustomer.Controllers
             {
                 var result = await Task.Run(() =>
                 {
-                    var createResult = _contractService.Submit(data.Id, data.Des, clientInfo, out var createResMessage, out var propertyName);
+                    var createResult = _contractService.SubmitContract(data, clientInfo, out var createResMessage, out var propertyName);
                     return new Tuple<long, string, string>(createResult, createResMessage, propertyName);
                 });
 
@@ -175,7 +175,7 @@ namespace MWCustomer.Controllers
                 }
                 else
                 {
-                    response.Id = $"{data.Id}";
+                    response.Id = $"{data.ContractId}";
                 }
             }
             catch (Exception ex)
@@ -202,7 +202,7 @@ namespace MWCustomer.Controllers
         }
 
         [HttpGet("getbyfreelancer")]
-        public virtual async Task<List<MWContract>?> GetContractByFreelancer([FromQuery] string? value)
+        public async Task<List<MWContract>?> GetContractByFreelancer([FromQuery] string? value)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -242,7 +242,7 @@ namespace MWCustomer.Controllers
         }
 
         [HttpGet("getbyjobid")]
-        public virtual async Task<List<MWContract>?> GetContractByJobId([FromQuery] string? value)
+        public async Task<List<MWContract>?> GetContractByJobId([FromQuery] string? value)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();

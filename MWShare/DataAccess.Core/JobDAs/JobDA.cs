@@ -28,7 +28,7 @@ namespace DataAccess.Core.JobDAs
             string sqlQuery = @$"
                         SELECT j.*, (a.skillMatchCount + a.specialtyMatchCount + a.levelMatch) as matchPoint
                                 , (CASE WHEN js.freelancerId is not null THEN 'Y' ELSE 'N' END) AS saved
-, CASE WHEN (SELECT count(*) FROM {Const.DbTable.MWProposal} WHERE jobid = j.jobId AND freelancerId = :{nameof(MWFreelancer.FreelancerId)}) > 0THEN '{Const.YN.Yes}' ELSE '{Const.YN.Yes}' END AS Applied
+, CASE WHEN (SELECT count(*) FROM {Const.DbTable.MWProposal} WHERE jobid = j.jobId AND freelancerId = :{nameof(MWFreelancer.FreelancerId)}  GROUP BY jobid) > 0 THEN '{Const.YN.Yes}' ELSE '{Const.YN.No}' END AS Applied
                         FROM (
                             SELECT j.jobId, 
                                    j.specialtyId, 
