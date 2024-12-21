@@ -368,6 +368,8 @@ namespace CommonLib.Constants
             public const string User = "UserName";
             public const string Freelancer = "FreelancerId";
             public const string Client = "ClientId";
+            public const string Wallet = "WalletId";
+            public const string Transaction = "TransactionId";
 
 
 
@@ -409,14 +411,15 @@ namespace CommonLib.Constants
             public const string MWFreelancerEducation = "MWFreelancerEducation";
             public const string MWFreelancerWorkingHistory = "MWFreelancerWorkingHistory";
             public const string MWFreelancerCertificate = "MWFreelancerCertificate";
-            public const string MWAccountCash = "MWAccountCash";
+            
             public const string MWProposal = "MWProposal";
             public const string MWContract = "MWContract";
             public const string MWProposalFileAttach = "MWProposalFileAttach";
             public const string MWFeedBack = "MWFeedBack";
             public const string MWClient = "MWClient";
             public const string MWFeedBackImage = "MWFeedBackImage";
-            public const string MWCashMovement = "MWCashMovement";
+            public const string MWWallet = "MWWallet";
+            public const string MWTransaction = "MWTransaction";
             public const string MWJobSkill = "MWJobSkill";
             public const string MWJobSaved = "MWJobSaved";
             public const string MWSysParam = "MWSysParam";

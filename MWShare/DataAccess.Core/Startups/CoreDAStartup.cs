@@ -13,6 +13,7 @@ using DataAccess.Core.SpencialDAs;
 using DataAccess.Core.SystemCodeDAs;
 using DataAccess.Core.SystemDAs;
 using DataAccess.Core.UserDAs;
+using DataAccess.Core.WalletDAs;
 using DataAccess.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using OracleHelpers;
@@ -79,6 +80,9 @@ namespace DataAccess.Core.Startups
             services.AddScoped<ISpecialtyDA, SpecialtyDA>();
             services.AddScoped<IProposalFileAttachDA, ProposalFileAttachDA>();
 
+            //wallet
+            services.AddScoped<IWalletDA, WalletDA>();
+            services.AddScoped<ITransactionDA, TransactionDA>();
 
             //login
             services.AddScoped<ILoginDA, LoginDA>();

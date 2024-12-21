@@ -52,5 +52,25 @@
             public const string Done = "D";
             public const string Fail = "F";
         }
+        public static class Wallet_Status
+        {
+            public const string Active = "A";
+            public const string Inactive = "I";
+        }
+        public static class Transaction_Status
+        {
+            public const string Pending = "P";
+            public const string Succeed = "S";
+            public const string Cancel = "X";
+        }
+
+        public static class Transaction_Type
+        {
+            public const string Deposit = "D"; //Nạp tiền
+            public const string Withdraw = "W"; //rút tiền
+            public const string Payment = "P"; //thanh toán
+            public const string Transfer = "T"; //Chuyển tiền
+            public const string Receive = "R"; //nhận tiền
+        }
     }
 }

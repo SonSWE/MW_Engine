@@ -11,6 +11,7 @@ using Business.Core.BLs.SpecialtyBLs;
 using Business.Core.BLs.SysParamBLs;
 using Business.Core.BLs.SystemCodeBLs;
 using Business.Core.BLs.UserBLs;
+using Business.Core.BLs.WalletBLs;
 using Business.Core.Services.BaseServices;
 using Business.Core.Services.ClientServices;
 using Business.Core.Services.ContractServices;
@@ -26,6 +27,7 @@ using Business.Core.Services.SpecialtyServices;
 using Business.Core.Services.SystemCodeServices;
 using Business.Core.Services.SystemServices;
 using Business.Core.Services.UserServices;
+using Business.Core.Services.WalletServices;
 using DataAccess.Core.Interfaces;
 using DataAccess.Core.JobDAs;
 using Microsoft.Extensions.DependencyInjection;
@@ -137,6 +139,17 @@ namespace Business.Core.Startups
             services.AddScoped<IMasterDataBaseBL<MWSpecialty>, SpecialtyBL>();
             services.AddScoped<ISpecialtyService, SpecialtyService>();
             services.AddScoped<IMasterDataBaseService<MWSpecialty>, SpecialtyService>();
+            #endregion
+
+
+            // ví tiền
+            #region wallet
+            services.AddScoped<IWalletBL, WalletBL>();
+            services.AddScoped<IMasterDataBaseBL<MWWallet>, WalletBL>();
+            services.AddScoped<ITransactionBL, TransactionBL>();
+            services.AddScoped<IMasterDataBaseBL<MWTransaction>, TransactionBL>();
+            services.AddScoped<IWalletService, WalletService>();
+            services.AddScoped<IMasterDataBaseService<MWWallet>, WalletService>();
             #endregion
 
             services.AddScoped<IUserBL, UserBL>();

@@ -43,6 +43,10 @@ namespace Object.Core
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public List<MWUserFunction> FunctionSettings { get; set; }
 
+        public string IdentityCard { get; set; }
+        public string IdentityAddress { get; set; }
+        public DateTime IdentityIssueDate { get; set; }
+        public DateTime IdentityExpirationDate { get; set; }
 
         public DateTime LastChangePasswordOn { get; set; }
 

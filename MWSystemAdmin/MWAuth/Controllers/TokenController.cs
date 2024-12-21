@@ -13,7 +13,6 @@ using Object.Core;
 using Object.Core.Share;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using static CommonLib.Constants.ErrorCodes.SA;
 using System.Text;
 using Business.Core.Services.LoginServices;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -441,7 +440,7 @@ namespace MWAuth.Controllers.SA
                 responseCode = StatusCodes.Status400BadRequest;
                 responseData = new BaseInfo
                 {
-                    Code = Err_SAUser.PasswordWrrong,
+                    Code = ErrorCodes.Err_Unknown,
                     Message = $"Không tìm thấy tài khoản trong hệ thống."
                 };
                 goto endFunc;
@@ -454,7 +453,7 @@ namespace MWAuth.Controllers.SA
                 responseCode = StatusCodes.Status401Unauthorized;
                 responseData = new BaseInfo
                 {
-                    Code = Err_SAUser.PasswordWrrong,
+                    Code = ErrorCodes.Err_Unknown,
                     Message = $"Mật khẩu không chính xác. {messageFailedLogonCount} {failedLogonCount}/{maximumLogonFailureCount}"
                 };
 
