@@ -6,7 +6,7 @@ namespace DataAccess.Core.Interfaces
 {
     public interface ISearchDA
     {
-        List<Search> GetAll();
+        List<MWSearch> GetAll();
 
         List<SearchFld> SearchFldGetAll();
 

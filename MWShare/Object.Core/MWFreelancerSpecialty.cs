@@ -10,7 +10,6 @@ namespace Object
     {
         [DbField(IsKey = true)]
         public string SpecialtyId { get; set; }
-        [DbField(IsKey = true)]
         public string FreelancerId { get; set; }
     }
 }

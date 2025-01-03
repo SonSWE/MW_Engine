@@ -14,7 +14,10 @@ namespace Business.Core.Services.WalletServices
         long Deposit(MWTransaction data, ClientInfo clientInfo, out string resMessage);
         long Withdraw(MWTransaction data, ClientInfo clientInfo, out string resMessage);
         long Transfer(MWTransaction data, ClientInfo clientInfo, out string resMessage);
+        long Transfer(IDbTransaction transaction, MWTransaction data, ClientInfo clientInfo, out string resMessage);
         MWWallet GetDetailByUserName(string userName);
+        MWWallet GetDetailByUserName(IDbTransaction transaction, string userName);
+        string GetWalletIdByFreelancer(string freelancerId);
 
     }
 }

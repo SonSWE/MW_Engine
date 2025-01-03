@@ -12,6 +12,9 @@ using System;
 using Object;
 using Business.Core.BLs.WalletBLs;
 using CommonLib.Extensions;
+using DataAccess.Core.FreelancerDAs;
+using System.Collections.Generic;
+using DataAccess.Core.UserDAs;
 
 namespace Business.Core.Services.WalletServices
 {
@@ -19,11 +22,16 @@ namespace Business.Core.Services.WalletServices
     {
         private readonly IMasterDataBaseBL<MWTransaction> _transactionBL;
         private readonly IWalletBL _walletBL;
+        private readonly IFreelancerDA _freelancerDA;
+        private readonly IUserDA _userDA;
+
         public WalletService(IMasterDataBaseBL<MWWallet> masterDataBaseDA, IDbManagement dbManagement,
-            IMasterDataBaseBL<MWTransaction> transactionBL, IWalletBL walletBL) : base(masterDataBaseDA, dbManagement)
+            IMasterDataBaseBL<MWTransaction> transactionBL, IWalletBL walletBL, IFreelancerDA freelancerDA, IUserDA userDA) : base(masterDataBaseDA, dbManagement)
         {
             _transactionBL = transactionBL;
             _walletBL = walletBL;
+            _freelancerDA = freelancerDA;
+            _userDA = userDA;
         }
         public override string ProfileKeyField => Const.ProfileKeyField.Wallet;
         public override BaseValidator<MWWallet> GetValidator(IDbTransaction transaction, ValidationAction validationAction, ClientInfo clientInfo, MWWallet dataToValidate, MWWallet oldData)
@@ -160,6 +168,25 @@ namespace Business.Core.Services.WalletServices
             using var connection = DbManagement.GetConnection();
             using var transaction = connection.BeginTransaction();
 
+            long result = Transfer(transaction, data, clientInfo, out resMessage);
+
+
+            if (result > 0)
+            {
+                transaction.Commit();
+            }
+            else
+            {
+                transaction.Rollback();
+            }
+
+            return result;
+        }
+
+        public long Transfer(IDbTransaction transaction, MWTransaction data, ClientInfo clientInfo, out string resMessage)
+        {
+            resMessage = string.Empty;
+
             long result = ErrorCodes.Err_Unknown;
 
             //lấy thông tin ví người gửi
@@ -235,24 +262,33 @@ namespace Business.Core.Services.WalletServices
                 }
             }
 
-
-            if (result > 0)
-            {
-                transaction.Commit();
-            }
-            else
-            {
-                transaction.Rollback();
-            }
-
             return result;
         }
+
 
         public MWWallet GetDetailByUserName(string userName)
         {
             using var connection = DbManagement.GetConnection();
             using var transaction = connection.BeginTransaction();
             return _walletBL.GetDetailByUserName(transaction, userName);
+        }
+
+        public MWWallet GetDetailByUserName(IDbTransaction transaction, string userName)
+        {
+            return _walletBL.GetDetailByUserName(transaction, userName);
+        }
+
+        public string GetWalletIdByFreelancer(string freelancerId)
+        {
+            using var connection = DbManagement.GetConnection();
+            using var transaction = connection.BeginTransaction();
+            var freelancer = _freelancerDA.GetFirstOrDefault(new Dictionary<string, object> { { nameof(MWFreelancer.FreelancerId), freelancerId } }, transaction);
+            if (freelancer == null)
+                return string.Empty;
+
+            var user = _userDA.GetViewFirstOrDefault(new Dictionary<string, object> { { nameof(MWUser.UserName), freelancer.Email } }, transaction);
+
+            return user.WalletId;
         }
     }
 }

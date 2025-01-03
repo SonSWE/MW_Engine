@@ -10,7 +10,6 @@ namespace Object
     {
         [DbField(IsKey = true)]
         public string EducationId { get; set; }
-        [DbField(IsKey = true)]
         public string FreelancerId { get; set; }
         public string SchoolName { get; set; }
         public string Degree { get; set; } //bằng cấp

@@ -1,6 +1,8 @@
 ﻿using CommonLib.Constants;
 using Object.Core;
 using Object.Core.CustomAttributes;
+using System.Runtime.InteropServices;
+using System;
 using static CommonLib.Constants.Const;
 
 namespace Object.Core
@@ -26,14 +28,26 @@ namespace Object.Core
         public string Description { get; set; } // Miêu tả
         public string Status { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
-        public string StatusText { get; set; } 
+        public string StatusText { get; set; }
 
         //contact
         public string Owner { get; set; } // người sở hữu
         public string PhoneNumber { get; set; } // số điện thoại
         public string Address { get; set; } // địa chỉ
 
+        //thong tin cho user
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string Password { get; set; } //mật khẩu
+        
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string Avatar { get; set; } //id file ảnh đại diện
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IdentityCard { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IdentityAddress { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public DateTime IdentityIssueDate { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public DateTime IdentityExpirationDate { get; set; }
     }
 }

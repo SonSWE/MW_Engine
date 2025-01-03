@@ -11,5 +11,10 @@ namespace Business.Core.Services.FreelancerServices
     public interface IFreelancerService
     {
         long UpdateIsOpenForJob(MWFreelancer data, ClientInfo clientInfo, out string createResMessage);
+        long UpdateAvatar(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
+        long UpdateHourlyRate(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
+        long UpdateTitle(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
+        long UpdateBio(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
+        long UpdateHourWorkingPerWeek(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
     }
 }

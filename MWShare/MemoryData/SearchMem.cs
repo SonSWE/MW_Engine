@@ -10,18 +10,18 @@ namespace MemoryData
     public static class SearchMem
     {
         private static readonly object _lock = new();
-        private static List<Search> _searches = new();
+        private static List<MWSearch> _searches = new();
 
         //
-        public static void InitData(List<Search> searches)
+        public static void InitData(List<MWSearch> searches)
         {
             lock (_lock)
             {
-                _searches = searches ?? new List<Search>();
+                _searches = searches ?? new List<MWSearch>();
             }
         }
 
-        public static List<Search> GetAll()
+        public static List<MWSearch> GetAll()
         {
             lock (_lock)
             {
@@ -29,7 +29,7 @@ namespace MemoryData
             }
         }
 
-        public static Search GetByCode(string code)
+        public static MWSearch GetByCode(string code)
         {
             lock (_lock)
             {

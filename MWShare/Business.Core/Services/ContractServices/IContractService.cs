@@ -1,4 +1,5 @@
-﻿using Object.Core;
+﻿using Object;
+using Object.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +14,14 @@ namespace Business.Core.Services.ContractServices
         List<MWContract> GetContractByFreelancer(string freelancerId);
         List<MWContract> GetContractByJobId(string jobId);
         long UpdateStatus(string id, string status, string des, ClientInfo clientInfo, out string resMessage, out string propertyName);
-        long SubmitContract(MWContract data, ClientInfo clientInfo, out string resMessage, out string propertyName);
+        List<MWContractResult> GetContractResultByContractId(string contractId);
+        long SendOffer(MWContract data, ClientInfo clientInfo, out string resMessage, out string propertyName);
+        long PaymentContract(string id, ClientInfo clientInfo, out string resMessage);
+        long SubmitContractResult(MWContractResult data, ClientInfo clientInfo, out string resMessage);
+        long DoneContract(MWFeedBack data, ClientInfo clientInfo, out string resMessage);
+        long EndContract(MWContract data, ClientInfo clientInfo, out string resMessage);
+        long ApprovalContractComplaint(string id, string status, ClientInfo clientInfo, out string resMessage);
+
+
     }
 }

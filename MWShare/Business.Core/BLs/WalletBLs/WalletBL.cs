@@ -3,18 +3,15 @@ using CommonLib.Extensions;
 using DataAccess.Core.Helpers;
 using DataAccess.Helpers;
 using CommonLib;
-using Object.Core;
 using System;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using DataAccess.Core.SystemCodeDAs;
 using Business.Core.BLs.BaseBLs;
-using DataAccess.Core.JobDAs;
 using Object;
-using DataAccess.Core.FileAttachDAs;
 using DataAccess.Core.WalletDAs;
 using System.Collections.Generic;
+using Object.Core;
 
 namespace Business.Core.BLs.WalletBLs
 {
@@ -58,7 +55,7 @@ namespace Business.Core.BLs.WalletBLs
             var data = _baseDA.GetViewFirstOrDefault(new Dictionary<string, object>
             {
                 { nameof(MWWallet.UserName),userName},
-                { nameof(MWWallet.Status),Const.Wallet_Status.Active},
+                //{ nameof(MWWallet.Status),Const.Wallet_Status.Active},
             }, transaction);
 
             if (data != null && !string.IsNullOrEmpty(data.WalletId))

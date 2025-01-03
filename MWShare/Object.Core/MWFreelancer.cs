@@ -11,17 +11,12 @@ namespace Object.Core
     {
         [DbField(IsKey = true)]
         public string FreelancerId { get; set; }
-        public string UserName { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
-        public string Password { get; set; } //mật khẩu
+
         public string PhoneNumber { get; set; }
-        public string AvatarFileId { get; set; } //id file ảnh đại diện
+
         public string StreetAddress { get; set; } //vị trí
-        public string CityId { get; set; } //quốc gia
-        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
-        public string CityIdText { get; set; } //quốc gia
         public DateTime DateOfBirth { get; set; } //ngày sinh
         public string LevelId { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
@@ -37,7 +32,7 @@ namespace Object.Core
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string SkillsText { get; set; }
         public decimal HourlyRate { get; set; } // số tiền công mỗi giờ
-        //public decimal HourlyRateReal { get; set; } // số tiền công mỗi giờ sau phí
+        public decimal HourWorkingPerWeek { get; set; } // Số giờ làm việc trên một tuần
 
 
 
@@ -53,5 +48,23 @@ namespace Object.Core
         public List<MWFreelancerWorkingHistory> WorkingHistories { get; set; } //lịch sử làm việc
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
         public List<MWFreelancerCertificate> Certificates { get; set; } //chứng chỉ
+
+        //thong tin cho user
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string Password { get; set; } //mật khẩu
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string Avatar { get; set; } //id file ảnh đại diện
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IdentityCard { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IdentityAddress { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public DateTime IdentityIssueDate { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public DateTime IdentityExpirationDate { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IsEkycVerified { get; set; } = Const.YN.No;
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string IsEmailVerified { get; set; } = Const.YN.No;
     }
 }

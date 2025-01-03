@@ -12,7 +12,8 @@ namespace Object
         public string CertificateId { get; set; }
         public string FreelancerId { get; set; }
         public string Name { get; set; }
-        public string FileAttachId { get; set; }
+        public string Description { get; set; }
+        public string FileAttach { get; set; }
        
     }
 }

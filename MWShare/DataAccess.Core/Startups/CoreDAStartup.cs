@@ -2,6 +2,7 @@
 using DataAccess.Core.Abtractions;
 using DataAccess.Core.ClientDAs;
 using DataAccess.Core.DefErrorDAs;
+using DataAccess.Core.FeedBackDAs;
 using DataAccess.Core.FreelancerDAs;
 using DataAccess.Core.FunctionDAs;
 using DataAccess.Core.Helpers;
@@ -69,16 +70,16 @@ namespace DataAccess.Core.Startups
             services.AddScoped<IJobDA, JobDA>();
             services.AddScoped<IProposalDA, ProposalDA>();
             services.AddScoped<IJobSkillDA, JobSkillDA>();
-            services.AddScoped<IJobFileAttachDA, JobFileAttachDA>();
             services.AddScoped<IJobSavedDA, JobSavedDA>();
             services.AddScoped<IContractDA, ContractDA>();
+            services.AddScoped<IContractResultDA, ContractResultDA>();
+            services.AddScoped<IFeedBackDA, FeedBackDA>();
 
             //skill
             services.AddScoped<ISkillDA, SkillDA>();
 
             //specialty
             services.AddScoped<ISpecialtyDA, SpecialtyDA>();
-            services.AddScoped<IProposalFileAttachDA, ProposalFileAttachDA>();
 
             //wallet
             services.AddScoped<IWalletDA, WalletDA>();

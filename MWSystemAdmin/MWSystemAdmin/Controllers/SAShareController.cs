@@ -49,6 +49,29 @@ namespace MWSystemAdmin.Controllers
             }
         }
 
+        [HttpGet("getsysparams")]
+        public async Task<IEnumerable<MWSysParam>> GetSysParams()
+        {
+            try
+            {
+                var datas = SysParamMem.GetAll();
+
+                if (datas == null || !datas.Any())
+                {
+                    Response.StatusCode = StatusCodes.Status204NoContent;
+                    return null;
+                }
+
+                return datas;
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+                return null;
+            }
+        }
+
 
         [HttpGet("getskills")]
         public async Task<IEnumerable<MWSkill>> GetSkills()

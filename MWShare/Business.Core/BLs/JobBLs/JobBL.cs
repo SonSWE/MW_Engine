@@ -8,14 +8,9 @@ using System;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using DataAccess.Core.SystemCodeDAs;
 using Business.Core.BLs.BaseBLs;
 using DataAccess.Core.JobDAs;
-using Object;
-using DataAccess.Core.FileAttachDAs;
-using Business.Core.BLs.ProposalBLs;
 using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Business.Core.BLs.JobBLs
 {
@@ -24,18 +19,16 @@ namespace Business.Core.BLs.JobBLs
         private readonly IJobDA _jobDA;
         private readonly IProposalDA _proposalDA;
         private readonly IJobSkillDA _jobSkillDA;
-        private readonly IJobFileAttachDA _jobFileAttachDA;
         private readonly IMasterDataBaseBL<MWProposal> _proposalBL;
 
 
         public override string ProfileKeyField => Const.ProfileKeyField.Job;
         public override string DbTable => Const.DbTable.MWJob;
 
-        public JobBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IProposalDA proposalDA, IJobSkillDA jobSkillDA, IJobFileAttachDA jobFileAttachDA, IJobDA jobDA, IMasterDataBaseBL<MWProposal> proposalBL) : base(dbManagement, loggingManagement)
+        public JobBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IProposalDA proposalDA, IJobSkillDA jobSkillDA, IJobDA jobDA, IMasterDataBaseBL<MWProposal> proposalBL) : base(dbManagement, loggingManagement)
         {
             _proposalDA = proposalDA;
             _jobSkillDA = jobSkillDA;
-            _jobFileAttachDA = jobFileAttachDA;
             _jobDA = jobDA;
             _proposalBL = proposalBL;
 
@@ -58,12 +51,6 @@ namespace Business.Core.BLs.JobBLs
                 {
                     data.JobId,
                 }, transaction).ToList() ?? new();
-
-                data.FileAttaches = _jobFileAttachDA.GetView(new
-                {
-                    data.JobId,
-                }, transaction).ToList() ?? new();
-
             }
             Logger.log.Info($"[{RequestId}] [{ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod())}] End. Tong thoi gian {ConstLog.GetProcessingMilliseconds(requestTime)} (ms)");
 
@@ -116,18 +103,6 @@ namespace Business.Core.BLs.JobBLs
                 resultValues = insertedCount == data.JobSkills.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
 
-            if (resultValues > 0 && data?.FileAttaches?.Count > 0)
-            {
-                data.FileAttaches.ForEach(x =>
-                {
-                    x.JobId = data.JobId;
-                });
-
-                var insertedCount = _jobFileAttachDA.Insert(data.FileAttaches, transaction);
-                resultValues = insertedCount == data.FileAttaches.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
-            }
-
-
             return resultValues;
         }
 
@@ -161,17 +136,6 @@ namespace Business.Core.BLs.JobBLs
                 });
 
                 var insertedCount = _jobSkillDA.Delete(deleteData.JobSkills, transaction);
-                resultValues = insertedCount == deleteData.JobSkills.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
-            }
-
-            if (resultValues > 0 && deleteData?.FileAttaches?.Count > 0)
-            {
-                deleteData.FileAttaches.ForEach(x =>
-                {
-                    x.JobId = deleteData.JobId;
-                });
-
-                var insertedCount = _jobFileAttachDA.Delete(deleteData.FileAttaches, transaction);
                 resultValues = insertedCount == deleteData.JobSkills.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
 

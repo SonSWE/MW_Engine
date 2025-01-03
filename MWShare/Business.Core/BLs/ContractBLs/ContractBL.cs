@@ -1,18 +1,9 @@
 ﻿using CommonLib.Constants;
-using CommonLib.Extensions;
 using DataAccess.Core.Helpers;
 using DataAccess.Helpers;
-using CommonLib;
 using Object.Core;
-using System;
 using System.Data;
-using System.Linq;
-using System.Reflection;
-using DataAccess.Core.SystemCodeDAs;
 using Business.Core.BLs.BaseBLs;
-using DataAccess.Core.JobDAs;
-using Object;
-using DataAccess.Core.FileAttachDAs;
 
 namespace Business.Core.BLs.ContractBLs
 {

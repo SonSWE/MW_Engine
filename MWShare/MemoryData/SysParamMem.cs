@@ -14,10 +14,9 @@ namespace MemoryData
         private static string _busDate = string.Empty;
 
         //
-        public static void InitData(List<MWSysParam> sysParams, string busDate)
+        public static void InitData(List<MWSysParam> sysParams)
         {
             _sysParams = sysParams;
-            _busDate = busDate;
         }
         public static List<MWSysParam> GetAll()
         {

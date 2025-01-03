@@ -80,22 +80,16 @@ namespace Business.Core.BLs.LoginBLs
                 { nameof(MWUser.UserName), userName},
             }, transaction);
 
-            if (user != null && !string.IsNullOrEmpty(user.Email))
+            if (user != null && !string.IsNullOrEmpty(user.UserName) && user.UserType == Const.USER_TYPE.User)
             {
-                user.Clients = (await _clientDA.GetViewAsync(new
-                {
-                    user.Email,
-                }, transaction))?.ToList() ?? new();
 
-                if (!string.IsNullOrEmpty(user.LoggedClientId))
-                {
-                    user.Client = (await _clientDA.GetFirstOrDefaultAsync(new Dictionary<string, object> { { nameof(MWClient.ClientId), user.LoggedClientId }, }, transaction)) ?? new();
-                }
+                user.Client = (await _clientDA.GetFirstOrDefaultAsync(new Dictionary<string, object>
+                { { nameof(MWUser.Email), user.UserName } }
+                , transaction)) ?? new();
 
-                var data = (await _freelancerDA.GetFirstOrDefaultAsync(new
-                {
-                    user.Email,
-                }, transaction)) ?? new();
+                var data = (await _freelancerDA.GetFirstOrDefaultAsync(new Dictionary<string, object>
+                { { nameof(MWUser.Email), user.UserName } }
+                , transaction)) ?? new();
 
                 if (data != null && !string.IsNullOrEmpty(data.FreelancerId))
                 {

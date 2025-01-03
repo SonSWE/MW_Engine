@@ -1,36 +1,27 @@
 ﻿using CommonLib.Constants;
-using CommonLib.Extensions;
 using DataAccess.Core.Helpers;
 using DataAccess.Helpers;
-using CommonLib;
 using Object.Core;
-using System;
 using System.Data;
-using System.Linq;
-using System.Reflection;
-using DataAccess.Core.SystemCodeDAs;
 using Business.Core.BLs.BaseBLs;
-using DataAccess.Core.JobDAs;
-using Object;
-using DataAccess.Core.FileAttachDAs;
-using DataAccess.Core.ClientDAs;
 using System.Collections.Generic;
 using DataAccess.Core.UserDAs;
+using DataAccess.Core.ClientDAs;
+using System.Linq;
 
 namespace Business.Core.BLs.ClientBLs
 {
     public class ClientBL : MasterDataBaseBL<MWClient>, IClientBL
     {
-        private readonly IMasterDataBaseBL<MWUser> _userBL;
-        private readonly IUserDA _userDA;
+        private readonly IClientDA _clientDA;
 
         public override string ProfileKeyField => Const.ProfileKeyField.Client;
         public override string DbTable => Const.DbTable.MWClient;
 
-        public ClientBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IMasterDataBaseBL<MWUser> userBL, IUserDA userDA) : base(dbManagement, loggingManagement)
+        public ClientBL(IDbManagement dbManagement, ILoggingManagement loggingManagement,
+            IClientDA clientDA) : base(dbManagement, loggingManagement)
         {
-            _userBL = userBL;
-            _userDA = userDA;
+            _clientDA = clientDA;
         }
 
         public override void BeforeCreate(IDbTransaction transaction, MWClient data)
@@ -39,46 +30,19 @@ namespace Business.Core.BLs.ClientBLs
             data.ClientId = "CL" + _baseDA.GetNextSequenceValue(transaction).ToString();
         }
 
-        public override long InsertData(IDbTransaction transaction, MWClient data, ClientInfo clientInfo)
+        public bool IsExistedEmail(IDbTransaction transaction, string email, string clientId)
         {
-            long resultValues = ErrorCodes.Success;
-
-
-            var user = _userDA.GetFirstOrDefault(new Dictionary<string, object>()
+            if (string.IsNullOrEmpty(clientId))
             {
-                { nameof(MWUser.UserName), data.Email }
-            });
-
-            if (user == null)
+                var count = _clientDA.Count(new Dictionary<string, object> { { nameof(MWClient.Email), email } }, transaction);
+                return count > 1;
+            }
+            else
             {
-                //nếu chưa có tài khoản thì tạo tài khoản tự động
-                MWUser userData = new MWUser();
-                userData.UserName = data.Email;
-                userData.Email = data.Email;
-                //pass
-                userData.Password = data.Password;
-                userData.Name = data.Name;
-                userData.UserType = Const.USER_TYPE.User;
-                userData.LoginType = Const.LOGIN_TYPE.Client;
-                //mặc định k được phép đăng nhập, sau khi xác thực email mới được phép đăng nhập
-                userData.EnableLogon = Const.YN.No;
-                userData.Status = Const.User_Status.PendingVerify;
-                ////yêu cầu đổi mật khẩu với lần đầu đăng nhập
-                //userData.MustChangePasswordAtNextLogonText = Const.YN.Yes;
-                userData.CreateDate = data.CreateDate;
-                userData.CreateBy = data.CreateBy;
-
-                //phân quyền mặc định cho freelancer
-
-                resultValues = _userBL.Insert(transaction, userData, clientInfo);
+                var count = _clientDA.Get(new Dictionary<string, object> { { nameof(MWClient.Email), email } }, transaction).Where(x => x.ClientId != clientId).Count();
+                return count > 1;
             }
 
-            if (resultValues > 0)
-            {
-                resultValues = base.InsertData(transaction, data, clientInfo);
-            }
-
-            return resultValues;
         }
     }
 }

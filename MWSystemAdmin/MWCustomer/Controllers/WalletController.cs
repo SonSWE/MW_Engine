@@ -26,12 +26,16 @@ namespace MWCustomer.Controllers
     [ApiController]
     //[ApiAuthorizeFunctionConfig(Const.AuthenFunctionId.Job)]
     [MasterDataBaseControllerConfig("WALLET", Const.ProfileKeyField.Wallet)]
-    public class WalletController : MasterDataBaseController<MWWallet>
+    public class WalletController : ControllerBase
     {
+        public string RequestId => LoggingManagement.RequestId;
+
+        public readonly ILoggingManagement LoggingManagement;
         private readonly IWalletService _walletService;
         public WalletController(IMasterDataBaseService<MWWallet> masterDataBaseBL, ILoggingManagement loggingManagement,
-            IWalletService walletService) : base(masterDataBaseBL, loggingManagement)
+            IWalletService walletService)
         {
+            LoggingManagement = loggingManagement;
             _walletService = walletService;
         }
 

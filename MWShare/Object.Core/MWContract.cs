@@ -21,12 +21,19 @@ namespace Object.Core
         public string Status { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string StatusText { get; set; }
-        public decimal Bid { get; set; } //giá đấu thầu
-        public decimal FeeService { get; set; } //phí
-        public decimal RealReceive { get; set; } //nhận thực tế sau khi trừ phí
+        public long ContractAmount { get; set; } //giá đấu thầu
+        public long FeeService { get; set; } //phí
+        public long RealReceive { get; set; } //nhận thực tế sau khi trừ phí
         public string Remark { get; set; }
+
+        public string EndReason { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string EndReasonText { get; set; }
+        public string EndReasonRemark { get; set; }
+        public string FileAttach { get; set; }
+
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
-        public List<MWProposalFileAttach> FileAttaches { get; set; } //file đính kèm
+        public List<MWContractResult> ContractResults { get; set; }
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string ProposalId { get; set; }

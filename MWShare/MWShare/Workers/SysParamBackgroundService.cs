@@ -39,12 +39,12 @@ namespace MWShare.Workers
                     {
                         try
                         {
-                            var busDate = _commonService.GetBusDate();
+                            //var busDate = _commonService.GetBusDate();
 
-                            Logger.log.Info($"[{guid}] [JOB - Reload SysParamMem] busDate={busDate}");
+                            Logger.log.Info($"[{guid}] [JOB - Reload SysParamMem]");
 
                             var sysParams = _sysParamBL.GetAll();
-                            SysParamMem.InitData(sysParams, busDate);
+                            SysParamMem.InitData(sysParams);
                         }
                         catch (Exception e)
                         {

@@ -361,6 +361,8 @@ namespace CommonLib.Constants
             public const string Job = "JobId";
             public const string Proposal = "ProposalId";
             public const string Contract = "ContractId";
+            public const string ContractResult = "ContractResultId";
+            public const string Feedback = "FeedBackId";
             public const string SysParam = "SysParamId";
             public const string JobSkill = "SkillId";
             public const string Skill = "SkillId";
@@ -414,6 +416,7 @@ namespace CommonLib.Constants
             
             public const string MWProposal = "MWProposal";
             public const string MWContract = "MWContract";
+            public const string MWContractResult = "MWContractResult";
             public const string MWProposalFileAttach = "MWProposalFileAttach";
             public const string MWFeedBack = "MWFeedBack";
             public const string MWClient = "MWClient";

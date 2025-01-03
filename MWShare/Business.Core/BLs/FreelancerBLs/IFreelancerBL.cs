@@ -11,6 +11,6 @@ namespace Business.Core.BLs.FreelancerBLs
     public interface IFreelancerBL
     {
         MWFreelancer GetDetailByEmail(IDbTransaction transaction, string email);
-        long UpdateIsOpenForJob(IDbTransaction transaction, MWFreelancer data);
+        bool IsExistedEmail(IDbTransaction transaction, string email, string freelancerId);
     }
 }

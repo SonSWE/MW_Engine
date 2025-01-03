@@ -20,9 +20,7 @@ namespace Business.Core.BLs.FreelancerBLs
 {
     public class FreelancerBL : MasterDataBaseBL<MWFreelancer>, IFreelancerBL
     {
-        private readonly IMasterDataBaseBL<MWUser> _userBL;
         private readonly IFreelancerDA _freelancerDA;
-        private readonly IUserDA _userDA;
         private readonly IFreelancerWorkingHistoryDA _workingHistoryDA;
         private readonly IFreelancerSpecialtyDA _specialtyDA;
         private readonly IFreelancerSkillDA _skillDA;
@@ -33,8 +31,7 @@ namespace Business.Core.BLs.FreelancerBLs
         public override string DbTable => Const.DbTable.MWFreelancer;
 
         public FreelancerBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IFreelancerWorkingHistoryDA workingHistoryDA, IFreelancerSpecialtyDA specialtyDA,
-            IFreelancerSkillDA skillDA, IFreelancerEducationDA freelancerEducationDA, IFreelancerCertificateDA certificateDA, IMasterDataBaseBL<MWUser> userBL, IUserDA userDA,
-            IFreelancerDA freelancerDA) : base(dbManagement, loggingManagement)
+            IFreelancerSkillDA skillDA, IFreelancerEducationDA freelancerEducationDA, IFreelancerCertificateDA certificateDA, IFreelancerDA freelancerDA) : base(dbManagement, loggingManagement)
         {
             _freelancerDA = freelancerDA;
             _workingHistoryDA = workingHistoryDA;
@@ -42,9 +39,6 @@ namespace Business.Core.BLs.FreelancerBLs
             _skillDA = skillDA;
             _educationDA = freelancerEducationDA;
             _certificateDA = certificateDA;
-
-            _userBL = userBL;
-            _userDA = userDA;
         }
 
         public override MWFreelancer GetDetailById(IDbTransaction transaction, string id)
@@ -104,48 +98,6 @@ namespace Business.Core.BLs.FreelancerBLs
         {
             //tự sinh id
             data.FreelancerId = "FR" + _baseDA.GetNextSequenceValue(transaction).ToString();
-        }
-
-        public override long InsertData(IDbTransaction transaction, MWFreelancer data, ClientInfo clientInfo)
-        {
-            long resultValues = ErrorCodes.Success;
-
-
-            var user = _userDA.GetFirstOrDefault(new Dictionary<string, object>()
-            {
-                { nameof(MWUser.UserName), data.Email }
-            });
-
-            if (user == null)
-            {
-                //nếu chưa có tài khoản thì tạo tài khoản tự động
-                MWUser userData = new MWUser();
-                userData.UserName = data.Email;
-                userData.Email = data.Email;
-                //pass
-                userData.Password = data.Password;
-                userData.Name = data.Name;
-                userData.UserType = Const.USER_TYPE.User;
-                userData.LoginType = Const.LOGIN_TYPE.Freelancer;
-                //mặc định k được phép đăng nhập, sau khi xác thực email mới được phép đăng nhập
-                userData.EnableLogon = Const.YN.No;
-                userData.Status = Const.User_Status.PendingVerify;
-                ////yêu cầu đổi mật khẩu với lần đầu đăng nhập
-                //userData.MustChangePasswordAtNextLogonText = Const.YN.Yes;
-                userData.CreateDate = data.CreateDate;
-                userData.CreateBy = data.CreateBy;
-
-                //phân quyền mặc định cho freelancer
-
-                resultValues = _userBL.Insert(transaction, userData, clientInfo);
-            }
-
-            if (resultValues > 0)
-            {
-                resultValues = base.InsertData(transaction, data, clientInfo);
-            }
-
-            return resultValues;
         }
 
         public override long InsertChildData(IDbTransaction transaction, MWFreelancer data, MWFreelancer oldData, ClientInfo clientInfo)
@@ -277,12 +229,19 @@ namespace Business.Core.BLs.FreelancerBLs
             return resultValues;
         }
 
-        public long UpdateIsOpenForJob(IDbTransaction transaction, MWFreelancer data)
+        public bool IsExistedEmail(IDbTransaction transaction, string email, string freelancerId)
         {
-            long resultValues = _freelancerDA.UpdateIsOpenForJob(data, transaction);
+            if (string.IsNullOrEmpty(freelancerId))
+            {
+                var count = _freelancerDA.Count(new Dictionary<string, object> { { nameof(MWFreelancer.Email), email } }, transaction);
+                return count > 1;
+            }
+            else
+            {
+                var count = _freelancerDA.Get(new Dictionary<string, object> { { nameof(MWFreelancer.Email), email } }, transaction).Where(x => x.FreelancerId != freelancerId).Count();
+                return count > 1;
+            }
 
-            return resultValues;
         }
-
     }
 }

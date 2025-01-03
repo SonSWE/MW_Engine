@@ -6,42 +6,35 @@ using CommonLib;
 using Object.Core;
 using System;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using DataAccess.Core.SystemCodeDAs;
-using DataAccess.Core.UserDAs;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Business.Core.BLs.BaseBLs;
-using DataAccess.Core.ClientDAs;
-using Business.Core.BLs.FreelancerBLs;
+using Dapper;
+using DataAccess.Core.UserDAs;
 
 namespace Business.Core.BLs.UserBLs
 {
     public class UserBL : MasterDataBaseBL<MWUser>, IUserBL
     {
-        private readonly IUserFunctionDA _userFunctionDA;
+        private readonly IUserDA _userDA;
         public override string ProfileKeyField => Const.ProfileKeyField.User;
         public override string DbTable => Const.DbTable.MWUser;
 
-        public UserBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IUserFunctionDA userFunctionDA) : base(dbManagement, loggingManagement)
+        public UserBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IUserDA userDA) : base(dbManagement, loggingManagement)
         {
-            _userFunctionDA = userFunctionDA;
 
-
+            _userDA = userDA;
         }
 
-        public override MWUser GetDetailById(IDbTransaction transaction, string id)
+        public bool IsExistedUserName(IDbTransaction transaction, string username)
         {
-            var requestTime = DateTime.Now;
-            Logger.log.Info($"[{RequestId}] [{ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod())}] Start. id=[{id}]");
+            var count = _baseDA.Count(new Dictionary<string, object> { { nameof(MWUser.UserName), username } }, transaction);
+            return count > 0;
+        }
 
-            MWUser data = base.GetDetailById(transaction, id);
-            
-            Logger.log.Info($"[{RequestId}] [{ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod())}] End. Tong thoi gian {ConstLog.GetProcessingMilliseconds(requestTime)} (ms)");
-
-
-            return data;
+        public int UpdateAvatar(MWUser data, IDbTransaction transaction)
+        {
+            return _userDA.UpdateAvatar(data, transaction);
         }
 
     }

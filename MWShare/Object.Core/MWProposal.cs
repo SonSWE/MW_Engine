@@ -20,11 +20,10 @@ namespace Object.Core
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string StatusText { get; set; }
         public string CoverLetter { get; set; } // thư xin việc
-        public decimal Bid { get; set; } //giá đấu thầu
+        public decimal BidAmount { get; set; } //giá đấu thầu
         public decimal FeeService { get; set; } //phí
         public decimal RealReceive { get; set; } //nhận thực tế sau khi trừ phí
-        [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
-        public List<MWProposalFileAttach> FileAttaches { get; set; }
+        public string FileAttach { get; set; }
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public MWFreelancer Freelancer { get; set; }

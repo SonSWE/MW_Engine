@@ -7,7 +7,7 @@ using System.Dynamic;
 namespace Object.Core
 {
     [DbTable(Name = Const.DbTable.MWSearch)]
-    public sealed class Search
+    public sealed class MWSearch
     {
         public string Code { get; set; }
         public string Title { get; set; }

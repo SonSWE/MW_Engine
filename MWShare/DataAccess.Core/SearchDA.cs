@@ -40,14 +40,14 @@ namespace DataAccess.Core
         //
         readonly List<string> strings = new();
 
-        public List<Search> GetAll()
+        public List<MWSearch> GetAll()
         {
             var requestTime = DateTime.Now;
             Logger.log.Info($"[{_requestId}] Start.");
 
             using var connection = _dbConnection;
 
-            var searches = connection.Get<Search>(new { deleted = 0 })?.ToList();
+            var searches = connection.Get<MWSearch>(new { deleted = 0 })?.ToList();
 
             Logger.log.Info($"[{_requestId}] End. Tong thoi gian {ConstLog.GetProcessingMilliseconds(requestTime)} (ms)");
 

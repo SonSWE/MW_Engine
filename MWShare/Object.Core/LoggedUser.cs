@@ -12,9 +12,9 @@ namespace Object.Core
         public string Status { get; set; }
         public string LoginType { get; set; }
         public bool MustChangePassword { get; set; }
+        public string WalletId { get; set; }
         //
         public List<LoggedUserFunction> FunctionSettings { get; set; }
-        public List<MWClient> Clients { get; set; }
         public MWClient Client { get; set; }
         public MWFreelancer Freelancer { get; set; }
     }

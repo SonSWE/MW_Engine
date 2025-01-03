@@ -16,6 +16,9 @@ namespace Object.Core
         public string UserName { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public string Avatar { get; set; }
         public string UserType { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string UserTypeText { get; set; }
@@ -57,6 +60,7 @@ namespace Object.Core
         public string IsEmailVerified { get; set; } = Const.YN.No;
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string LoggedClientId { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string IsEmailVerifiedText { get; set; }
         public string LoginType { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
@@ -70,10 +74,11 @@ namespace Object.Core
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public MWFreelancer Freelancer { get; set; }
-        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
-        public List<MWClient> Clients { get; set; }
 
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public MWClient Client { get; set; }
+
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string WalletId { get; set; }
     }
 }

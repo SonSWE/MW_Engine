@@ -10,16 +10,18 @@ using System.Threading.Tasks;
 using Business.Core.BLs.UserBLs;
 using Business.Core.Services.BaseServices;
 using Business.Core.BLs.BaseBLs;
+using CommonLib.Extensions;
+using System.Linq;
+using System;
+using ZeroMQ;
 
 namespace Business.Core.Services.UserServices
 {
     public class UserService : MasterDataBaseService<MWUser>, IUserService
     {
-        private readonly IUserBL _userBL;
-
-        public UserService(IMasterDataBaseBL<MWUser> masterDataBaseDA, IDbManagement dbManagement, IUserBL userBL) : base(masterDataBaseDA, dbManagement)
+        public UserService(IMasterDataBaseBL<MWUser> masterDataBaseDA, IDbManagement dbManagement) : base(masterDataBaseDA, dbManagement)
         {
-            _userBL = userBL;
+
         }
         public override string ProfileKeyField => Const.ProfileKeyField.User;
         public override BaseValidator<MWUser> GetValidator(IDbTransaction transaction, ValidationAction validationAction, ClientInfo clientInfo, MWUser dataToValidate, MWUser oldData)
@@ -29,6 +31,55 @@ namespace Business.Core.Services.UserServices
                 ClassLevelCascadeMode = CascadeMode.Stop,
                 RuleLevelCascadeMode = CascadeMode.Stop,
             };
+        }
+
+        public override void BeforeCreate(IDbTransaction transaction, MWUser data)
+        {
+            data.IsEmailVerified = Const.YN.No;
+            data.IsEkycVerified = Const.YN.No;
+        }
+        public long VerifyEKYC(string userName, ClientInfo clientInfo, out string resMessage)
+        {
+            resMessage = string.Empty;
+            using var connection = DbManagement.GetConnection();
+            using var transaction = connection.BeginTransaction();
+
+            long result = ErrorCodes.Success;
+
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return ErrorCodes.Err_DataNull;
+            }
+
+            // Lay thong tin cu ra check
+            var oldData = GetDetailById(transaction, userName);
+
+            if (oldData == null || string.IsNullOrEmpty(userName))
+            {
+                return ErrorCodes.Err_NotFound;
+            }
+
+            var UpdateDate = oldData.Clone();
+            UpdateDate.LastChangeBy = clientInfo?.UserName ?? string.Empty;
+            UpdateDate.LastChangeDate = clientInfo?.ActionTime ?? DateTime.Now;
+            UpdateDate.IsEkycVerified = Const.YN.Yes;
+            UpdateDate.IsEmailVerified = Const.YN.Yes;
+            //
+
+            result = MasterDataBaseBL.Update(transaction, UpdateDate, clientInfo);
+
+            if (result > 0)
+            {
+                transaction.Commit();
+            }
+            else
+            {
+                transaction.Rollback();
+            }
+
+            return result;
+
         }
 
 

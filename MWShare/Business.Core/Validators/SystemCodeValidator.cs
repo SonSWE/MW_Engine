@@ -34,25 +34,28 @@ namespace Business.Core.Validators
 
         public override void InitRules()
         {
-            RuleFor(x => x.SystemCodeId).NotEmpty()
+            RuleFor(x => x.SystemCodeId)
+               .Must(x => !string.IsNullOrEmpty(x.Trim()))
                .WithErrorCode(ErrorCodes.SA_SystemCode.Err_SystemCodeId_Invalid)
                .WithMessage(DefErrorMem.GetErrorDesc(ErrorCodes.SA_SystemCode.Err_SystemCodeId_Invalid, Config.Language));
 
-            RuleFor(x => x.Name).NotEmpty()
+            RuleFor(x => x.Name)
+               .Must(x => !string.IsNullOrEmpty(x.Trim()))
                .WithErrorCode(ErrorCodes.SA_SystemCode.Err_SystemCodeDescription_Invalid)
                .WithMessage(DefErrorMem.GetErrorDesc(ErrorCodes.SA_SystemCode.Err_SystemCodeDescription_Invalid, Config.Language))
                .MaximumLength(250)
                .WithErrorCode(ErrorCodes.SA_SystemCode.Err_SystemCodeDescription_Invalid)
                .WithMessage(DefErrorMem.GetErrorDesc(ErrorCodes.SA_SystemCode.Err_SystemCodeDescription_Invalid, Config.Language));
 
-            RuleFor(x => x.SystemCodeValues).Must((obj, SystemCodeValues, context) =>
+            RuleFor(x => x.SystemCodeValues)
+                .Must((obj, SystemCodeValues, context) =>
             {
                 SystemCodeValueValidator valueValidator = new SystemCodeValueValidator(this.Config)
                 {
                     ClassLevelCascadeMode = this.ClassLevelCascadeMode,
                     RuleLevelCascadeMode = this.RuleLevelCascadeMode,
                 };
-                if (SystemCodeValues != null)
+                if (SystemCodeValues != null && SystemCodeValues?.Count > 0)
                 {
                     for (int i = 0; i < SystemCodeValues.Count; i++)
                     {
@@ -63,7 +66,7 @@ namespace Business.Core.Validators
 
                             context.AddFailure(new ValidationFailure
                             {
-                                PropertyName = $"positionlimitGroupDetail[{i}].{firstError.PropertyName?.ToCamelCase()}",
+                                PropertyName = $"SystemCodeValues[{i}].{firstError.PropertyName?.ToCamelCase()}",
                                 ErrorCode = firstError.ErrorCode,
                                 ErrorMessage = $"{firstError.ErrorMessage}",
                             });

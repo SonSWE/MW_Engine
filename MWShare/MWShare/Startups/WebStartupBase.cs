@@ -62,7 +62,7 @@ namespace MWShare.Startups
 
 
             //services.AddSingleton<INotifyClient>(new NotifyClient(ConfigData.NotifyHost));
-            services.AddSingleton<IMWAuthClient>(new MWAuthClient(ConfigData.BOAuthHost));
+            services.AddSingleton<IMWAuthClient>(new MWAuthClient(ConfigData.MWAuthHost));
 
             //
             CoreDAStartup.ConfigureServices(services);

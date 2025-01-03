@@ -8,7 +8,7 @@ namespace MWShare.Helpers
 {
     public interface ISearchHelper
     {
-        Search? GetSearchConfigs(string code);
+        MWSearch? GetSearchConfigs(string code);
         DataSet? Inquiry(SearchInquiry request, int maxRecordShow, out int pageCount, out int recordCount, out int realRecordCount, out long maxAutoId);
     }
 
@@ -22,9 +22,9 @@ namespace MWShare.Helpers
         }
 
         //
-        public Search? GetSearchConfigs(string code)
+        public MWSearch? GetSearchConfigs(string code)
         {
-            Search search = new();
+            MWSearch search = new();
 
             if (string.IsNullOrEmpty(code)) return search;
 

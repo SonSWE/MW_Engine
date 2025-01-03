@@ -17,7 +17,7 @@ namespace Business.Core.Services.SystemServices
     public class SysParamService : MasterDataBaseService<MWSysParam>, ISysParamService
     {
         private readonly ISysParamDA _sysParamDA;
-        public override string ProfileKeyField => Const.ProfileKeyField.SystemCode;
+        public override string ProfileKeyField => Const.ProfileKeyField.SysParam;
 
         public SysParamService(IMasterDataBaseBL<MWSysParam> masterDataBaseDA, IDbManagement dbManagement, ISysParamDA sysParamDA) : base(masterDataBaseDA, dbManagement)
         {

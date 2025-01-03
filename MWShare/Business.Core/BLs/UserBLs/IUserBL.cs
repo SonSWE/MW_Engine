@@ -10,5 +10,7 @@ namespace Business.Core.BLs.UserBLs
 {
     public interface IUserBL
     {
+        bool IsExistedUserName(IDbTransaction transaction, string username);
+        int UpdateAvatar(MWUser data, IDbTransaction transaction);
     }
 }

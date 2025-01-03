@@ -184,6 +184,7 @@ namespace Business.Core.Services.BaseServices
             // Validate Create
             if (!ValidateCreate(transaction, data, clientInfo, out var validateResCode, out var validateResMessage))
             {
+                resMessage = validateResMessage;
                 return validateResCode;
             }
 

@@ -15,7 +15,7 @@ namespace Business.Core.BLs
         }
 
         //
-        public List<Search> GetAll()
+        public List<MWSearch> GetAll()
         {
             return _searchDA.GetAll();
         }

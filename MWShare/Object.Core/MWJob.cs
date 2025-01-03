@@ -33,7 +33,8 @@ namespace Object.Core
         public string Position { get; set; }
         public decimal HourlyRateFrom { get; set; }
         public decimal HourlyRateTo { get; set; }
-        public decimal CostEstimate { get; set; }
+        public string FileAttach { get; set; }
+        public long CostEstimate { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public long CountOfProposal { get; set; }
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
@@ -50,8 +51,6 @@ namespace Object.Core
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
         public string JobSkillsText { get; set; }
 
-        [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
-        public List<MWJobFileAttach> FileAttaches { get; set; }
-
+        
     }
 }

@@ -2,6 +2,7 @@
 using Business.Core.BLs.BaseBLs;
 using Business.Core.BLs.ClientBLs;
 using Business.Core.BLs.ContractBLs;
+using Business.Core.BLs.FeedbackBLs;
 using Business.Core.BLs.FreelancerBLs;
 using Business.Core.BLs.JobBLs;
 using Business.Core.BLs.LoginBLs;
@@ -28,6 +29,7 @@ using Business.Core.Services.SystemCodeServices;
 using Business.Core.Services.SystemServices;
 using Business.Core.Services.UserServices;
 using Business.Core.Services.WalletServices;
+using DataAccess.Core.FeedBackDAs;
 using DataAccess.Core.Interfaces;
 using DataAccess.Core.JobDAs;
 using Microsoft.Extensions.DependencyInjection;
@@ -122,6 +124,11 @@ namespace Business.Core.Startups
             services.AddScoped<IMasterDataBaseBL<MWContract>, ContractBL>();
             services.AddScoped<IContractService, ContractService>();
             services.AddScoped<IMasterDataBaseService<MWContract>, ContractService>();
+            services.AddScoped<IContractResultBL, ContractResultBL>();
+            services.AddScoped<IMasterDataBaseBL<MWContractResult>, ContractResultBL>();
+
+            services.AddScoped<IFeedBackBL, FeedBackBL>();
+            services.AddScoped<IMasterDataBaseBL<MWFeedBack>, FeedBackBL>();
             #endregion
 
             // Skill

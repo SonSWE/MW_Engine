@@ -45,7 +45,7 @@ namespace CommonLib
 
         #region Cấu hình nối đến Authen server
 
-        public static string BOAuthHost { get; private set; } = "";
+        public static string MWAuthHost { get; private set; } = "";
         public static string NotifyHost { get; private set; } = "";
 
         #endregion
@@ -113,7 +113,7 @@ namespace CommonLib
                 // End - Cau hinh ket noi Redis
 
                 // Cau hinh noi den Authen server
-                BOAuthHost = configuration["BOAuthHost"]?.Trim() ?? string.Empty;
+                MWAuthHost = configuration["MWAuthHost"]?.Trim() ?? string.Empty;
                 NotifyHost = configuration["NotifyHost"]?.Trim() ?? string.Empty;
 
                 // Cau hinh noi den LDAP Server

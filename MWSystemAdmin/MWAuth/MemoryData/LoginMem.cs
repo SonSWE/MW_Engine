@@ -238,6 +238,7 @@ namespace MWAuth.MemoryData
                 Name = user.Name,
                 UserType = user.UserType,
                 Status = user.Status,
+                WalletId = user.WalletId,
                 MustChangePassword = mustChangePassword,
                 FunctionSettings = functionsByUser?.Select(x => new LoggedUserFunction
                 {
@@ -249,7 +250,7 @@ namespace MWAuth.MemoryData
                     AllowDelete = x.AllowDelete,
                     AllowExecute = x.AllowExecute,
                 }).ToList(),
-                Clients = user.Clients,
+                //Clients = user.Clients,
                 Client = user.Client,
                 Freelancer = user.Freelancer,
             };

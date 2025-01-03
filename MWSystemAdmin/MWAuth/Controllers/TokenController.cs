@@ -674,15 +674,16 @@ namespace MWAuth.Controllers.SA
                 refresh_token,
                 fullName = user.Name,
                 username = user.UserName,
+                avatar = user.Avatar,
                 userId = user.UserName,
                 loginType = user.LoginType,
                 mustChangePassword = loggedUser.MustChangePassword,
                 userType = loggedUser.UserType,
                 functionSettings = loggedUser.FunctionSettings,
                 freelancer = loggedUser.Freelancer,
-                clients = loggedUser.Clients,
                 client = loggedUser.Client,
-     
+                isEkycVerified = user.IsEkycVerified,
+                isEmailVerified = user.IsEmailVerified,
             };
 
             return new Tuple<string, string>(JsonHelper.Serialize(response), accessToken);

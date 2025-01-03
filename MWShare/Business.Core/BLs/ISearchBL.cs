@@ -6,7 +6,7 @@ namespace Business.Core.BLs
 {
     public interface ISearchBL
     {
-        List<Search> GetAll();
+        List<MWSearch> GetAll();
         List<SearchFld> SearchFldGetAll();
         List<SearchFilterOption> GetSearchFilterOptions(string sqlCmd);
         DataSet Inquiry(string storeName, List<SearchInquiryCond> searchConds, List<string> sortConds, string language, int fromRecord, int toRecord, out int recordCount);

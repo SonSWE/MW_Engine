@@ -10,8 +10,8 @@
 
         public static class USER_TYPE
         {
-            public const string Admin = "A";
-            public const string User = "U";
+            public const string Admin = "ADMIN";
+            public const string User = "USER";
         }
 
         public static class LOGIN_TYPE
@@ -40,18 +40,41 @@
             public const string Offer = "D";
         }
 
+        public static class Freelancer_Status
+        {
+            public const string Active = "A";
+            public const string Close = "C";
+        }
+        public static class Client_Status
+        {
+            public const string Active = "A";
+            public const string Close = "C";
+        }
+
         public static class Contract_Status
         {
-            public const string Pending = "P";
+            public const string Offer = "O";
             public const string Rejected = "R";
             public const string Active = "A";
             public const string Closed = "C";
-            public const string End = "E";
-            public const string PendingApprovalSubmit = "PS";
-            public const string Reopen = "RO";
+            public const string PendingPayment = "PP";
+            public const string PendingApprovalSubmit = "PA";
+            public const string PendingApprovalEnd = "PE";
             public const string Done = "D";
             public const string Fail = "F";
         }
+        public static class Contract_EndReason
+        {
+            public const string Complaint = "C";
+            public const string Other = "O";
+        }
+
+        public static class Contract_Complaint_Status
+        {
+            public const string Accept = "A";
+            public const string Reject = "R";
+        }
+
         public static class Wallet_Status
         {
             public const string Active = "A";
