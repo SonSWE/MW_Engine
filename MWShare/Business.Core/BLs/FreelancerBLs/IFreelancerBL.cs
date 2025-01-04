@@ -1,10 +1,7 @@
-﻿using Object.Core;
-using System;
+﻿using Object;
+using Object.Core;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Core.BLs.FreelancerBLs
 {
@@ -12,5 +9,12 @@ namespace Business.Core.BLs.FreelancerBLs
     {
         MWFreelancer GetDetailByEmail(IDbTransaction transaction, string email);
         bool IsExistedEmail(IDbTransaction transaction, string email, string freelancerId);
+        long UpdateEducation(IDbTransaction transaction, List<MWFreelancerEducation> data, ClientInfo clientInfo);
+        long DeleteEducation(IDbTransaction transaction, MWFreelancerEducation data, ClientInfo clientInfo);
+        int UpdateIsOpenForJob(MWFreelancer data, IDbTransaction transaction);
+        int UpdateHourlyRate(MWFreelancer data, IDbTransaction transaction);
+        int UpdateHourWorkingPerWeek(MWFreelancer data, IDbTransaction transaction);
+        int UpdateTitle(MWFreelancer data, IDbTransaction transaction);
+        int UpdateBio(MWFreelancer data, IDbTransaction transaction);
     }
 }

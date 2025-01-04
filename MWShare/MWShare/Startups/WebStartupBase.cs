@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NLog.Web;
 using MWShare.ExportEngine;
 using MWShare.ExportHelpers;
-using Object.Core.Configs;
 using MWShare.Helpers.FileStorage;
 using MWShare.Authen;
 
@@ -52,8 +51,6 @@ namespace MWShare.Startups
                         .WithExposedHeaders("Content-Disposition");
                 });
             });
-
-            services.Configure<BOConnectApiConfig>(services.BuildServiceProvider().GetRequiredService<IConfiguration>().GetSection(BOConnectApiConfig.AppsettingsKey));
 
             
             services.AddSingleton<IExportService, ExportService>();

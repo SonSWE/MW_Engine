@@ -204,8 +204,8 @@ namespace Business.Core.Services.ContractServices
                 MWTransaction transactionWithdraw = new MWTransaction();
                 transactionWithdraw.Amount = contractData.RealReceive;
                 transactionWithdraw.Description = "Thanh toán công việc: " + contractData.JobTitle;
-                transactionWithdraw.WalletId = _walletService.GetWalletIdByFreelancer(data.FreelancerId);
-                transactionWithdraw.WalletReceiveId = SysParamMem.GetValueById("WALLETID_SYSTEM");
+                transactionWithdraw.WalletId = SysParamMem.GetValueById("WALLETID_SYSTEM");
+                transactionWithdraw.WalletReceiveId = _walletService.GetWalletIdByFreelancer(data.FreelancerId);
 
 
                 //chuyển tiền từ tài khoản hệ thống đến tài khoản freelancer

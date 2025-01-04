@@ -77,6 +77,8 @@ namespace Business.Core.Services.WalletServices
             transactionDeposit.Status = Const.Transaction_Status.Succeed;
             transactionDeposit.TransactionType = Const.Transaction_Type.Deposit;
             transactionDeposit.TransactionDate = DateTime.Now;
+            transactionDeposit.CreateBy = clientInfo.UserName;
+            transactionDeposit.CreateDate = DateTime.Now;
 
             //thêm mới lịch sử giao dịch
             result = _transactionBL.Insert(transaction, transactionDeposit, clientInfo);
@@ -135,6 +137,8 @@ namespace Business.Core.Services.WalletServices
             transactionWithdraw.Status = Const.Transaction_Status.Succeed;
             transactionWithdraw.TransactionType = Const.Transaction_Type.Withdraw;
             transactionWithdraw.TransactionDate = DateTime.Now;
+            transactionWithdraw.CreateBy = clientInfo.UserName;
+            transactionWithdraw.CreateDate = DateTime.Now;
 
             //Thực hiện chuyền tiền từ hệ thống đến tài khoản ngân hàng
 
@@ -216,6 +220,9 @@ namespace Business.Core.Services.WalletServices
             transactionTransfer.WalletTransferId = data.WalletId;
             transactionTransfer.WalletId = data.WalletId;
 
+            transactionTransfer.CreateBy = clientInfo.UserName;
+            transactionTransfer.CreateDate = DateTime.Now;
+
             //lấy thông tin ví người nhận
             MWWallet oldReceiver = MasterDataBaseBL.GetDetailById(transaction, data.WalletReceiveId);
             if (oldReceiver == null || string.IsNullOrEmpty(oldReceiver.GetPropertyValue(ProfileKeyField)?.ToString()))
@@ -238,6 +245,8 @@ namespace Business.Core.Services.WalletServices
             transactionReceive.WalletReceiveId = data.WalletReceiveId;
             transactionReceive.WalletTransferId = data.WalletId;
             transactionReceive.WalletId = data.WalletReceiveId;
+            transactionReceive.CreateBy = clientInfo.UserName;
+            transactionReceive.CreateDate = DateTime.Now;
 
 
             //Thực hiện chuyền tiền từ hệ thống đến tài khoản ngân hàng

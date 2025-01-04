@@ -8,7 +8,7 @@ namespace DataAccess.Core.JobDAs
 {
     public interface IJobDA : IBaseDA<MWJob>
     {
-        long GetNextSequenceValue(IDbTransaction transaction);
         List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId);
+        List<MWJob> Search(IDbTransaction transaction, SearchJobRequest data);
     }
 }

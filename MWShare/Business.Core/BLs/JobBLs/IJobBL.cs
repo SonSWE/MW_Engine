@@ -12,5 +12,6 @@ namespace Business.Core.BLs.JobBLs
     {
         List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId);
         List<MWJob> GetByClientId(IDbTransaction transaction, string clientId);
+        List<MWJob> Search(IDbTransaction transaction, SearchJobRequest data);
     }
 }

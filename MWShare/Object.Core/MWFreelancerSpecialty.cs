@@ -11,5 +11,7 @@ namespace Object
         [DbField(IsKey = true)]
         public string SpecialtyId { get; set; }
         public string FreelancerId { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string Name { get; set; }
     }
 }

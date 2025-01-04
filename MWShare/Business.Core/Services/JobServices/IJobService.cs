@@ -12,5 +12,6 @@ namespace Business.Core.Services.JobServices
     {
         List<MWJob> GetSuggestByFreelancer(string freelancerId, ClientInfo clientInfo);
         List<MWJob> GetByClientId(string clientId, ClientInfo clientInfo);
+        List<MWJob> Search(SearchJobRequest data, ClientInfo clientInfo);
     }
 }

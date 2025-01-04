@@ -13,6 +13,8 @@ namespace Object
         public string FreelancerId { get; set; }
         public string SchoolName { get; set; }
         public string Degree { get; set; } //bằng cấp
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string DegreeText { get; set; } //bằng cấp
         public string Major { get; set; } //chuyên ngành
         public string FromDate { get; set; } //năm bắt đầu học
         public string EndDate { get; set; } //năm tốt nghiệp

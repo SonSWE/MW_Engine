@@ -48,6 +48,11 @@ namespace Object.Core
         public List<MWFreelancerWorkingHistory> WorkingHistories { get; set; } //lịch sử làm việc
         [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
         public List<MWFreelancerCertificate> Certificates { get; set; } //chứng chỉ
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
+        public List<MWFreelancerSpecialProject> SpecialProjects { get; set; } //chứng chỉ
+
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true, IsDetailTable = true)]
+        public List<MWFeedBack> FeedBacks { get; set; } //chứng chỉ
 
         //thong tin cho user
         [DbField(IgnoreInsert = true, IgnoreUpdate = true)]

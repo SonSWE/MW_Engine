@@ -63,7 +63,7 @@ namespace Business.Core.BLs.WalletBLs
                 data.Transactions = _transactionDA.GetView(new
                 {
                     data.WalletId,
-                }, transaction).OrderByDescending(x => x.CreateBy).ToList() ?? new();
+                }, transaction).OrderByDescending(x => x.TransactionDate).ToList() ?? new();
 
             }
             Logger.log.Info($"[{RequestId}] [{ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod())}] End. Tong thoi gian {ConstLog.GetProcessingMilliseconds(requestTime)} (ms)");

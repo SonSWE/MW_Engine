@@ -11,6 +11,8 @@ namespace Object
         [DbField(IsKey = true)]
         public string FeedBackId { get; set; }
         public string JobId { get; set; }
+        [DbField(IgnoreInsert = true, IgnoreUpdate = true)]
+        public string JobTitle { get; set; }
         public string ContractId { get; set; }
         public string FreelancerId { get; set; }
         public string Description { get; set; }

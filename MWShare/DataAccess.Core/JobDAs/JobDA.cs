@@ -16,16 +16,7 @@ namespace DataAccess.Core.JobDAs
         {
         }
 
-        public long GetNextSequenceValue(IDbTransaction transaction)
-        {
-            string sqlText = $"SELECT seq_{Const.DbTable.MWJob}.NEXTVAL FROM dual";
-            long result = transaction.Connection.QueryFirstOrDefault<long>(sqlText);
-            return result;
-        }
-
-        public List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId)
-        {
-            string sqlQuery = @$"
+        private readonly string sqlJobByMatchPoint = @$"
                         SELECT j.*, (a.skillMatchCount + a.specialtyMatchCount + a.levelMatch) as matchPoint
                                 , (CASE WHEN js.freelancerId is not null THEN 'Y' ELSE 'N' END) AS saved
 , CASE WHEN (SELECT count(*) FROM {Const.DbTable.MWProposal} WHERE jobid = j.jobId AND freelancerId = :{nameof(MWFreelancer.FreelancerId)}  GROUP BY jobid) > 0 THEN '{Const.YN.Yes}' ELSE '{Const.YN.No}' END AS Applied
@@ -48,11 +39,39 @@ namespace DataAccess.Core.JobDAs
                         JOIN vw_{Const.DbTable.MWJob} j ON a.jobId = j.jobid
                         LEFT JOIN {Const.DbTable.MWJobSaved} js ON j.jobId = js.jobId AND js.freelancerId = :{nameof(MWFreelancer.FreelancerId)}
                         ORDER BY matchPoint DESC, j.createDate DESC
-                        FETCH FIRST 30 ROWS ONLY";
+                        FETCH FIRST 1000 ROWS ONLY";
 
-            List<MWJob> result = transaction.Connection.Query<MWJob>(sqlQuery, new Dictionary<string, object> { { nameof(MWFreelancer.FreelancerId), freelancerId } }).ToList();
+        public List<MWJob> GetSuggestByFreelancer(IDbTransaction transaction, string freelancerId)
+        {
+            List<MWJob> result = transaction.Connection.Query<MWJob>(sqlJobByMatchPoint, new Dictionary<string, object> { { nameof(MWFreelancer.FreelancerId), freelancerId } }).ToList();
 
             return result;
+        }
+
+        public List<MWJob> Search(IDbTransaction transaction, SearchJobRequest data)
+        {
+            string conds = buildConditions(data);
+            string sql = $"SELECT * FROM ({sqlJobByMatchPoint}) WHERE 1=1 {conds} ";
+
+            List<MWJob> result = transaction.Connection.Query<MWJob>(sql, new Dictionary<string, object> { { nameof(MWFreelancer.FreelancerId), data.FreelancerId } }).ToList();
+
+            return result;
+        }
+
+        private string buildConditions(SearchJobRequest dataSearch)
+        {
+            var sqlQuery = $"";
+            if (!string.IsNullOrEmpty(dataSearch.Title))
+            {
+                sqlQuery += $" AND (  UPPER({nameof(MWJob.Title)}) like '%{dataSearch.Title.ToUpper()}%' OR UPPER({nameof(MWJob.Description)}) like '%{dataSearch.Title.ToUpper()}%' ) ";
+            }
+
+            if (dataSearch.LevelIds != null && dataSearch.LevelIds.Count > 0)
+            {
+                sqlQuery += $" AND {nameof(MWJob.LevelFreelancerId)} in ('{string.Join("', '", dataSearch.LevelIds)}') ";
+            }
+
+            return sqlQuery;
         }
 
     }

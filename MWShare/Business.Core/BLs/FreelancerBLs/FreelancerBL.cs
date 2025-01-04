@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using static CommonLib.Constants.ErrorCodes;
 using Business.Core.BLs.UserBLs;
 using Business.Core.Services.BaseServices;
+using Object;
+using DataAccess.Core.FeedBackDAs;
 
 namespace Business.Core.BLs.FreelancerBLs
 {
@@ -26,12 +28,15 @@ namespace Business.Core.BLs.FreelancerBLs
         private readonly IFreelancerSkillDA _skillDA;
         private readonly IFreelancerEducationDA _educationDA;
         private readonly IFreelancerCertificateDA _certificateDA;
+        private readonly IFreelancerSpecialProjectDA _specialProjectDA;
+        private readonly IFeedBackDA _feedBackDA;
 
         public override string ProfileKeyField => Const.ProfileKeyField.Freelancer;
         public override string DbTable => Const.DbTable.MWFreelancer;
 
         public FreelancerBL(IDbManagement dbManagement, ILoggingManagement loggingManagement, IFreelancerWorkingHistoryDA workingHistoryDA, IFreelancerSpecialtyDA specialtyDA,
-            IFreelancerSkillDA skillDA, IFreelancerEducationDA freelancerEducationDA, IFreelancerCertificateDA certificateDA, IFreelancerDA freelancerDA) : base(dbManagement, loggingManagement)
+            IFreelancerSkillDA skillDA, IFreelancerEducationDA freelancerEducationDA, IFreelancerCertificateDA certificateDA, IFreelancerDA freelancerDA, IFreelancerSpecialProjectDA specialProjectDA,
+            IFeedBackDA feedBackDA) : base(dbManagement, loggingManagement)
         {
             _freelancerDA = freelancerDA;
             _workingHistoryDA = workingHistoryDA;
@@ -39,6 +44,8 @@ namespace Business.Core.BLs.FreelancerBLs
             _skillDA = skillDA;
             _educationDA = freelancerEducationDA;
             _certificateDA = certificateDA;
+            _specialProjectDA = specialProjectDA;
+            _feedBackDA = feedBackDA;
         }
 
         public override MWFreelancer GetDetailById(IDbTransaction transaction, string id)
@@ -70,6 +77,16 @@ namespace Business.Core.BLs.FreelancerBLs
                 }, transaction).ToList() ?? new();
 
                 data.Certificates = _certificateDA.GetView(new
+                {
+                    data.FreelancerId,
+                }, transaction).ToList() ?? new();
+
+                data.SpecialProjects = _specialProjectDA.GetView(new
+                {
+                    data.FreelancerId,
+                }, transaction).ToList() ?? new();
+
+                data.FeedBacks = _feedBackDA.GetView(new
                 {
                     data.FreelancerId,
                 }, transaction).ToList() ?? new();
@@ -163,6 +180,18 @@ namespace Business.Core.BLs.FreelancerBLs
                 resultValues = insertedCount == data.Certificates.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
 
+            if (resultValues > 0 && data?.SpecialProjects?.Count > 0)
+            {
+                data.SpecialProjects.ForEach(x =>
+                {
+                    x.FreelancerId = data.FreelancerId;
+                    x.ProjectId = "SP" + _specialProjectDA.GetNextSequenceValue(transaction).ToString();
+                });
+
+                var insertedCount = _specialProjectDA.Insert(data.SpecialProjects, transaction);
+                resultValues = insertedCount == data.SpecialProjects.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+            }
+
             return resultValues;
         }
 
@@ -178,8 +207,8 @@ namespace Business.Core.BLs.FreelancerBLs
                     x.FreelancerId = deleteData.FreelancerId;
                 });
 
-                var insertedCount = _workingHistoryDA.Delete(deleteData.WorkingHistories, transaction);
-                resultValues = insertedCount == deleteData.WorkingHistories.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+                resultValues = _workingHistoryDA.Delete(deleteData.WorkingHistories, transaction);
+                //resultValues = insertedCount == deleteData.WorkingHistories.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
 
             if (resultValues > 0 && deleteData?.Specialties?.Count > 0)
@@ -189,8 +218,8 @@ namespace Business.Core.BLs.FreelancerBLs
                     x.FreelancerId = deleteData.FreelancerId;
                 });
 
-                var insertedCount = _specialtyDA.Delete(deleteData.Specialties, transaction);
-                resultValues = insertedCount == deleteData.Specialties.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+                resultValues = _specialtyDA.Delete(deleteData.Specialties, transaction);
+                //resultValues = insertedCount == deleteData.Specialties.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
 
             if (resultValues > 0 && deleteData?.Skills?.Count > 0)
@@ -200,8 +229,8 @@ namespace Business.Core.BLs.FreelancerBLs
                     x.FreelancerId = deleteData.FreelancerId;
                 });
 
-                var insertedCount = _skillDA.Delete(deleteData.Skills, transaction);
-                resultValues = insertedCount == deleteData.Skills.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+                resultValues = _skillDA.Delete(deleteData.Skills, transaction);
+                //resultValues = insertedCount == deleteData.Skills.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
 
             if (resultValues > 0 && deleteData?.Educations?.Count > 0)
@@ -211,8 +240,8 @@ namespace Business.Core.BLs.FreelancerBLs
                     x.FreelancerId = deleteData.FreelancerId;
                 });
 
-                var insertedCount = _educationDA.Delete(deleteData.Educations, transaction);
-                resultValues = insertedCount == deleteData.Educations.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+                resultValues = _educationDA.Delete(deleteData.Educations, transaction);
+                //resultValues = insertedCount == deleteData.Educations.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
 
             if (resultValues > 0 && deleteData?.Certificates?.Count > 0)
@@ -222,9 +251,58 @@ namespace Business.Core.BLs.FreelancerBLs
                     x.FreelancerId = deleteData.FreelancerId;
                 });
 
-                var insertedCount = _certificateDA.Delete(deleteData.Certificates, transaction);
-                resultValues = insertedCount == deleteData.Certificates.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+                resultValues = _certificateDA.Delete(deleteData.Certificates, transaction);
+                //resultValues = insertedCount == deleteData.Certificates.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
             }
+
+            if (resultValues > 0 && deleteData?.SpecialProjects?.Count > 0)
+            {
+                deleteData.SpecialProjects.ForEach(x =>
+                {
+                    x.FreelancerId = deleteData.FreelancerId;
+                });
+
+                resultValues = _specialProjectDA.Delete(deleteData.SpecialProjects, transaction);
+                //resultValues = insertedCount == deleteData.Certificates.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+            }
+
+            return resultValues;
+        }
+
+        public long UpdateEducation(IDbTransaction transaction, List<MWFreelancerEducation> data, ClientInfo clientInfo)
+        {
+            long resultValues = ErrorCodes.Success;
+
+            var deleteData = data.Clone();
+
+            if (resultValues > 0 && deleteData?.Count > 0)
+            {
+                var deletedCount = _educationDA.Delete(deleteData, transaction);
+
+                if (deletedCount > 0)
+                {
+                    data.ForEach(x =>
+                    {
+                        x.EducationId = string.IsNullOrEmpty(x.EducationId) ? "ED" + _educationDA.GetNextSequenceValue(transaction).ToString() : x.EducationId;
+                    });
+
+                    var insertedCount = _educationDA.Insert(data, transaction);
+                    resultValues = insertedCount == data.Count ? ErrorCodes.Success : ErrorCodes.Err_InvalidData;
+                }
+                else
+                {
+                    resultValues = ErrorCodes.Err_Unknown;
+                }
+            }
+
+            return resultValues;
+        }
+
+        public long DeleteEducation(IDbTransaction transaction, MWFreelancerEducation data, ClientInfo clientInfo)
+        {
+            long resultValues = ErrorCodes.Success;
+
+            resultValues = _educationDA.Delete(data, transaction);
 
             return resultValues;
         }
@@ -242,6 +320,27 @@ namespace Business.Core.BLs.FreelancerBLs
                 return count > 1;
             }
 
+        }
+
+        public int UpdateIsOpenForJob(MWFreelancer data, IDbTransaction transaction)
+        {
+            return _freelancerDA.UpdateIsOpenForJob(data, transaction);
+        }
+        public int UpdateHourlyRate(MWFreelancer data, IDbTransaction transaction)
+        {
+            return _freelancerDA.UpdateHourlyRate(data, transaction);
+        }
+        public int UpdateHourWorkingPerWeek(MWFreelancer data, IDbTransaction transaction)
+        {
+            return _freelancerDA.UpdateHourWorkingPerWeek(data, transaction);
+        }
+        public int UpdateTitle(MWFreelancer data, IDbTransaction transaction)
+        {
+            return _freelancerDA.UpdateTitle(data, transaction);
+        }
+        public int UpdateBio(MWFreelancer data, IDbTransaction transaction)
+        {
+            return _freelancerDA.UpdateBio(data, transaction);
         }
     }
 }

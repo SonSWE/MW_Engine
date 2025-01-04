@@ -14,6 +14,7 @@ using MWShare.Helpers;
 using Business.Core.Services.FreelancerServices;
 using Business.Core.BLs.JobBLs;
 using Business.Core.Services.JobServices;
+using Object;
 
 namespace MWCustomer.Controllers
 {
@@ -92,7 +93,7 @@ namespace MWCustomer.Controllers
 
         [ApiAuthorize(Action = Const.AuthenAction.Any)]
         [HttpGet("getdetailbyid")]
-        public virtual async Task<MWFreelancer?> GetDetailById([FromQuery] string? value)
+        public async Task<MWFreelancer?> GetDetailById([FromQuery] string? value)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -131,8 +132,9 @@ namespace MWCustomer.Controllers
             return response;
         }
 
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
         [HttpPut("updateavatar")]
-        public virtual async Task<MasterDataBaseBusinessResponse> UpdateAvatar([FromBody] MWFreelancer data)
+        public async Task<MasterDataBaseBusinessResponse> UpdateAvatar([FromBody] MWFreelancer data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -186,8 +188,9 @@ namespace MWCustomer.Controllers
             return response;
         }
 
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
         [HttpPut("updatehourlyrate")]
-        public virtual async Task<MasterDataBaseBusinessResponse> UpdateHourlyRate([FromBody] MWFreelancer data)
+        public async Task<MasterDataBaseBusinessResponse> UpdateHourlyRate([FromBody] MWFreelancer data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -241,9 +244,9 @@ namespace MWCustomer.Controllers
             return response;
         }
 
-
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
         [HttpPut("updatetitle")]
-        public virtual async Task<MasterDataBaseBusinessResponse> UpdateTitle([FromBody] MWFreelancer data)
+        public async Task<MasterDataBaseBusinessResponse> UpdateTitle([FromBody] MWFreelancer data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -297,9 +300,9 @@ namespace MWCustomer.Controllers
             return response;
         }
 
-
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
         [HttpPut("updatebio")]
-        public virtual async Task<MasterDataBaseBusinessResponse> UpdateBio([FromBody] MWFreelancer data)
+        public async Task<MasterDataBaseBusinessResponse> UpdateBio([FromBody] MWFreelancer data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -353,9 +356,9 @@ namespace MWCustomer.Controllers
             return response;
         }
 
-
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
         [HttpPut("updatehourworkingperweek")]
-        public virtual async Task<MasterDataBaseBusinessResponse> UpdateHourWorkingPerWeek([FromBody] MWFreelancer data)
+        public async Task<MasterDataBaseBusinessResponse> UpdateHourWorkingPerWeek([FromBody] MWFreelancer data)
         {
             var requestTime = DateTime.Now;
             var clientInfo = Request.GetClientInfo();
@@ -376,6 +379,177 @@ namespace MWCustomer.Controllers
                 //
                 response.Code = result.Item1;
                 response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
+
+                if (response.Code <= 0)
+                {
+                    Response.StatusCode = StatusCodes.Status400BadRequest;
+                }
+                else
+                {
+                    response.Id = $"{data.FreelancerId}";
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+
+                response.Code = ErrorCodes.Err_Exception;
+                response.Message = ex.Message;
+
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            Logger.logData.Info(JsonHelper.Serialize(new
+            {
+                RequestId,
+                requestTime,
+                responseTime = DateTime.Now,
+                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
+                peer = clientInfo?.IpAddress,
+                request = data,
+            }));
+
+            return response;
+        }
+
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
+        [HttpPut("updateeducation")]
+        public async Task<MasterDataBaseBusinessResponse> UpdateEducation([FromBody] MWFreelancer data)
+        {
+            var requestTime = DateTime.Now;
+            var clientInfo = Request.GetClientInfo();
+
+            Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
+
+            //
+            MasterDataBaseBusinessResponse response = new();
+
+            try
+            {
+                var result = await Task.Run(() =>
+                {
+                    var createResult = _freelancerService.UpdateEducation(data.Educations, clientInfo, out var createResMessage);
+                    return new Tuple<long, string>(createResult, createResMessage);
+                });
+
+                //
+                response.Code = result.Item1;
+                response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
+
+                if (response.Code <= 0)
+                {
+                    Response.StatusCode = StatusCodes.Status400BadRequest;
+                }
+                else
+                {
+                    response.Id = $"";
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+
+                response.Code = ErrorCodes.Err_Exception;
+                response.Message = ex.Message;
+
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            Logger.logData.Info(JsonHelper.Serialize(new
+            {
+                RequestId,
+                requestTime,
+                responseTime = DateTime.Now,
+                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
+                peer = clientInfo?.IpAddress,
+                request = data,
+            }));
+
+            return response;
+        }
+
+        [ApiAuthorize(Action = Const.AuthenAction.Any)]
+        [HttpDelete("deleteeducation")]
+        public async Task<MasterDataBaseBusinessResponse> DeleteEducation([FromQuery] string value)
+        {
+            var requestTime = DateTime.Now;
+            var clientInfo = Request.GetClientInfo();
+
+            Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
+
+            //
+            MasterDataBaseBusinessResponse response = new();
+
+            try
+            {
+                var result = await Task.Run(() =>
+                {
+                    var data = new MWFreelancerEducation() { EducationId = value };
+                    var createResult = _freelancerService.DeleteEducation(data, clientInfo, out var createResMessage);
+                    return new Tuple<long, string>(createResult, createResMessage);
+                });
+
+                //
+                response.Code = result.Item1;
+                response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
+
+                if (response.Code <= 0)
+                {
+                    Response.StatusCode = StatusCodes.Status400BadRequest;
+                }
+                else
+                {
+                    response.Id = $"";
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+
+                response.Code = ErrorCodes.Err_Exception;
+                response.Message = ex.Message;
+
+                Response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            Logger.logData.Info(JsonHelper.Serialize(new
+            {
+                RequestId,
+                requestTime,
+                responseTime = DateTime.Now,
+                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
+                peer = clientInfo?.IpAddress,
+                request = value,
+            }));
+
+            return response;
+        }
+
+        // Update
+        [ApiAuthorize(Action = Const.AuthenAction.Update)]
+        [HttpPut("update")]
+        public virtual async Task<MasterDataBaseBusinessResponse> Update([FromBody] MWFreelancer data)
+        {
+            var requestTime = DateTime.Now;
+            var clientInfo = Request.GetClientInfo();
+
+            Logger.logData.Info($"[{RequestId}] Receive request from [{clientInfo?.IpAddress}] url=[{Request.GetDisplayUrl()}]");
+
+            //
+            MasterDataBaseBusinessResponse response = new();
+
+            try
+            {
+                var result = await Task.Run(() =>
+                {
+                    var createResult = MasterDataBaseService.Update(data, clientInfo, out var createResMessage, out var propertyName);
+                    return new Tuple<long, string, string>(createResult, createResMessage, propertyName);
+                });
+
+                //
+                response.Code = result.Item1;
+                response.Message = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : DefErrorMem.GetErrorDesc(result.Item1, clientInfo.ClientLanguage);
+                response.PropertyName = result.Item3 ?? string.Empty;
 
                 if (response.Code <= 0)
                 {

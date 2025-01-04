@@ -11,6 +11,7 @@ using System.Reflection;
 using Business.Core.BLs.BaseBLs;
 using DataAccess.Core.JobDAs;
 using System.Collections.Generic;
+using Dapper;
 
 namespace Business.Core.BLs.JobBLs
 {
@@ -155,5 +156,11 @@ namespace Business.Core.BLs.JobBLs
 
             return data;
         }
+
+        public List<MWJob> Search(IDbTransaction transaction, SearchJobRequest data)
+        { 
+            return _jobDA.Search(transaction, data);
+        }
+
     }
 }

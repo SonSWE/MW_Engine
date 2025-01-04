@@ -5,13 +5,13 @@ using static CommonLib.Constants.Const;
 
 namespace Object
 {
-    [DbTable(Name = Const.DbTable.MWFreelancerCertificate, ViewName = $"VW_{Const.DbTable.MWFreelancerCertificate}")]
-    public sealed class MWFreelancerCertificate
+    [DbTable(Name = Const.DbTable.MWFreelancerSpecialProject, ViewName = $"VW_{Const.DbTable.MWFreelancerSpecialProject}")]
+    public sealed class MWFreelancerSpecialProject
     {
         [DbField(IsKey = true)]
-        public string CertificateId { get; set; }
+        public string ProjectId { get; set; }
         public string FreelancerId { get; set; }
-        public string CertificateName { get; set; }
+        public string ProjectName { get; set; }
         public string Description { get; set; }
         public string FileAttach { get; set; }
        

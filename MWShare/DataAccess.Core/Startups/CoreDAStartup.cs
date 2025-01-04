@@ -61,6 +61,7 @@ namespace DataAccess.Core.Startups
             services.AddScoped<IFreelancerSkillDA, FreelancerSkillDA>();
             services.AddScoped<IFreelancerEducationDA, FreelancerEducationDA>();
             services.AddScoped<IFreelancerCertificateDA, FreelancerCertificateDA>();
+            services.AddScoped<IFreelancerSpecialProjectDA, FreelancerSpecialProjectDA>();
 
             //system code
             services.AddScoped<ISystemCodeDA, SystemCodeDA>();

@@ -34,8 +34,7 @@ namespace BOSystemAdmin.Controllers
 
         private string _requestId => _loggingManagement.RequestId;
 
-        //tạm bỏ vì chưa tạo chức năng phân quyền
-        //[ApiAuthorize(CheckFunction = false)]
+        [ApiAuthorize(CheckFunction = false)]
         [HttpPost, Route("inquiry")]
         public async Task<IActionResult> Inquiry([FromBody] SearchInquiry searchInquiry)
         {

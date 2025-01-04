@@ -413,6 +413,7 @@ namespace CommonLib.Constants
             public const string MWFreelancerEducation = "MWFreelancerEducation";
             public const string MWFreelancerWorkingHistory = "MWFreelancerWorkingHistory";
             public const string MWFreelancerCertificate = "MWFreelancerCertificate";
+            public const string MWFreelancerSpecialProject = "MWFreelancerSpecialProject";
             
             public const string MWProposal = "MWProposal";
             public const string MWContract = "MWContract";

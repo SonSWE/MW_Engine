@@ -23,19 +23,19 @@ namespace Business.Core.Services.FreelancerServices
 {
     public class FreelancerService : MasterDataBaseService<MWFreelancer>, IFreelancerService
     {
-        private readonly IFreelancerDA _freelancerDA;
+        private readonly IFreelancerBL _freelancerBL;
         private readonly IMasterDataBaseBL<MWUser> _userBLBase;
         private readonly IUserBL _userBL;
         private readonly IMasterDataBaseBL<MWWallet> _walletBL;
         private readonly IWalletDA _walletDA;
-        public FreelancerService(IMasterDataBaseBL<MWFreelancer> masterDataBaseDA, IDbManagement dbManagement, IFreelancerDA freelancerDA, IMasterDataBaseBL<MWUser> userBLBase
-            , IMasterDataBaseBL<MWWallet> walletBL, IWalletDA walletDA, IUserBL userBL) : base(masterDataBaseDA, dbManagement)
+        public FreelancerService(IMasterDataBaseBL<MWFreelancer> masterDataBaseDA, IDbManagement dbManagement, IMasterDataBaseBL<MWUser> userBLBase
+            , IMasterDataBaseBL<MWWallet> walletBL, IWalletDA walletDA, IUserBL userBL, IFreelancerBL freelancerBL) : base(masterDataBaseDA, dbManagement)
         {
-            _freelancerDA = freelancerDA;
             _userBLBase = userBLBase;
             _walletBL = walletBL;
             _walletDA = walletDA;
             _userBL = userBL;
+            _freelancerBL = freelancerBL;
         }
         public override string ProfileKeyField => Const.ProfileKeyField.Freelancer;
         public override BaseValidator<MWFreelancer> GetValidator(IDbTransaction transaction, ValidationAction validationAction, ClientInfo clientInfo, MWFreelancer dataToValidate, MWFreelancer oldData)
@@ -160,7 +160,7 @@ namespace Business.Core.Services.FreelancerServices
             data.LastChangeBy = clientInfo.UserName;
             data.LastChangeDate = DateTime.Now;
 
-            long result = _freelancerDA.UpdateIsOpenForJob(data, transaction);
+            long result = _freelancerBL.UpdateIsOpenForJob(data, transaction);
 
             if (result > 0)
             {
@@ -231,7 +231,7 @@ namespace Business.Core.Services.FreelancerServices
             data.LastChangeBy = clientInfo?.UserName ?? string.Empty;
             data.LastChangeDate = clientInfo?.ActionTime ?? DateTime.Now;
 
-            result = _freelancerDA.UpdateHourlyRate(data, transaction);
+            result = _freelancerBL.UpdateHourlyRate(data, transaction);
 
             if (result > 0)
             {
@@ -265,7 +265,7 @@ namespace Business.Core.Services.FreelancerServices
             data.LastChangeBy = clientInfo?.UserName ?? string.Empty;
             data.LastChangeDate = clientInfo?.ActionTime ?? DateTime.Now;
 
-            result = _freelancerDA.UpdateTitle(data, transaction);
+            result = _freelancerBL.UpdateTitle(data, transaction);
 
             if (result > 0)
             {
@@ -299,7 +299,7 @@ namespace Business.Core.Services.FreelancerServices
             data.LastChangeBy = clientInfo?.UserName ?? string.Empty;
             data.LastChangeDate = clientInfo?.ActionTime ?? DateTime.Now;
 
-            result = _freelancerDA.UpdateBio(data, transaction);
+            result = _freelancerBL.UpdateBio(data, transaction);
 
             if (result > 0)
             {
@@ -333,7 +333,7 @@ namespace Business.Core.Services.FreelancerServices
             data.LastChangeBy = clientInfo?.UserName ?? string.Empty;
             data.LastChangeDate = clientInfo?.ActionTime ?? DateTime.Now;
 
-            result = _freelancerDA.UpdateHourWorkingPerWeek(data, transaction);
+            result = _freelancerBL.UpdateHourWorkingPerWeek(data, transaction);
 
             if (result > 0)
             {
@@ -347,6 +347,57 @@ namespace Business.Core.Services.FreelancerServices
             return result;
         }
 
+        public long UpdateEducation(List<MWFreelancerEducation> data, ClientInfo clientInfo, out string resMessage)
+        {
+            long result = ErrorCodes.Success;
+            resMessage = string.Empty;
+
+            using var connection = DbManagement.GetConnection();
+            using var transaction = connection.BeginTransaction();
+            if (data == null)
+            {
+                return ErrorCodes.Err_DataNull;
+            }
+
+            result = _freelancerBL.UpdateEducation(transaction, data, clientInfo);
+
+            if (result > 0)
+            {
+                transaction.Commit();
+            }
+            else
+            {
+                transaction.Rollback();
+            }
+
+            return result;
+        }
+
+        public long DeleteEducation(MWFreelancerEducation data, ClientInfo clientInfo, out string resMessage)
+        {
+            long result = ErrorCodes.Success;
+            resMessage = string.Empty;
+
+            using var connection = DbManagement.GetConnection();
+            using var transaction = connection.BeginTransaction();
+            if (data == null)
+            {
+                return ErrorCodes.Err_DataNull;
+            }
+
+            result = _freelancerBL.DeleteEducation(transaction, data, clientInfo);
+
+            if (result > 0)
+            {
+                transaction.Commit();
+            }
+            else
+            {
+                transaction.Rollback();
+            }
+
+            return result;
+        }
 
     }
 }

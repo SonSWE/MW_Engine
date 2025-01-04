@@ -11,6 +11,7 @@ using Business.Core.BLs.BaseBLs;
 using Object;
 using System.Collections.Generic;
 using Business.Core.BLs.JobBLs;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Core.Services.JobServices
 {
@@ -55,6 +56,19 @@ namespace Business.Core.Services.JobServices
             }
 
             return _jobBL.GetByClientId(transaction, clientId);
+        }
+
+        public List<MWJob> Search(SearchJobRequest data, ClientInfo clientInfo)
+        {
+            using var connection = DbManagement.GetConnection();
+            using var transaction = connection.BeginTransaction();
+
+            if (string.IsNullOrEmpty(data.FreelancerId) && !string.IsNullOrEmpty(clientInfo?.LoggedUser?.Freelancer?.FreelancerId))
+            {
+                data.FreelancerId = clientInfo?.LoggedUser?.Freelancer?.FreelancerId;
+            }
+
+            return _jobBL.Search(transaction, data);
         }
     }
 }

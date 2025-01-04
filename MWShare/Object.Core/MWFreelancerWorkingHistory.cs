@@ -12,6 +12,7 @@ namespace Object
         public string WorkingHistoryId { get; set; }
         public string FreelancerId { get; set; }
         public string CompanyName { get; set; }
+        public string Position { get; set; }
         public string Address { get; set; }
         public string FromDate { get; set; } //tháng năm bắt đầu
         public string EndDate { get; set; } //tháng năm kết thúc

@@ -1,4 +1,5 @@
-﻿using Object.Core;
+﻿using Object;
+using Object.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,5 +17,7 @@ namespace Business.Core.Services.FreelancerServices
         long UpdateTitle(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
         long UpdateBio(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
         long UpdateHourWorkingPerWeek(MWFreelancer data, ClientInfo clientInfo, out string resMessage);
+        long UpdateEducation(List<MWFreelancerEducation> data, ClientInfo clientInfo, out string resMessage);
+        long DeleteEducation(MWFreelancerEducation data, ClientInfo clientInfo, out string resMessage);
     }
 }

@@ -104,4 +104,13 @@ namespace Object.Core
         public List<ExpandoObject> Datas { get; set; }
     }
 
+    public sealed class SearchJobRequest
+    {
+        public string FreelancerId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Skills { get; set; }
+        public List<string> LevelIds { get; set; }
+        public string Specialties { get; set; }
+    }
 }

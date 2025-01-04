@@ -13,6 +13,7 @@ using MemoryData;
 using System.Reflection;
 using CommonLib.Extensions;
 using Object;
+using Google.Protobuf.WellKnownTypes;
 
 namespace MWCustomer.Controllers
 {
@@ -255,6 +256,37 @@ namespace MWCustomer.Controllers
                 processTime = ConstLog.GetProcessingMilliseconds(requestTime),
                 peer = clientInfo?.IpAddress,
                 request = new { value },
+            }));
+
+            return response;
+        }
+
+
+        [HttpPost, Route("search")]
+        public async Task<List<MWJob>?> Search([FromBody] SearchJobRequest data)
+        {
+            var requestTime = DateTime.Now;
+            var clientInfo = Request.GetClientInfo();
+            List<MWJob>? response = null;
+
+            try
+            {
+                response = await Task.Run(() => _jobService.Search(data, clientInfo));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Error(ex, $"[{RequestId}] {ex.Message}");
+            }
+
+            Logger.logData.Info(JsonHelper.Serialize(new
+            {
+                RequestId,
+                requestTime,
+                responseTime = DateTime.Now,
+                processTime = ConstLog.GetProcessingMilliseconds(requestTime),
+                peer = clientInfo?.IpAddress,
+                request = data,
             }));
 
             return response;
