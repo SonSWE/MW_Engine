@@ -17,6 +17,7 @@ using Business.Core.Services.WalletServices;
 using MemoryData;
 using Business.Core.BLs.WalletBLs;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Threading.Tasks;
 
 namespace Business.Core.Services.ContractServices
 {
@@ -501,6 +502,16 @@ namespace Business.Core.Services.ContractServices
             long result = _proposalBL.Update(transaction, data, clientInfo);
 
             return result;
+        }
+
+        public async Task<List<string>> GetContractIdsEndDate()
+        {
+            return await _contractDA.GetContractIdsEndDate();
+        }
+
+        public async Task<MWContract> GetDetailByIdAync(string id)
+        {
+            return GetDetailById(id);
         }
     }
 }

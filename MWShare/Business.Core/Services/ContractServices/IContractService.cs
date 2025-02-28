@@ -22,6 +22,8 @@ namespace Business.Core.Services.ContractServices
         long EndContract(MWContract data, ClientInfo clientInfo, out string resMessage);
         long ApprovalContractComplaint(string id, string status, ClientInfo clientInfo, out string resMessage);
 
+        Task<List<string>> GetContractIdsEndDate();
 
+        Task<MWContract> GetDetailByIdAync(string id);
     }
 }

@@ -53,12 +53,6 @@ namespace MWShare.Startups
             });
 
             
-            services.AddSingleton<IExportService, ExportService>();
-            services.AddSingleton<IFileStorageClient, MinIOClient>();
-
-
-
-            //services.AddSingleton<INotifyClient>(new NotifyClient(ConfigData.NotifyHost));
             services.AddSingleton<IMWAuthClient>(new MWAuthClient(ConfigData.MWAuthHost));
 
             //
@@ -71,7 +65,6 @@ namespace MWShare.Startups
 
 
             services.AddHostedService<SysParamBackgroundService>();
-            //services.AddHostedService<DefErrorBackgroundService>();
             services.AddHostedService<SearchBackgroundService>();
             services.AddHostedService<LoadMemBackgroundService>();
 

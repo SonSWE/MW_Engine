@@ -60,6 +60,7 @@
             public const string PendingPayment = "PP";
             public const string PendingApprovalSubmit = "PA";
             public const string PendingApprovalEnd = "PE";
+            public const string PendingComplaint = "PC";
             public const string Done = "D";
             public const string Fail = "F";
         }

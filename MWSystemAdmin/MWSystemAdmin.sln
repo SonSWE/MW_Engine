@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MWAuth", "MWAuth\MWAuth.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MWCustomer", "MWCustomer\MWCustomer.csproj", "{CF3D8ACE-3357-48B2-B944-776D7E6E4C6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MWJobAutomation", "MWJobAutomation\MWJobAutomation.csproj", "{425A0355-CCCB-4E96-851E-439B7FAE1B92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{CF3D8ACE-3357-48B2-B944-776D7E6E4C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF3D8ACE-3357-48B2-B944-776D7E6E4C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF3D8ACE-3357-48B2-B944-776D7E6E4C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{425A0355-CCCB-4E96-851E-439B7FAE1B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{425A0355-CCCB-4E96-851E-439B7FAE1B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{425A0355-CCCB-4E96-851E-439B7FAE1B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{425A0355-CCCB-4E96-851E-439B7FAE1B92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

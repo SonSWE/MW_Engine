@@ -219,6 +219,7 @@ namespace Business.Core.Services.WalletServices
             transactionTransfer.WalletReceiveId = data.WalletReceiveId;
             transactionTransfer.WalletTransferId = data.WalletId;
             transactionTransfer.WalletId = data.WalletId;
+            transactionTransfer.Description = data.Description;
 
             transactionTransfer.CreateBy = clientInfo.UserName;
             transactionTransfer.CreateDate = DateTime.Now;
@@ -247,6 +248,7 @@ namespace Business.Core.Services.WalletServices
             transactionReceive.WalletId = data.WalletReceiveId;
             transactionReceive.CreateBy = clientInfo.UserName;
             transactionReceive.CreateDate = DateTime.Now;
+            transactionReceive.Description = data.Description;
 
 
             //Thực hiện chuyền tiền từ hệ thống đến tài khoản ngân hàng

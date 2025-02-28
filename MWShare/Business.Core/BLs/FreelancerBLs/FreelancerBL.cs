@@ -90,6 +90,11 @@ namespace Business.Core.BLs.FreelancerBLs
                 {
                     data.FreelancerId,
                 }, transaction).ToList() ?? new();
+
+                foreach (var item in data.FeedBacks)
+                {
+                    item.Description = item.Description + " Freelancer";
+                }
             }
             Logger.log.Info($"[{RequestId}] [{ConstLog.GetMethodFullName(MethodBase.GetCurrentMethod())}] End. Tong thoi gian {ConstLog.GetProcessingMilliseconds(requestTime)} (ms)");
 
